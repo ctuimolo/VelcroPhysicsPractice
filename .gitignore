@@ -4,3 +4,7 @@
 */*.exe
 */*.manifest
 /.vs/
+**.exe
+**.pdb
+**.sln
+**.cache

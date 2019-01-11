@@ -38,7 +38,6 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Game.cs" />
@@ -64,8 +63,8 @@
     <None Include="app.manifest" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\VelcroPhysics\VelcroPhysics\VelcroPhysics\VelcroPhysics.MonoGame.csproj">
-      <Project>{7030bb2e-dfb1-47dd-88ab-00d8938bd1f2}</Project>
+    <ProjectReference Include="..\..\VelcroPhysics\VelcroPhysics\VelcroPhysics.MonoGame.csproj">
+      <Project>{b9ec506e-db4e-475a-896d-0425a71e0f74}</Project>
       <Name>VelcroPhysics.MonoGame</Name>
     </ProjectReference>
   </ItemGroup>
