@@ -23,7 +23,7 @@ namespace VelcroPhysicsPractice
 
         // Game Objects to make
         private List<GameObject> _renderedGameObjects;
-        private List<HitBox> worldHitBoxes;
+        private List<HitBox> _worldHitBoxes;
 
         // Debug
 
