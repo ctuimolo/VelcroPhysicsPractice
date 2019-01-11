@@ -23,8 +23,7 @@ C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\obj\x86\Debug\VelcroPhys
 C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\obj\x86\Debug\VelcroPhysicsPractice.csproj.CopyComplete
 C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\obj\x86\Debug\VelcroPhysicsPractice.exe
 C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\obj\x86\Debug\VelcroPhysicsPractice.pdb
-C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\bin\Windows\x86\Debug\Content\CircleSprite.xnb
-C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\bin\Windows\x86\Debug\Content\GroundSprite.xnb
 C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\bin\Windows\x86\Debug\Content\black.xnb
 C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\bin\Windows\x86\Debug\Content\grey.xnb
 C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\bin\Windows\x86\Debug\Content\white.xnb
+C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\bin\Windows\x86\Debug\Content\font.xnb

@@ -18,7 +18,6 @@ namespace VelcroPhysicsPractice.Scripts
         private SpriteBatch spriteBatch;
 
         // Player VelcroPhysics fields
-        public Body body;
         private Vector2 playerSize = new Vector2(32,32);
         private Vector2 playerOrigin;
         private readonly float gravityScale = 1;
@@ -26,12 +25,19 @@ namespace VelcroPhysicsPractice.Scripts
         // Game logic misc. fields
         private KeyboardState _oldKeyState;
 
+        // Debugs
+        private string positionDebugString;
+        private string isTouchingWallString;
+        private bool isTouchingWall;
+        private readonly SpriteFont font;
+
         public Player(ContentManager rootContent, World rootWorld, SpriteBatch rootSpriteBatch, Vector2 setPosition)
         {
             // Player fields
             spriteBatch = rootSpriteBatch;
             playerSprite = rootContent.Load<Texture2D>("white");
             playerOrigin = new Vector2(playerSize.X/2, playerSize.Y/2);
+            font = rootContent.Load<SpriteFont>("font");
 
             // VelcroPhysics body configuration
             body = BodyFactory.CreateRectangle(
@@ -59,6 +65,15 @@ namespace VelcroPhysicsPractice.Scripts
         {
         }
 
+        public override void Collide(GameObject other)
+        {
+            if (other.collisionType == CollisionType.wall)
+            {
+                isTouchingWall = true;
+
+            }
+        }
+
         private void HandleKeyboard()
         {
             KeyboardState state = Keyboard.GetState();
@@ -80,15 +95,30 @@ namespace VelcroPhysicsPractice.Scripts
 
         public override void Update()
         {
+            ///// Setup debug string
+            positionDebugString = "Position: \n" + 
+                                  "X: " + (int)(ConvertUnits.ToDisplayUnits(body.Position.X) - playerSize.X /2) + "\n" +
+                                  "Y: " + (int)(ConvertUnits.ToDisplayUnits(body.Position.Y) - playerSize.Y /2) + "\n";
+
+            isTouchingWallString = "Touching wall: " + (isTouchingWall ? " true": " false");
+
+
+            /////////////////////////////////
+
             HandleKeyboard();
             if(body.LinearVelocity.Y > 10)
             {
                 body.LinearVelocity = new Vector2(body.LinearVelocity.X, 10);
             }
+            isTouchingWall = false;
+
         }
 
         public override void Draw()
         {
+            spriteBatch.DrawString(font, positionDebugString, new Vector2(10, 10), Color.CornflowerBlue);
+            spriteBatch.DrawString(font, isTouchingWallString, new Vector2(60, 10), Color.White);
+
             spriteBatch.Draw(
                 playerSprite, 
                 ConvertUnits.ToDisplayUnits(body.Position), 

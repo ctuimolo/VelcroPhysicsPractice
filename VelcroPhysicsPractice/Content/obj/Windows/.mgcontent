@@ -5,13 +5,11 @@
   <Config />
   <SourceFiles>
     <File>C:/Projects/VelcroPhysicsPractice/VelcroPhysicsPractice/Content/black.png</File>
-    <File>C:/Projects/VelcroPhysicsPractice/VelcroPhysicsPractice/Content/CircleSprite.png</File>
+    <File>C:/Projects/VelcroPhysicsPractice/VelcroPhysicsPractice/Content/font.spritefont</File>
     <File>C:/Projects/VelcroPhysicsPractice/VelcroPhysicsPractice/Content/grey.png</File>
-    <File>C:/Projects/VelcroPhysicsPractice/VelcroPhysicsPractice/Content/GroundSprite.png</File>
     <File>C:/Projects/VelcroPhysicsPractice/VelcroPhysicsPractice/Content/white.png</File>
   </SourceFiles>
   <DestFiles>
-    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

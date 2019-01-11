@@ -11,7 +11,7 @@ using VelcroPhysicsPractice.Scripts;
 namespace VelcroPhysicsPractice
 {
 
-    public class Game1 : Game
+    public class Game : Microsoft.Xna.Framework.Game
     {
         // Engine IO and Physics inits
         private readonly GraphicsDeviceManager _graphics;
@@ -23,8 +23,11 @@ namespace VelcroPhysicsPractice
 
         // Game Objects to make
         private List<GameObject> _renderedGameObjects;
+        private List<HitBox> worldHitBoxes;
 
-        public Game1()
+        // Debug
+
+        public Game()
         {
             _graphics = new GraphicsDeviceManager(this) {
                 PreferredBackBufferWidth = 800,
@@ -47,7 +50,7 @@ namespace VelcroPhysicsPractice
             //    ADD GAME OBJECTS HERE
             ///////////////////
             _renderedGameObjects = new List<GameObject> {
-                new Player(Content, _world, _batch, new Vector2(0,0)),
+                new Player(Content, _world, _batch, new Vector2(350,230)),
                 new Wall(Content, _world, _batch, new Rectangle(0,420,800,80)),
                 new Wall(Content, _world, _batch, new Rectangle(0,0,4,480)),
                 new Wall(Content, _world, _batch, new Rectangle(796,0,4,480)),
@@ -57,11 +60,15 @@ namespace VelcroPhysicsPractice
                 new Wall(Content, _world, _batch, new Rectangle(190,400,70,20)),
                 new Wall(Content, _world, _batch, new Rectangle(60,325,70,20)),
             };
+
         }
 
         protected override void Update(GameTime gameTime)
         {
             HandleKeyboard();
+
+            ///// Physics world step, and then resolve collisions
+            /// Send to collisions, interacting objects
             _world.Step((float)gameTime.ElapsedGameTime.TotalMilliseconds * 0.001f);
 
             foreach (GameObject obj in _renderedGameObjects)
@@ -87,6 +94,7 @@ namespace VelcroPhysicsPractice
             GraphicsDevice.Clear(Color.Black);
 
             _batch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, _view);
+
 
             foreach (GameObject obj in _renderedGameObjects)
             {

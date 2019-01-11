@@ -1,6 +1,5 @@
 Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
 "C:/Projects/VelcroPhysicsPractice/VelcroPhysicsPractice/Content/black.png","C:/Projects/VelcroPhysicsPractice/VelcroPhysicsPractice/Content/bin/Windows/Content/black.xnb","TextureProcessor","Texture2DContent",133,4181,0.1453075
-"C:/Projects/VelcroPhysicsPractice/VelcroPhysicsPractice/Content/CircleSprite.png","C:/Projects/VelcroPhysicsPractice/VelcroPhysicsPractice/Content/bin/Windows/Content/CircleSprite.xnb","TextureProcessor","Texture2DContent",4948,38501,0.1515663
+"C:/Projects/VelcroPhysicsPractice/VelcroPhysicsPractice/Content/font.spritefont","C:/Projects/VelcroPhysicsPractice/VelcroPhysicsPractice/Content/bin/Windows/Content/font.xnb","FontDescriptionProcessor","SpriteFontContent",2009,13329,0.3186606
 "C:/Projects/VelcroPhysicsPractice/VelcroPhysicsPractice/Content/grey.png","C:/Projects/VelcroPhysicsPractice/VelcroPhysicsPractice/Content/bin/Windows/Content/grey.xnb","TextureProcessor","Texture2DContent",153,4181,0.0119708
-"C:/Projects/VelcroPhysicsPractice/VelcroPhysicsPractice/Content/GroundSprite.png","C:/Projects/VelcroPhysicsPractice/VelcroPhysicsPractice/Content/bin/Windows/Content/GroundSprite.xnb","TextureProcessor","Texture2DContent",3737,131157,0.0189478
 "C:/Projects/VelcroPhysicsPractice/VelcroPhysicsPractice/Content/white.png","C:/Projects/VelcroPhysicsPractice/VelcroPhysicsPractice/Content/bin/Windows/Content/white.xnb","TextureProcessor","Texture2DContent",157,4181,0.007945

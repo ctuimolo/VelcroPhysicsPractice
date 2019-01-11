@@ -17,7 +17,6 @@ namespace VelcroPhysicsPractice.Scripts
         private SpriteBatch spriteBatch;
 
         // Player VelcroPhysics fields
-        public Body body;
         private Vector2 size;
         private Vector2 origin;
         private Vector2 position;
@@ -26,12 +25,13 @@ namespace VelcroPhysicsPractice.Scripts
 
         public Wall(ContentManager rootContent, World rootWorld, SpriteBatch rootSpriteBatch, Rectangle coordinates)
         {
-            // Player fields
+            // Object fields
             spriteBatch = rootSpriteBatch;
             size = new Vector2(coordinates.Width, coordinates.Height);
             sprite = rootContent.Load<Texture2D>("grey");
             origin = new Vector2(size.X / 2, size.Y / 2);
             position = new Vector2(coordinates.X, coordinates.Y);
+            collisionType = CollisionType.wall;
 
             // VelcroPhysics body configuration
             body = BodyFactory.CreateRectangle(
@@ -46,7 +46,6 @@ namespace VelcroPhysicsPractice.Scripts
             );
             body.FixedRotation = true;
             body.FixtureList[0].CollisionCategories = VelcroPhysics.Collision.Filtering.Category.Cat1;
-            body.FixtureList[0].CollidesWith = VelcroPhysics.Collision.Filtering.Category.Cat1 & VelcroPhysics.Collision.Filtering.Category.Cat1;
             body.Friction = 0;
         }
 
@@ -55,6 +54,10 @@ namespace VelcroPhysicsPractice.Scripts
         }
 
         public override void Initialize()
+        {
+        }
+
+        public override void Collide(GameObject other)
         {
         }
 
