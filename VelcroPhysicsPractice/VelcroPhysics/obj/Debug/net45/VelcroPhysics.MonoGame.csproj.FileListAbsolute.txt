@@ -11,7 +11,6 @@ C:\Projects\VelcroPhysics\VelcroPhysics\VelcroPhysics\obj\Debug\net45\VelcroPhys
 C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\VelcroPhysics\bin\Debug\net45\VelcroPhysics.MonoGame.dll
 C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\VelcroPhysics\bin\Debug\net45\VelcroPhysics.MonoGame.pdb
 C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\VelcroPhysics\bin\Debug\net45\MonoGame.Framework.dll
-C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\VelcroPhysics\obj\Debug\net45\VelcroPhysics.MonoGame.csprojAssemblyReference.cache
 C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\VelcroPhysics\obj\Debug\net45\VelcroPhysics.MonoGame.csproj.CoreCompileInputs.cache
 C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\VelcroPhysics\obj\Debug\net45\VelcroPhysics.MonoGame.AssemblyInfoInputs.cache
 C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\VelcroPhysics\obj\Debug\net45\VelcroPhysics.MonoGame.AssemblyInfo.cs

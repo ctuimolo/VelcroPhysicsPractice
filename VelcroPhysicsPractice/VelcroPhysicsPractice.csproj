@@ -60,11 +60,10 @@
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
-    <None Include="app.manifest" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="VelcroPhysics\VelcroPhysics.MonoGame.csproj">
-      <Project>{81352253-a484-48de-b229-396f25040a9d}</Project>
+      <Project>{bcd70972-0eff-420b-8005-0a6d3acf75ce}</Project>
       <Name>VelcroPhysics.MonoGame</Name>
     </ProjectReference>
   </ItemGroup>
