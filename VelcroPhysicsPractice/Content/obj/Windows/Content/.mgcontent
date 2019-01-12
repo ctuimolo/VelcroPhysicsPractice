@@ -5,11 +5,23 @@
   <Config />
   <SourceFiles>
     <File>C:/Projects/VelcroPhysicsPractice/VelcroPhysicsPractice/Content/black.png</File>
+    <File>C:/Projects/VelcroPhysicsPractice/VelcroPhysicsPractice/Content/blue.png</File>
     <File>C:/Projects/VelcroPhysicsPractice/VelcroPhysicsPractice/Content/font.spritefont</File>
+    <File>C:/Projects/VelcroPhysicsPractice/VelcroPhysicsPractice/Content/green.png</File>
     <File>C:/Projects/VelcroPhysicsPractice/VelcroPhysicsPractice/Content/grey.png</File>
+    <File>C:/Projects/VelcroPhysicsPractice/VelcroPhysicsPractice/Content/pink.png</File>
+    <File>C:/Projects/VelcroPhysicsPractice/VelcroPhysicsPractice/Content/purple.png</File>
+    <File>C:/Projects/VelcroPhysicsPractice/VelcroPhysicsPractice/Content/red.png</File>
     <File>C:/Projects/VelcroPhysicsPractice/VelcroPhysicsPractice/Content/white.png</File>
+    <File>C:/Projects/VelcroPhysicsPractice/VelcroPhysicsPractice/Content/yellow.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

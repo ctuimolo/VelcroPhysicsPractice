@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Projects/VelcroPhysicsPractice/VelcroPhysicsPractice/Content/black.png</SourceFile>
-  <SourceTime>2018-12-17T16:28:44.9405509-08:00</SourceTime>
-  <DestFile>C:/Projects/VelcroPhysicsPractice/VelcroPhysicsPractice/Content/bin/Windows/black.xnb</DestFile>
-  <DestTime>2019-01-11T11:58:31.1896916-08:00</DestTime>
+  <SourceFile>C:/Projects/VelcroPhysicsPractice/VelcroPhysicsPractice/Content/purple.png</SourceFile>
+  <SourceTime>2019-01-11T11:54:20.6092726-08:00</SourceTime>
+  <DestFile>C:/Projects/VelcroPhysicsPractice/VelcroPhysicsPractice/Content/bin/Windows/purple.xnb</DestFile>
+  <DestTime>2019-01-11T11:58:31.5698101-08:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2018-12-08T08:35:54-08:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

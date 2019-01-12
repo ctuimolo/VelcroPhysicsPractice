@@ -7,6 +7,9 @@ using VelcroPhysics.Dynamics;
 using VelcroPhysics.Factories;
 using VelcroPhysics.Utilities;
 
+using Microsoft.Xna.Framework.Input;
+
+
 namespace VelcroPhysicsPractice.Scripts
 {
     public class Wall : GameObject
@@ -20,7 +23,10 @@ namespace VelcroPhysicsPractice.Scripts
         private Vector2 origin;
         private Vector2 position;
 
-        // Game logic misc. fields
+        // Debugs and self hitboxes
+        private bool drawDebug = true;
+        public HitBox hitbox;
+        private KeyboardState _oldKeyState;
 
         public Wall(ContentManager rootContent, World rootWorld, SpriteBatch rootSpriteBatch, Rectangle coordinates)
         {
@@ -46,6 +52,10 @@ namespace VelcroPhysicsPractice.Scripts
             body.FixedRotation = true;
             body.FixtureList[0].CollisionCategories = VelcroPhysics.Collision.Filtering.Category.Cat1;
             body.Friction = 0;
+
+            /////////////
+            /// Debug hitbox
+            hitbox = new HitBox(rootWorld, rootSpriteBatch, rootContent, this, new Rectangle(0, 0, (int)size.X, (int)size.Y), "blue");
         }
 
         public override void LoadContent()
@@ -56,12 +66,16 @@ namespace VelcroPhysicsPractice.Scripts
         {
         }
 
-        public override void Collide(GameObject other)
+        public override void SetCollision(HitBox other)
         {
         }
 
         public override void Update()
         {
+            KeyboardState state = Keyboard.GetState();
+            if (state.IsKeyDown(Keys.F1) && _oldKeyState.IsKeyUp(Keys.F1))
+                drawDebug = !drawDebug;
+            _oldKeyState = state;
         }
 
         public override void Draw()
@@ -77,6 +91,11 @@ namespace VelcroPhysicsPractice.Scripts
                 SpriteEffects.None,
                 0f
             );
+
+            if(drawDebug)
+            {
+                //hitbox.Draw();
+            }
         }
     }
 }

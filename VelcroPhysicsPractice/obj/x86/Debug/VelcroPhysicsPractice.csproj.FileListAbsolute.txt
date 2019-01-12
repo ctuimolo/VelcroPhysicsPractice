@@ -27,3 +27,9 @@ C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\bin\Windows\x86\Debug\Co
 C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\bin\Windows\x86\Debug\Content\grey.xnb
 C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\bin\Windows\x86\Debug\Content\white.xnb
 C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\bin\Windows\x86\Debug\Content\font.xnb
+C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\bin\Windows\x86\Debug\Content\blue.xnb
+C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\bin\Windows\x86\Debug\Content\red.xnb
+C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\bin\Windows\x86\Debug\Content\green.xnb
+C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\bin\Windows\x86\Debug\Content\pink.xnb
+C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\bin\Windows\x86\Debug\Content\purple.xnb
+C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\bin\Windows\x86\Debug\Content\yellow.xnb

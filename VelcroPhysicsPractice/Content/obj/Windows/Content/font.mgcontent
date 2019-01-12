@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SourceFile>C:/Projects/VelcroPhysicsPractice/VelcroPhysicsPractice/Content/font.spritefont</SourceFile>
-  <SourceTime>2019-01-10T18:18:14.2946627-08:00</SourceTime>
+  <SourceTime>2019-01-10T15:13:09.0653845-08:00</SourceTime>
   <DestFile>C:/Projects/VelcroPhysicsPractice/VelcroPhysicsPractice/Content/bin/Windows/Content/font.xnb</DestFile>
-  <DestTime>2019-01-10T18:23:39.3759132-08:00</DestTime>
+  <DestTime>2019-01-10T18:52:37.8750505-08:00</DestTime>
   <Importer>FontDescriptionImporter</Importer>
-  <ImporterTime>2018-09-23T14:55:52-07:00</ImporterTime>
+  <ImporterTime>2018-12-08T08:35:54-08:00</ImporterTime>
   <Processor>FontDescriptionProcessor</Processor>
-  <ProcessorTime>2018-09-23T14:55:52-07:00</ProcessorTime>
+  <ProcessorTime>2018-12-08T08:35:54-08:00</ProcessorTime>
   <Parameters>
     <Key>PremultiplyAlpha</Key>
     <Value>True</Value>
