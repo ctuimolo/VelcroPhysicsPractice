@@ -63,8 +63,8 @@
     <None Include="app.manifest" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\VelcroPhysics\VelcroPhysics\VelcroPhysics\VelcroPhysics.MonoGame.csproj">
-      <Project>{7030bb2e-dfb1-47dd-88ab-00d8938bd1f2}</Project>
+    <ProjectReference Include="VelcroPhysics\VelcroPhysics.MonoGame.csproj">
+      <Project>{81352253-a484-48de-b229-396f25040a9d}</Project>
       <Name>VelcroPhysics.MonoGame</Name>
     </ProjectReference>
   </ItemGroup>
