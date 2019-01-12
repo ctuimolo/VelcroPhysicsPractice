@@ -6,6 +6,5 @@
 /.vs/
 **.exe
 **.pdb
-**.sln
 **.cache
 **.csproj
