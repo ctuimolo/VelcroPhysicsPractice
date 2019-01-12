@@ -8,7 +8,7 @@ using VelcroPhysics.Factories;
 
 namespace VelcroPhysicsPractice.Scripts
 {
-    public class HitBox
+    public class HitBox : GameObject
     {
         // Monogame drawing fields
         private SpriteBatch spriteBatch;
@@ -22,7 +22,6 @@ namespace VelcroPhysicsPractice.Scripts
         public Vector2 offset;
 
         // VelcroPhysics bodies
-        public Body body;
 
         public HitBox(World rootWorld, SpriteBatch rootSpriteBatch, ContentManager rootContent, GameObject setOwner, Rectangle coordinates, string color)
         {
@@ -58,12 +57,24 @@ namespace VelcroPhysicsPractice.Scripts
             body.IsSensor = true;
         }
 
-        public void Update()
+        public override void LoadContent()
+        {
+        }
+
+        public override void Initialize()
+        {
+        }
+
+        public override void SetCollision(HitBox other)
+        {
+        }
+
+        public override void Update()
         {
             position = ConvertUnits.ToDisplayUnits(owner.body.Position) + offset;
         }
 
-        public void Draw()
+        public override void Draw()
         {
             spriteBatch.Draw(
                 sprite,

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -41,6 +42,14 @@ namespace VelcroPhysicsPractice
             Content.RootDirectory = "Content";
             _world = new World(new Vector2(0, 100f));
             
+        }
+
+        bool AABBoverlapping(GameObject self, GameObject other)
+        {
+            // if self.left >= other.right && self.right <= other.left
+            
+
+            return false;
         }
 
         protected override void LoadContent()
@@ -86,6 +95,10 @@ namespace VelcroPhysicsPractice
                 if(contact != null)
                 {
                     contactinRangeString = "true";
+                    if(AABBoverlapping((GameObject)contact.FixtureA.Body.UserData, (GameObject)contact.FixtureB.Body.UserData))
+                    {
+                        Console.WriteLine("COLLIDED");
+                    }
                 }
             }
 
