@@ -17,3 +17,4 @@ C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\VelcroPhysics\obj\Debug\
 C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\VelcroPhysics\obj\Debug\net45\VelcroPhysics.MonoGame.csproj.CopyComplete
 C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\VelcroPhysics\obj\Debug\net45\VelcroPhysics.MonoGame.dll
 C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\VelcroPhysics\obj\Debug\net45\VelcroPhysics.MonoGame.pdb
+C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\VelcroPhysics\obj\Debug\net45\VelcroPhysics.MonoGame.csprojAssemblyReference.cache

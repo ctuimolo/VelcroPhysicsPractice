@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -19,16 +20,14 @@ namespace VelcroPhysicsPractice.Scripts
         private SpriteBatch spriteBatch;
 
         // Player VelcroPhysics fields
-        private Vector2 size;
         private Vector2 origin;
-        private Vector2 position;
 
-        // Debugs and self hitboxes
+        // Debugs and self Hitboxes
         private bool drawDebug = true;
-        public HitBox hitbox;
+        public Hitbox Hitbox;
         private KeyboardState _oldKeyState;
 
-        public Wall(ContentManager rootContent, World rootWorld, SpriteBatch rootSpriteBatch, Rectangle coordinates)
+        public Wall(ContentManager rootContent, World rootWorld, List<Hitbox> rootWorldHitboxes, SpriteBatch rootSpriteBatch, Rectangle coordinates)
         {
             // Object fields
             spriteBatch = rootSpriteBatch;
@@ -50,12 +49,14 @@ namespace VelcroPhysicsPractice.Scripts
                 this
             );
             body.FixedRotation = true;
-            body.FixtureList[0].CollisionCategories = VelcroPhysics.Collision.Filtering.Category.Cat1;
+            /*body.FixtureList[0].CollisionCategories = VelcroPhysics.Collision.Filtering.Category.Cat1;*/
             body.Friction = 0;
 
             /////////////
-            /// Debug hitbox
-            hitbox = new HitBox(rootWorld, rootSpriteBatch, rootContent, this, new Rectangle(0, 0, (int)size.X, (int)size.Y), "blue");
+            /// Debug Hitbox
+            Hitbox = new Hitbox(rootWorld, rootSpriteBatch, rootContent, this, new Rectangle(0, 0, (int)size.X, (int)size.Y), "blue");
+            rootWorldHitboxes.Add(Hitbox);
+            collisionType = CollisionType.wall;
         }
 
         public override void LoadContent()
@@ -66,8 +67,9 @@ namespace VelcroPhysicsPractice.Scripts
         {
         }
 
-        public override void SetCollision(HitBox other)
+        public override void SetCollision(GameObject other)
         {
+
         }
 
         public override void Update()
@@ -91,11 +93,6 @@ namespace VelcroPhysicsPractice.Scripts
                 SpriteEffects.None,
                 0f
             );
-
-            if(drawDebug)
-            {
-                //hitbox.Draw();
-            }
         }
     }
 }

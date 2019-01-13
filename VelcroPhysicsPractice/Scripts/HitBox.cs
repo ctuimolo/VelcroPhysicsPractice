@@ -6,24 +6,29 @@ using VelcroPhysics.Dynamics;
 using VelcroPhysics.Utilities;
 using VelcroPhysics.Factories;
 
+using System;
+
 namespace VelcroPhysicsPractice.Scripts
 {
-    public class HitBox : GameObject
+    public class Hitbox
     {
         // Monogame drawing fields
         private SpriteBatch spriteBatch;
         private readonly Texture2D sprite;
 
-        // Hitbox fields
+        // Hitboxfields
         public GameObject owner;
         public Vector2 origin;
+        public Vector2 offset;
         public Vector2 size;
         public Vector2 position;
-        public Vector2 offset;
+        private CollisionType trigger;
+        private CollisionType collisionType;
 
         // VelcroPhysics bodies
+        private Body body;
 
-        public HitBox(World rootWorld, SpriteBatch rootSpriteBatch, ContentManager rootContent, GameObject setOwner, Rectangle coordinates, string color)
+        public Hitbox(World rootWorld, SpriteBatch rootSpriteBatch, ContentManager rootContent, GameObject setOwner, Rectangle coordinates, string color, CollisionType setTrigger = CollisionType.none)
         {
             spriteBatch = rootSpriteBatch;
             owner = setOwner;
@@ -52,29 +57,37 @@ namespace VelcroPhysicsPractice.Scripts
                 this
             );
             body.FixedRotation = true;
-            body.FixtureList[0].CollisionCategories = VelcroPhysics.Collision.Filtering.Category.Cat1;
+            /*body.FixtureList[0].CollisionCategories = VelcroPhysics.Collision.Filtering.Category.Cat1;*/
             body.Friction = 0;
             body.IsSensor = true;
+
+            collisionType = CollisionType.invoker;
+            trigger = setTrigger;
         }
 
-        public override void LoadContent()
+        public void LoadContent()
         {
         }
 
-        public override void Initialize()
+        public void Initialize()
         {
         }
 
-        public override void SetCollision(HitBox other)
+        public void SetCollision(GameObject other)
         {
+            Console.WriteLine("INSETCOLLISION");
+            if (other.collisionType == trigger)
+            {
+                Console.WriteLine("FLOORHERE");
+            }
         }
 
-        public override void Update()
+        public void UpdatePosition()
         {
-            position = ConvertUnits.ToDisplayUnits(owner.body.Position) + offset;
+            //position = ConvertUnits.ToDisplayUnits(owner.body.Position) + offset;
         }
 
-        public override void Draw()
+        public void Draw()
         {
             spriteBatch.Draw(
                 sprite,

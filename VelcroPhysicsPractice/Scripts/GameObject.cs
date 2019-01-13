@@ -7,7 +7,7 @@ namespace VelcroPhysicsPractice.Scripts
     public enum CollisionType {
         none,
         wall,
-        actor,
+        invoker,
     };
 
     public abstract class GameObject
@@ -15,12 +15,12 @@ namespace VelcroPhysicsPractice.Scripts
         public Body body = null;
         public Vector2 size;
         public Vector2 position;
-        public List<HitBox> hitBoxes;
+        public List<Hitbox> Hitboxes;
         public CollisionType collisionType = CollisionType.none;
         public abstract void Initialize();
         public abstract void Draw();
         public abstract void LoadContent();
-        public abstract void SetCollision(HitBox other);
+        public abstract void SetCollision(GameObject other);
         public abstract void Update();
     }
 }

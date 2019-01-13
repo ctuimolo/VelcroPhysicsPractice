@@ -8,6 +8,8 @@ using VelcroPhysics.Dynamics;
 using VelcroPhysics.Factories;
 using VelcroPhysics.Utilities;
 
+using System;
+
 namespace VelcroPhysicsPractice.Scripts
 {
     public class Player : GameObject
@@ -17,59 +19,62 @@ namespace VelcroPhysicsPractice.Scripts
         private SpriteBatch spriteBatch;
 
         // Player VelcroPhysics fields
-        private Vector2 playerSize = new Vector2(32,32);
         private Vector2 playerOrigin;
         private readonly float gravityScale = 1;
 
         // Game logic misc. fields
         private KeyboardState _oldKeyState;
 
-        // Debugs and self hitboxes
+        // Debugs and self Hitboxes
         bool drawDebug = true;
         private string positionDebugString;
         private string isTouchingWallString;
         private bool isTouchingWall;
-        private List<HitBox> collisions;
+        private List<Hitbox> collisions;
         private readonly SpriteFont font;
-        public HitBox bodyHitbox;
-        public HitBox feetHitbox;
+        public Hitbox bodyHitbox;
+        public Hitbox feetHitbox;
 
-        public Player(ContentManager rootContent, World rootWorld, SpriteBatch rootSpriteBatch, Vector2 setPosition)
+        public Player(ContentManager rootContent, World rootWorld, List<Hitbox> rootWorldHitboxes, SpriteBatch rootSpriteBatch, Vector2 setPosition)
         {
             // Player fields
             spriteBatch = rootSpriteBatch;
             playerSprite = rootContent.Load<Texture2D>("white");
-            playerOrigin = new Vector2(playerSize.X/2, playerSize.Y/2);
+            size = new Vector2(32, 32);
+            playerOrigin = new Vector2(size.X/2, size.Y/2);
             font = rootContent.Load<SpriteFont>("font");
 
             // VelcroPhysics body configuration
             body = BodyFactory.CreateRectangle(
                 rootWorld, 
-                ConvertUnits.ToSimUnits(playerSize.X), 
-                ConvertUnits.ToSimUnits(playerSize.Y), 
+                ConvertUnits.ToSimUnits(size.X), 
+                ConvertUnits.ToSimUnits(size.Y), 
                 1f, 
-                ConvertUnits.ToSimUnits(setPosition + new Vector2(playerSize.X/2, playerSize.Y/2)), 
+                ConvertUnits.ToSimUnits(setPosition + new Vector2(size.X/2, size.Y/2)), 
                 0, 
                 BodyType.Dynamic, 
                 this
             );
             body.FixedRotation = true;
             body.GravityScale = gravityScale;
+            /*body.FixtureList[0].CollisionCategories = VelcroPhysics.Dynamics.Contacts;
             body.FixtureList[0].CollisionCategories = VelcroPhysics.Collision.Filtering.Category.Cat1;
-            body.FixtureList[0].CollidesWith = VelcroPhysics.Collision.Filtering.Category.Cat1 & VelcroPhysics.Collision.Filtering.Category.Cat1;
+            body.FixtureList[0].CollidesWith = VelcroPhysics.Collision.Filtering.Category.Cat1 & VelcroPhysics.Collision.Filtering.Category.Cat1;*/
             body.Friction = 0;
 
             //////////////////////////////////
             // Debug fields
-            feetHitbox = new HitBox(rootWorld, rootSpriteBatch, rootContent, this, new Rectangle(0, (int)playerSize.Y / 2, (int)playerSize.X, 2), "red");
-            bodyHitbox = new HitBox(rootWorld, rootSpriteBatch, rootContent, this, new Rectangle(0, 0, (int)playerSize.X, (int)playerSize.Y), "yellow");
+            feetHitbox = new Hitbox(rootWorld, rootSpriteBatch, rootContent, this, new Rectangle(0, (int)size.Y / 2, (int)size.X, 2), "red", CollisionType.wall);
+            bodyHitbox = new Hitbox(rootWorld, rootSpriteBatch, rootContent, this, new Rectangle(0, 0, (int)size.X, (int)size.Y), "yellow");
+            rootWorldHitboxes.Add(feetHitbox);
+            rootWorldHitboxes.Add(bodyHitbox);
 
-            hitBoxes = new List<HitBox> {
+            Hitboxes = new List<Hitbox> {
                 feetHitbox,
                 bodyHitbox
             };
 
-            collisions = new List<HitBox>();
+            collisions = new List<Hitbox>();
         }
 
         public override void LoadContent()
@@ -80,9 +85,8 @@ namespace VelcroPhysicsPractice.Scripts
         {
         }
 
-        public override void SetCollision(HitBox other)
+        public override void SetCollision(GameObject other)
         {
-            collisions.Add(other);
         }
 
         private void HandleKeyboard()
@@ -109,15 +113,15 @@ namespace VelcroPhysicsPractice.Scripts
 
         private void UpdateHitboxes()
         {
-            foreach(HitBox hitbox in hitBoxes)
+            foreach(Hitbox Hitbox in Hitboxes)
             {
-                hitbox.Update();
+                Hitbox.UpdatePosition();
             }
         }
 
         public override void Update()
         {
-
+            position = ConvertUnits.ToDisplayUnits(body.Position);
 
             HandleKeyboard();
             if(body.LinearVelocity.Y > 40)
@@ -129,8 +133,8 @@ namespace VelcroPhysicsPractice.Scripts
             ////////////////////////////////
             ///// Setup debug string
             positionDebugString = "Position: \n" +
-                                  "X: " + (int)(ConvertUnits.ToDisplayUnits(body.Position.X) - playerSize.X / 2) + "\n" +
-                                  "Y: " + (int)(ConvertUnits.ToDisplayUnits(body.Position.Y) - playerSize.Y / 2) + "\n";
+                                  "X: " + (int)(ConvertUnits.ToDisplayUnits(body.Position.X) - size.X / 2) + "\n" +
+                                  "Y: " + (int)(ConvertUnits.ToDisplayUnits(body.Position.Y) - size.Y / 2) + "\n";
              
             isTouchingWallString = "                  Grounded:    " + (isTouchingWall ? " true" : " false");
 
@@ -142,13 +146,13 @@ namespace VelcroPhysicsPractice.Scripts
         public override void Draw()
         {
             spriteBatch.DrawString(font, positionDebugString, new Vector2(10, 10), Color.CornflowerBlue);
-            spriteBatch.DrawString(font, "Toggle hitbox view:   [F1]", new Vector2(60, 10), Color.White);
+            spriteBatch.DrawString(font, "Toggle Hitbox view:   [F1]", new Vector2(60, 10), Color.White);
             spriteBatch.DrawString(font, isTouchingWallString, new Vector2(60, 24), Color.Gray);
 
             spriteBatch.Draw(
-                playerSprite, 
-                ConvertUnits.ToDisplayUnits(body.Position), 
-                new Rectangle(0, 0, (int)playerSize.X, (int)playerSize.Y), 
+                playerSprite,
+                ConvertUnits.ToDisplayUnits(body.Position),
+                new Rectangle(0, 0, (int)size.X, (int)size.Y), 
                 Color.White, 
                 body.Rotation,
                 playerOrigin, 
@@ -156,14 +160,14 @@ namespace VelcroPhysicsPractice.Scripts
                 SpriteEffects.None, 
                 0f
             );
-            ////////////////////
+            /*////////////////////
             if (drawDebug)
             {
-                foreach (HitBox hitbox in hitBoxes)
+                foreach (Hitbox Hitbox in Hitboxes)
                 {
-                    hitbox.Draw();
+                    Hitbox.Draw();
                 }
-            }
+            }*/
         }
     }
 }

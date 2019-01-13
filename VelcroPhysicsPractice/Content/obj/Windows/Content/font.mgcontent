@@ -3,11 +3,11 @@
   <SourceFile>C:/Projects/VelcroPhysicsPractice/VelcroPhysicsPractice/Content/font.spritefont</SourceFile>
   <SourceTime>2019-01-11T18:52:28.3760083-08:00</SourceTime>
   <DestFile>C:/Projects/VelcroPhysicsPractice/VelcroPhysicsPractice/Content/bin/Windows/Content/font.xnb</DestFile>
-  <DestTime>2019-01-11T19:00:25.134006-08:00</DestTime>
+  <DestTime>2019-01-11T23:25:55.6804809-08:00</DestTime>
   <Importer>FontDescriptionImporter</Importer>
-  <ImporterTime>2018-09-23T14:55:52-07:00</ImporterTime>
+  <ImporterTime>2018-12-08T08:35:54-08:00</ImporterTime>
   <Processor>FontDescriptionProcessor</Processor>
-  <ProcessorTime>2018-09-23T14:55:52-07:00</ProcessorTime>
+  <ProcessorTime>2018-12-08T08:35:54-08:00</ProcessorTime>
   <Parameters>
     <Key>PremultiplyAlpha</Key>
     <Value>True</Value>

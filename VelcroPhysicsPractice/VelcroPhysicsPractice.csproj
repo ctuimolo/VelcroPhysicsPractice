@@ -44,9 +44,10 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scripts\GameObject.cs" />
-    <Compile Include="Scripts\HitBox.cs" />
+    <Compile Include="Scripts\Hitbox.cs" />
     <Compile Include="Scripts\Player.cs" />
     <Compile Include="Scripts\Wall.cs" />
+    <Compile Include="Scripts\WorldHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
@@ -63,7 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="VelcroPhysics\VelcroPhysics.MonoGame.csproj">
-      <Project>{bcd70972-0eff-420b-8005-0a6d3acf75ce}</Project>
+      <Project>{f8593cf5-bfae-4624-a5b4-5d6d7366bd14}</Project>
       <Name>VelcroPhysics.MonoGame</Name>
     </ProjectReference>
   </ItemGroup>
