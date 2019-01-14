@@ -20,7 +20,6 @@ namespace VelcroPhysicsPractice.Scripts
         public abstract void Initialize();
         public abstract void Draw();
         public abstract void LoadContent();
-        public abstract void SetCollision(GameObject other);
         public abstract void Update();
     }
 }

@@ -28,8 +28,6 @@ namespace VelcroPhysicsPractice
         private List<Hitbox> _worldHitboxes;
 
         // Debug
-        private string contactinRangeString;
-        private Hitbox testHitbox;
         private bool drawDebug = false;
         private KeyboardState _oldKeyState;
 
@@ -71,6 +69,7 @@ namespace VelcroPhysicsPractice
             //    ADD GAME OBJECTS HERE
             ///////////////////
             _renderedGameObjects = new List<GameObject> {
+                new Player(Content, _world,_worldHitboxes,  _batch, new Vector2(350,230)),
                 new Wall(Content, _world, _worldHitboxes, _batch, new Rectangle(0,420,800,80)),
                 new Wall(Content, _world, _worldHitboxes, _batch, new Rectangle(0,0,4,480)),
                 new Wall(Content, _world, _worldHitboxes, _batch, new Rectangle(0,400,5,480)),
@@ -81,19 +80,41 @@ namespace VelcroPhysicsPractice
                 new Wall(Content, _world, _worldHitboxes, _batch, new Rectangle(190,400,70,20)),
                 new Wall(Content, _world, _worldHitboxes, _batch, new Rectangle(60,325,70,20)),
                 new Wall(Content, _world, _worldHitboxes, _batch, new Rectangle(390,388,40,32)),
-                new Player(Content, _world,_worldHitboxes,  _batch, new Vector2(350,230)),
             };
 
-            testHitbox = new Hitbox(_world, _batch, Content, null, new Rectangle(440, 355, 40, 40), "purple");
-            _worldHitboxes.Add(testHitbox);
+            Hitbox testHitbox1 = new Hitbox(_world, _batch, Content, null, new Rectangle(440, 330, 40, 40), "purple", CollisionType.invoker);
+            _worldHitboxes.Add(testHitbox1);
+
+            Hitbox testHitbox2 = new Hitbox(_world, _batch, Content, null, new Rectangle(300, 300, 80, 40), "purple", CollisionType.invoker);
+            _worldHitboxes.Add(testHitbox2);
+
+            Hitbox testHitbox3 = new Hitbox(_world, _batch, Content, null, new Rectangle(90, 290, 40, 20), "purple", CollisionType.invoker);
+            _worldHitboxes.Add(testHitbox3);
+
+            Hitbox testHitbox4 = new Hitbox(_world, _batch, Content, null, new Rectangle(550, 290, 40, 120), "purple", CollisionType.invoker);
+            _worldHitboxes.Add(testHitbox4);
 
             // Initialize debug
             _font = Content.Load<SpriteFont>("font");
         }
 
-        private void ResolveHitboxOverlaps()
+        private void ResolveHitboxOverlaps(GameObject self, GameObject other)
         {
-
+            foreach (Hitbox ownHitbox in self.Hitboxes)
+            {
+                foreach (Hitbox otherHitbox in other.Hitboxes)
+                {
+                    // check AABB overlap
+                    if (!ReferenceEquals(ownHitbox, otherHitbox) &&
+                        (ownHitbox.position.X - ownHitbox.size.X / 2) <= (otherHitbox.position.X + ownHitbox.size.X / 2) &&
+                        (ownHitbox.position.X - ownHitbox.size.X / 2) <= (otherHitbox.position.X + ownHitbox.size.X / 2) &&
+                        (ownHitbox.position.Y + ownHitbox.size.Y / 2) >= (otherHitbox.position.Y - ownHitbox.size.Y / 2) &&
+                        (ownHitbox.position.Y - ownHitbox.size.Y / 2) <= (otherHitbox.position.Y + ownHitbox.size.Y / 2))
+                    {
+                        ownHitbox.AddCollision(otherHitbox);
+                    }
+                }
+            }
         }
 
         protected override void Update(GameTime gameTime)
@@ -104,18 +125,31 @@ namespace VelcroPhysicsPractice
             // Send to collisions, interacting objects
             _world.Step((float)gameTime.ElapsedGameTime.TotalMilliseconds * 0.001f);
 
+            /*foreach (Contact contact in _world.ContactList)
+            {
+                contact.FixtureA.Body.OnCollision += Collision;
+            }*/
+
+
             // Update Hitboxes positions
-            foreach (Hitbox hitbox in _worldHitboxes)
+            /*foreach (Hitbox hitbox in _worldHitboxes)
             {
                 hitbox.UpdatePosition();
-            }
+            }*/
 
             // Resolve Hitbox AABB overlap
-            foreach (Hitbox hitbox in _worldHitboxes)
+            /*foreach (GameObject self in _renderedGameObjects)
             {
-                // AABBB logic here...
-            }
+                foreach (GameObject other in _renderedGameObjects)
+                {
+                    if(!ReferenceEquals(self, other))
+                    {
+                        ResolveHitboxOverlaps(self, other);
+                    }
+                }
+            }*/
 
+            // update every game object
             foreach (GameObject obj in _renderedGameObjects)
             {
                 obj.Update();
@@ -159,7 +193,6 @@ namespace VelcroPhysicsPractice
 
             _batch.End();
             base.Draw(gameTime);
-            contactinRangeString = "false";
         }
     }
 }

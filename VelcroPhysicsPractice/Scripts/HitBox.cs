@@ -7,6 +7,7 @@ using VelcroPhysics.Utilities;
 using VelcroPhysics.Factories;
 
 using System;
+using System.Collections.Generic;
 
 namespace VelcroPhysicsPractice.Scripts
 {
@@ -23,7 +24,6 @@ namespace VelcroPhysicsPractice.Scripts
         public Vector2 size;
         public Vector2 position;
         private CollisionType trigger;
-        private CollisionType collisionType;
 
         // VelcroPhysics bodies
         private Body body;
@@ -57,11 +57,9 @@ namespace VelcroPhysicsPractice.Scripts
                 this
             );
             body.FixedRotation = true;
-            /*body.FixtureList[0].CollisionCategories = VelcroPhysics.Collision.Filtering.Category.Cat1;*/
             body.Friction = 0;
-            body.IsSensor = true;
+            body.FixtureList[0].IsSensor = true;
 
-            collisionType = CollisionType.invoker;
             trigger = setTrigger;
         }
 
@@ -73,28 +71,25 @@ namespace VelcroPhysicsPractice.Scripts
         {
         }
 
-        public void SetCollision(GameObject other)
+        public void AddCollision(Hitbox other)
         {
-            Console.WriteLine("INSETCOLLISION");
-            if (other.collisionType == trigger)
-            {
-                Console.WriteLine("FLOORHERE");
-            }
         }
 
         public void UpdatePosition()
         {
-            //position = ConvertUnits.ToDisplayUnits(owner.body.Position) + offset;
+            if(owner != null) { 
+                position = ConvertUnits.ToDisplayUnits(owner.body.Position) + offset;
+            }
         }
 
         public void Draw()
         {
             spriteBatch.Draw(
                 sprite,
-                position,
+                ConvertUnits.ToDisplayUnits(body.Position),
                 new Rectangle(0, 0, (int)size.X, (int)size.Y),
-                new Color(255,255,255,160),
-                0f,
+                new Color(255,255,255,120),
+                body.Rotation,
                 origin,
                 1f,
                 SpriteEffects.None,

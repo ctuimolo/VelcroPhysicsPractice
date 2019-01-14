@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SourceFile>C:/Projects/VelcroPhysicsPractice/VelcroPhysicsPractice/Content/grey.png</SourceFile>
-  <SourceTime>2018-12-19T16:36:35.9807538-08:00</SourceTime>
+  <SourceTime>2019-01-11T18:52:28.3849854-08:00</SourceTime>
   <DestFile>C:/Projects/VelcroPhysicsPractice/VelcroPhysicsPractice/Content/bin/Windows/grey.xnb</DestFile>
-  <DestTime>2019-01-11T11:58:31.5378486-08:00</DestTime>
+  <DestTime>2019-01-13T18:22:16.6802115-08:00</DestTime>
   <Importer>TextureImporter</Importer>
-  <ImporterTime>2018-12-08T08:35:54-08:00</ImporterTime>
+  <ImporterTime>2017-03-01T07:05:36-08:00</ImporterTime>
   <Processor>TextureProcessor</Processor>
-  <ProcessorTime>2018-12-08T08:35:54-08:00</ProcessorTime>
+  <ProcessorTime>2017-03-01T07:05:36-08:00</ProcessorTime>
   <Parameters>
     <Key>ColorKeyColor</Key>
     <Value>255,0,255,255</Value>

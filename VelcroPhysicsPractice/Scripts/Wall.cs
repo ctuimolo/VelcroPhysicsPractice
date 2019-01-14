@@ -24,7 +24,7 @@ namespace VelcroPhysicsPractice.Scripts
 
         // Debugs and self Hitboxes
         private bool drawDebug = true;
-        public Hitbox Hitbox;
+        public Hitbox hitbox;
         private KeyboardState _oldKeyState;
 
         public Wall(ContentManager rootContent, World rootWorld, List<Hitbox> rootWorldHitboxes, SpriteBatch rootSpriteBatch, Rectangle coordinates)
@@ -49,13 +49,13 @@ namespace VelcroPhysicsPractice.Scripts
                 this
             );
             body.FixedRotation = true;
-            /*body.FixtureList[0].CollisionCategories = VelcroPhysics.Collision.Filtering.Category.Cat1;*/
             body.Friction = 0;
 
             /////////////
             /// Debug Hitbox
-            Hitbox = new Hitbox(rootWorld, rootSpriteBatch, rootContent, this, new Rectangle(0, 0, (int)size.X, (int)size.Y), "blue");
-            rootWorldHitboxes.Add(Hitbox);
+            //hitbox = new Hitbox(rootWorld, rootSpriteBatch, rootContent, this, new Rectangle(0, 0, (int)size.X, (int)size.Y), "blue");
+            //rootWorldHitboxes.Add(hitbox);
+            //Hitboxes = new List<Hitbox>() { hitbox };
             collisionType = CollisionType.wall;
         }
 
@@ -65,11 +65,6 @@ namespace VelcroPhysicsPractice.Scripts
 
         public override void Initialize()
         {
-        }
-
-        public override void SetCollision(GameObject other)
-        {
-
         }
 
         public override void Update()

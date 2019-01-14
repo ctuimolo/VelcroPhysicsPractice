@@ -6,8 +6,6 @@ namespace VelcroPhysicsPractice.Scripts
 {
     public class WorldHandler
     {
-        private List<GameObject> _worldObjects;
-        private List<Hitbox>     _worldHitboxes;
         private World _world;
 
         public WorldHandler(Vector2 gravity)

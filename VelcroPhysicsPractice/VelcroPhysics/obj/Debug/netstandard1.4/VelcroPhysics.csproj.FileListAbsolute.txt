@@ -1,9 +1,0 @@
-C:\Projects\VelcroPhysics\VelcroPhysics\VelcroPhysics\bin\Debug\netstandard1.4\VelcroPhysics.deps.json
-C:\Projects\VelcroPhysics\VelcroPhysics\VelcroPhysics\bin\Debug\netstandard1.4\VelcroPhysics.dll
-C:\Projects\VelcroPhysics\VelcroPhysics\VelcroPhysics\bin\Debug\netstandard1.4\VelcroPhysics.pdb
-C:\Projects\VelcroPhysics\VelcroPhysics\VelcroPhysics\obj\Debug\netstandard1.4\VelcroPhysics.csprojAssemblyReference.cache
-C:\Projects\VelcroPhysics\VelcroPhysics\VelcroPhysics\obj\Debug\netstandard1.4\VelcroPhysics.csproj.CoreCompileInputs.cache
-C:\Projects\VelcroPhysics\VelcroPhysics\VelcroPhysics\obj\Debug\netstandard1.4\VelcroPhysics.AssemblyInfoInputs.cache
-C:\Projects\VelcroPhysics\VelcroPhysics\VelcroPhysics\obj\Debug\netstandard1.4\VelcroPhysics.AssemblyInfo.cs
-C:\Projects\VelcroPhysics\VelcroPhysics\VelcroPhysics\obj\Debug\netstandard1.4\VelcroPhysics.dll
-C:\Projects\VelcroPhysics\VelcroPhysics\VelcroPhysics\obj\Debug\netstandard1.4\VelcroPhysics.pdb
