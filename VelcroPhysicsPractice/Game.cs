@@ -82,7 +82,7 @@ namespace VelcroPhysicsPractice
                 new Wall(Content, _world, _worldHitboxes, _batch, new Rectangle(390,388,40,32)),
             };
 
-            Hitbox testHitbox1 = new Hitbox(_world, _batch, Content, null, new Rectangle(440, 330, 40, 40), "purple", CollisionType.invoker);
+            Hitbox testHitbox1 = new Hitbox(_world, _batch, Content, null, new Rectangle(440, 330, 40, 40), "orange", CollisionType.invoker);
             _worldHitboxes.Add(testHitbox1);
 
             Hitbox testHitbox2 = new Hitbox(_world, _batch, Content, null, new Rectangle(300, 300, 80, 40), "purple", CollisionType.invoker);
@@ -93,6 +93,9 @@ namespace VelcroPhysicsPractice
 
             Hitbox testHitbox4 = new Hitbox(_world, _batch, Content, null, new Rectangle(550, 290, 40, 120), "purple", CollisionType.invoker);
             _worldHitboxes.Add(testHitbox4);
+
+            Hitbox testHitbox5 = new Hitbox(_world, _batch, Content, null, new Rectangle(60, 290, 20, 20), "orange", CollisionType.invoker);
+            _worldHitboxes.Add(testHitbox5);
 
             // Initialize debug
             _font = Content.Load<SpriteFont>("font");

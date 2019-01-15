@@ -51,15 +51,16 @@ namespace VelcroPhysicsPractice.Scripts
 
             // VelcroPhysics body configuration
             body = BodyFactory.CreateRectangle(
-                rootWorld, 
-                ConvertUnits.ToSimUnits(size.X), 
-                ConvertUnits.ToSimUnits(size.Y), 
-                1f, 
-                ConvertUnits.ToSimUnits(setPosition + new Vector2(size.X/2, size.Y/2)), 
-                0, 
-                BodyType.Dynamic, 
+                rootWorld,
+                ConvertUnits.ToSimUnits(size.X),
+                ConvertUnits.ToSimUnits(size.Y),
+                1f,
+                ConvertUnits.ToSimUnits(setPosition + new Vector2(size.X / 2, size.Y / 2)),
+                0,
+                BodyType.Dynamic,
                 this
             );
+            body.FixtureList[0].UserData = new Rectangle(0,0,32,32);
             body.FixedRotation = true;
             body.GravityScale = gravityScale;
             /*body.FixtureList[0].CollisionCategories = VelcroPhysics.Dynamics.Contacts;
@@ -68,9 +69,24 @@ namespace VelcroPhysicsPractice.Scripts
             body.Friction = 0;
 
             //body.OnCollision += Collision;
-            body.FixtureList[0].AfterCollision += Collision;
-            body.FixtureList[0].OnCollision += SensorCollsion;
-            body.FixtureList[0].OnSeparation += SensorSeparation;
+
+            FixtureFactory.AttachRectangle(
+                ConvertUnits.ToSimUnits(20),
+                ConvertUnits.ToSimUnits(20),
+                1f,
+                ConvertUnits.ToSimUnits(new Vector2(0, -16)),
+                body,
+                new Rectangle(0, -16, 20, 20)
+            );
+
+
+            foreach (Fixture fixture in body.FixtureList)
+            {
+                fixture.AfterCollision += Collision;
+                fixture.OnCollision += SensorCollsion;
+                fixture.OnSeparation += SensorSeparation;
+   
+            }
 
             //////////////////////////////////
             // Debug fields
@@ -97,14 +113,41 @@ namespace VelcroPhysicsPractice.Scripts
 
         void Collision(Fixture fixtureA, Fixture fixtureB, Contact contact, ContactVelocityConstraint impulse)
         {
-            Console.WriteLine("Collision @ X: " + ConvertUnits.ToDisplayUnits( fixtureA.Body.Position.X));
-            Console.WriteLine("            Y: " + ConvertUnits.ToDisplayUnits(fixtureA.Body.Position.Y));
-            Console.WriteLine(impulse.Normal);
+            // Ensure that fixtureB is not owned by this Body
+            // will be replaced with reference to Fixture.UserData reference template
 
-            afterCollision = true;
-            if(impulse.Normal.Y > 0)
+            bool doCheck = true;
+            if (ReferenceEquals(fixtureB.Body, body.FixtureList[0]))
+                doCheck = false;
+            /*foreach (Fixture fixture in body.FixtureList)
             {
-                isFloored = true;
+                if(ReferenceEquals(fixture, fixtureB))
+                {
+                    doCheck = false;
+                    break;
+                }
+            }*/
+
+            /* TODO
+             * 
+             * Create class for Fixture UserData
+             * Must contain:
+             * -> owner body (to reference parent nodes)
+             * -> offset Vector2 to parent position
+             * -> width/height Vector2
+             */
+
+            if (doCheck)
+            {
+                Console.WriteLine("Collision @ X: " + ConvertUnits.ToDisplayUnits(fixtureA.Body.Position.X));
+                Console.WriteLine("            Y: " + ConvertUnits.ToDisplayUnits(fixtureA.Body.Position.Y));
+                Console.WriteLine(impulse.Normal);
+
+                afterCollision = true;
+                if (impulse.Normal.Y > 0)
+                {
+                    isFloored = true;
+                }
             }
         }
 
@@ -201,17 +244,20 @@ namespace VelcroPhysicsPractice.Scripts
             spriteBatch.DrawString(font, afterCollisionString, new Vector2(60, 38), Color.Gray);
             spriteBatch.DrawString(font, isOverlappingString, new Vector2(60, 52), Color.Violet);
 
-            spriteBatch.Draw(
-                playerSprite,
-                ConvertUnits.ToDisplayUnits(body.Position),
-                new Rectangle(0, 0, (int)size.X, (int)size.Y), 
-                Color.White, 
-                body.Rotation,
-                playerOrigin, 
-                1f, 
-                SpriteEffects.None, 
-                0f
-            );
+            foreach (Fixture fixture in body.FixtureList)
+            {
+                spriteBatch.Draw(
+                    playerSprite,
+                    ConvertUnits.ToDisplayUnits(fixture.Body.Position)+ new Vector2(((Rectangle)fixture.UserData).X, ((Rectangle)fixture.UserData).Y),
+                    new Rectangle(0, 0, ((Rectangle)fixture.UserData).Width, ((Rectangle)fixture.UserData).Height),
+                    Color.White,
+                    fixture.Body.Rotation,
+                    new Vector2(((Rectangle)fixture.UserData).Width/2, ((Rectangle)fixture.UserData).Height/2),
+                    1f,
+                    SpriteEffects.None,
+                    0f
+                );
+            }
 
             /*////////////////////
             if (drawDebug)

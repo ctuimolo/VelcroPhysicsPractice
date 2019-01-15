@@ -20,6 +20,7 @@
 * 3. This notice may not be removed or altered from any source distribution. 
 */
 
+using System;
 using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using VelcroPhysics.Collision.Broadphase;
@@ -85,6 +86,11 @@ namespace VelcroPhysics.Dynamics
             _collisionGroup = 0;
 
             IgnoreCCDWith = Settings.DefaultFixtureIgnoreCCDWith;
+        }
+
+        public void IgnoreCCD(Body body)
+        {
+            throw new NotImplementedException();
         }
 
         internal Fixture(Body body, FixtureTemplate template) : this()
