@@ -41,7 +41,13 @@ namespace VelcroPhysicsPractice
             Content.RootDirectory = "Content";
             _world = new World(new Vector2(0, 100f));
             _worldHitboxes = new List<Hitbox>();
+            _world.ContactManager.ContactFilter += SharedParentBody;
             
+        }
+
+        bool SharedParentBody(Fixture fixtureA, Fixture fixtureB)
+        {
+            return (!ReferenceEquals(fixtureA.Body, fixtureB.Body));
         }
 
         bool AABBoverlapping(Hitbox self, Hitbox other)
