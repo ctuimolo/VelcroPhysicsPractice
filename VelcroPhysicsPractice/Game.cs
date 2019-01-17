@@ -88,19 +88,19 @@ namespace VelcroPhysicsPractice
                 new Wall(Content, _world, _worldHitboxes, _batch, new Rectangle(390,388,40,32)),
             };
 
-            Hitbox testHitbox1 = new Hitbox(_world, _batch, Content, null, new Rectangle(440, 330, 40, 40), "orange", CollisionType.invoker);
+            Hitbox testHitbox1 = new Hitbox(_world, _batch, Content, null, new Rectangle(440, 330, 40, 40), "orange", "orange");
             _worldHitboxes.Add(testHitbox1);
 
-            Hitbox testHitbox2 = new Hitbox(_world, _batch, Content, null, new Rectangle(300, 300, 80, 40), "purple", CollisionType.invoker);
+            Hitbox testHitbox2 = new Hitbox(_world, _batch, Content, null, new Rectangle(300, 300, 80, 40), "purple", "purple");
             _worldHitboxes.Add(testHitbox2);
 
-            Hitbox testHitbox3 = new Hitbox(_world, _batch, Content, null, new Rectangle(90, 290, 40, 20), "purple", CollisionType.invoker);
+            Hitbox testHitbox3 = new Hitbox(_world, _batch, Content, null, new Rectangle(90, 290, 40, 20), "purple", "purple");
             _worldHitboxes.Add(testHitbox3);
 
-            Hitbox testHitbox4 = new Hitbox(_world, _batch, Content, null, new Rectangle(550, 290, 40, 120), "purple", CollisionType.invoker);
+            Hitbox testHitbox4 = new Hitbox(_world, _batch, Content, null, new Rectangle(550, 290, 40, 120), "purple", "purple");
             _worldHitboxes.Add(testHitbox4);
 
-            Hitbox testHitbox5 = new Hitbox(_world, _batch, Content, null, new Rectangle(60, 290, 20, 20), "orange", CollisionType.invoker);
+            Hitbox testHitbox5 = new Hitbox(_world, _batch, Content, null, new Rectangle(60, 290, 20, 20), "orange", "orange");
             _worldHitboxes.Add(testHitbox5);
 
             // Initialize debug

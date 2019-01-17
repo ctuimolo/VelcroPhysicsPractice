@@ -24,11 +24,12 @@ namespace VelcroPhysicsPractice.Scripts
         public Vector2 size;
         public Vector2 position;
         private CollisionType trigger;
+        public string value;
 
         // VelcroPhysics bodies
         private Body body;
 
-        public Hitbox(World rootWorld, SpriteBatch rootSpriteBatch, ContentManager rootContent, GameObject setOwner, Rectangle coordinates, string color, CollisionType setTrigger = CollisionType.none)
+        public Hitbox(World rootWorld, SpriteBatch rootSpriteBatch, ContentManager rootContent, GameObject setOwner, Rectangle coordinates, string color, string setValue = "")
         {
             spriteBatch = rootSpriteBatch;
             owner = setOwner;
@@ -54,13 +55,13 @@ namespace VelcroPhysicsPractice.Scripts
                 ConvertUnits.ToSimUnits(position + new Vector2(size.X / 2, size.Y / 2)),
                 0,
                 BodyType.Kinematic,
-                this
+                setValue
             );
             body.FixedRotation = true;
             body.Friction = 0;
             body.FixtureList[0].IsSensor = true;
 
-            trigger = setTrigger;
+            value = setValue;
         }
 
         public void LoadContent()

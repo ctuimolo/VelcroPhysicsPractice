@@ -83,9 +83,9 @@ namespace VelcroPhysicsPractice.Scripts
                 ConvertUnits.ToSimUnits(10),
                 ConvertUnits.ToSimUnits(10),
                 1f,
-                ConvertUnits.ToSimUnits(new Vector2(20, -5)),
+                ConvertUnits.ToSimUnits(new Vector2(18, -5)),
                 body,
-                new Rectangle(20, -5, 10, 10)
+                new Rectangle(18, -5, 10, 10)
             );
 
             foreach (Fixture fixture in body.FixtureList)
@@ -136,12 +136,12 @@ namespace VelcroPhysicsPractice.Scripts
 
             if (!ReferenceEquals(fixtureA.Body, fixtureB.Body))
             {
-                Console.WriteLine("Collision @ X: " + ConvertUnits.ToDisplayUnits(fixtureA.Body.Position.X));
+                /*Console.WriteLine("Collision @ X: " + ConvertUnits.ToDisplayUnits(fixtureA.Body.Position.X));
                 Console.WriteLine("            Y: " + ConvertUnits.ToDisplayUnits(fixtureA.Body.Position.Y));
                 Console.WriteLine(impulse.Normal);
 
                 Console.WriteLine("A: " + fixtureA.Body.Position.Y);
-                Console.WriteLine("B: " + fixtureB.Body.Position.Y);
+                Console.WriteLine("B: " + fixtureB.Body.Position.Y);*/
 
                 afterCollision = true;
                 if (impulse.Normal.Y > 0)
@@ -167,6 +167,7 @@ namespace VelcroPhysicsPractice.Scripts
             if (fixtureB.IsSensor)
             {
                 isOverlapping = true;
+                Console.WriteLine(fixtureB.Body.UserData);
             }
         }
 
@@ -256,7 +257,8 @@ namespace VelcroPhysicsPractice.Scripts
             spriteBatch.DrawString(font, "Toggle Hitbox view:   [F1]", new Vector2(60, 10), Color.White);
             spriteBatch.DrawString(font, isFlooredString, new Vector2(60, 24), Color.Gray);
             spriteBatch.DrawString(font, afterCollisionString, new Vector2(60, 38), Color.Gray);
-            spriteBatch.DrawString(font, isOverlappingString, new Vector2(60, 52), Color.Violet);
+            spriteBatch.DrawString(font, "A " + isOverlappingString, new Vector2(60, 52), Color.Violet);
+            spriteBatch.DrawString(font, "B " + isOverlappingString, new Vector2(60, 66), Color.Orange);
 
             foreach (Fixture fixture in body.FixtureList)
             {
