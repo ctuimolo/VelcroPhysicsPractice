@@ -34,8 +34,10 @@ namespace VelcroPhysicsPractice.Scripts
         private string positionDebugString;
         private bool isFloored;
         private string isFlooredString;
-        private bool isOverlapping;
-        private string isOverlappingString;
+        private bool isOverlappingOrange;
+        private string isOverlappingOrangeString;
+        private bool isOverlappingPink;
+        private string isOverlappingPinkString;
         private readonly SpriteFont font;
         public Hitbox bodyHitbox;
         public Hitbox feetHitbox;
@@ -166,8 +168,35 @@ namespace VelcroPhysicsPractice.Scripts
         {
             if (fixtureB.IsSensor)
             {
-                isOverlapping = true;
-                Console.WriteLine(fixtureB.Body.UserData);
+                switch(((CollisionPackage)fixtureB.Body.UserData).value) {
+                    case "orange":
+                        isOverlappingOrange = true;
+                        break;
+                    case "purple":
+                        isOverlappingPink = true;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        void SensorEndContact(Contact contact)
+        {
+            Fixture fixtureB = contact.FixtureB;
+            if (fixtureB.IsSensor)
+            {
+                switch (((CollisionPackage)fixtureB.Body.UserData).value)
+                {
+                    case "orange":
+                        isOverlappingOrange = false;
+                        break;
+                    case "purple":
+                        isOverlappingPink = false;
+                        break;
+                    default:
+                        break;
+                }
             }
         }
 
@@ -175,7 +204,17 @@ namespace VelcroPhysicsPractice.Scripts
         {
             if (fixtureB.IsSensor)
             {
-                isOverlapping = false;
+                switch (((CollisionPackage)fixtureB.Body.UserData).value)
+                {
+                    case "orange":
+                        isOverlappingOrange = false;
+                        break;
+                    case "purple":
+                        isOverlappingPink = false;
+                        break;
+                    default:
+                        break;
+                }
             }
         }
 
@@ -238,7 +277,8 @@ namespace VelcroPhysicsPractice.Scripts
                                   "Y: " + (int)(ConvertUnits.ToDisplayUnits(body.Position.Y) - size.Y / 2) + "\n";
 
             isFlooredString      = "                   Grounded:    " + (isFloored ? "true" : "false");
-            isOverlappingString  = "   Hitbox Collisions:    " + (isOverlapping ? "true" : "false");
+            isOverlappingOrangeString  = "   Hitbox Collisions:    " + (isOverlappingOrange ? "true" : "false");
+            isOverlappingPinkString = "   Hitbox Collisions:    " + (isOverlappingPink ? "true" : "false");
             afterCollisionString = "Collisions present:    " + (afterCollision ? "true" : "false");
 
             /////// Reset collisions to default
@@ -253,12 +293,12 @@ namespace VelcroPhysicsPractice.Scripts
 
         public override void Draw()
         {
-            spriteBatch.DrawString(font, positionDebugString, new Vector2(10, 10), Color.CornflowerBlue);
+            spriteBatch.DrawString(font, positionDebugString, ConvertUnits.ToDisplayUnits(body.Position) + new Vector2(-60,-68), Color.CornflowerBlue);
             spriteBatch.DrawString(font, "Toggle Hitbox view:   [F1]", new Vector2(60, 10), Color.White);
             spriteBatch.DrawString(font, isFlooredString, new Vector2(60, 24), Color.Gray);
             spriteBatch.DrawString(font, afterCollisionString, new Vector2(60, 38), Color.Gray);
-            spriteBatch.DrawString(font, "A " + isOverlappingString, new Vector2(60, 52), Color.Violet);
-            spriteBatch.DrawString(font, "B " + isOverlappingString, new Vector2(60, 66), Color.Orange);
+            spriteBatch.DrawString(font, "A " + isOverlappingPinkString, ConvertUnits.ToDisplayUnits(body.Position) + new Vector2(-20, -54), Color.Violet);
+            spriteBatch.DrawString(font, "B " + isOverlappingOrangeString, ConvertUnits.ToDisplayUnits(body.Position) + new Vector2(-20, -40), Color.Orange);
 
             foreach (Fixture fixture in body.FixtureList)
             {

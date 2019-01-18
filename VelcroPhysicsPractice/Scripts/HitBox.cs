@@ -11,6 +11,12 @@ using System.Collections.Generic;
 
 namespace VelcroPhysicsPractice.Scripts
 {
+    public struct CollisionPackage
+    {
+        public CollisionType type;
+        public string value;
+    }
+
     public class Hitbox
     {
         // Monogame drawing fields
@@ -23,7 +29,7 @@ namespace VelcroPhysicsPractice.Scripts
         public Vector2 offset;
         public Vector2 size;
         public Vector2 position;
-        private CollisionType trigger;
+        private CollisionPackage collisionPackage;
         public string value;
 
         // VelcroPhysics bodies
@@ -47,6 +53,12 @@ namespace VelcroPhysicsPractice.Scripts
                 position = offset;
             }
 
+            collisionPackage = new CollisionPackage()
+            {
+                type = CollisionType.invoker,
+                value = setValue,
+            };
+
             body = BodyFactory.CreateRectangle(
                 rootWorld,
                 ConvertUnits.ToSimUnits(size.X),
@@ -55,13 +67,11 @@ namespace VelcroPhysicsPractice.Scripts
                 ConvertUnits.ToSimUnits(position + new Vector2(size.X / 2, size.Y / 2)),
                 0,
                 BodyType.Kinematic,
-                setValue
+                collisionPackage
             );
             body.FixedRotation = true;
             body.Friction = 0;
             body.FixtureList[0].IsSensor = true;
-
-            value = setValue;
         }
 
         public void LoadContent()
