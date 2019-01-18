@@ -68,7 +68,6 @@ namespace VelcroPhysicsPractice
             //    ADD GAME OBJECTS HERE
             ///////////////////
             _renderedGameObjects = new List<GameObject> {
-                new Player(Content, _world,_worldHitboxes,  _batch, new Vector2(350,230)),
                 new Wall(Content, _world, _worldHitboxes, _batch, new Rectangle(0,420,800,80)),
                 new Wall(Content, _world, _worldHitboxes, _batch, new Rectangle(0,0,4,480)),
                 new Wall(Content, _world, _worldHitboxes, _batch, new Rectangle(0,400,5,480)),
@@ -79,6 +78,9 @@ namespace VelcroPhysicsPractice
                 new Wall(Content, _world, _worldHitboxes, _batch, new Rectangle(190,400,70,20)),
                 new Wall(Content, _world, _worldHitboxes, _batch, new Rectangle(60,325,70,20)),
                 new Wall(Content, _world, _worldHitboxes, _batch, new Rectangle(390,388,40,32)),
+                new Wall(Content, _world, _worldHitboxes, _batch, new Rectangle(432,388,40,32)),
+                new Wall(Content, _world, _worldHitboxes, _batch, new Rectangle(474,388,40,32)),
+                new Player(Content, _world,_worldHitboxes,  _batch, new Vector2(350,230)),
             };
 
             Hitbox testHitbox1 = new Hitbox(_world, _batch, Content, null, new Rectangle(440, 330, 40, 40), "orange", "orange");

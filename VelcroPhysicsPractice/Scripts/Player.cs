@@ -29,6 +29,7 @@ namespace VelcroPhysicsPractice.Scripts
 
         // Debugs and self Hitboxes
         private Dictionary<Fixture, int> currentCollisions;
+        private int floorCollisionsCount = 0;
         bool drawDebug = true;
         private bool afterCollision = false;
         private string afterCollisionString;
@@ -39,11 +40,10 @@ namespace VelcroPhysicsPractice.Scripts
         private string isOverlappingOrangeString;
         private bool isOverlappingPink;
         private string isOverlappingPinkString;
-        private int orangeClsns = 0;
-        private int pinkClsns = 0;
         private readonly SpriteFont font;
         public Hitbox bodyHitbox;
         public Hitbox feetHitbox;
+        Fixture feetCollider;
 
         public Player(ContentManager rootContent, World rootWorld, List<Hitbox> rootWorldHitboxes, SpriteBatch rootSpriteBatch, Vector2 setPosition)
         {
@@ -85,14 +85,14 @@ namespace VelcroPhysicsPractice.Scripts
                 new Rectangle(0, -10, 20, 20)
             );
 
-            FixtureFactory.AttachRectangle(
+            /*FixtureFactory.AttachRectangle(
                 ConvertUnits.ToSimUnits(10),
                 ConvertUnits.ToSimUnits(10),
                 1f,
                 ConvertUnits.ToSimUnits(new Vector2(18, -5)),
                 body,
                 new Rectangle(18, -5, 10, 10)
-            );
+            );*/
 
             foreach (Fixture fixture in body.FixtureList)
             {
@@ -101,6 +101,19 @@ namespace VelcroPhysicsPractice.Scripts
                 fixture.OnSeparation += SensorSeparation;
                 fixture.OnSeparation += WallSeparation;
             }
+
+            // Feet collilder
+            feetCollider = FixtureFactory.AttachRectangle(
+                ConvertUnits.ToSimUnits(size.X - 1), // Needs to be inbetween the width of the body, and 1 pixel smaller than body
+                ConvertUnits.ToSimUnits(1),
+                1f,
+                ConvertUnits.ToSimUnits(new Vector2(0, size.Y/2)),
+                body,
+                new Rectangle(0, (int)size.Y/2, (int)size.X, 1)
+            );
+            feetCollider.IsSensor = true;
+            feetCollider.OnCollision += FloorCollision;
+            feetCollider.OnSeparation += FloorSeparation;
 
             //////////////////////////////////
             // Debug fields
@@ -151,9 +164,30 @@ namespace VelcroPhysicsPractice.Scripts
                 afterCollision = true;
                 if (impulse.Normal.Y > 0)
                 {
-                    isFloored = true;
+                    //sFloored = true;
                 }
             //}
+        }
+
+        void FloorCollision(Fixture fixtureA, Fixture fixtureB, Contact contact)
+        {
+            if (fixtureB.Body.UserData is Wall)
+            {
+                floorCollisionsCount++;
+                isFloored = true;
+            }
+        }
+
+        void FloorSeparation(Fixture fixtureA, Fixture fixtureB, Contact contact)
+        {
+            if (fixtureB.Body.UserData is Wall)
+            {
+                floorCollisionsCount--;
+                if (floorCollisionsCount <= 0)
+                {
+                    isFloored = false;
+                }
+            }
         }
 
         void WallCollision(Fixture fixtureA, Fixture fixtureB, Contact contact)
@@ -164,7 +198,6 @@ namespace VelcroPhysicsPractice.Scripts
         void WallSeparation(Fixture fixtureA, Fixture fixtureB, Contact contact)
         {
             afterCollision = false;
-            isFloored = false;
         }
 
         void SensorCollsion(Fixture fixtureA, Fixture fixtureB, Contact contact)
@@ -271,7 +304,6 @@ namespace VelcroPhysicsPractice.Scripts
         {
             position = ConvertUnits.ToDisplayUnits(body.Position);
             HandleKeyboard();
-            Console.WriteLine(currentCollisions.Count);
             /*if(bodyHitbox.collisions.Count > 0)
             {
                 isOverlapping = true;
@@ -318,17 +350,33 @@ namespace VelcroPhysicsPractice.Scripts
 
             foreach (Fixture fixture in body.FixtureList)
             {
-                spriteBatch.Draw(
-                    playerSprite,
-                    ConvertUnits.ToDisplayUnits(fixture.Body.Position)+ new Vector2(((Rectangle)fixture.UserData).X, ((Rectangle)fixture.UserData).Y),
-                    new Rectangle(0, 0, ((Rectangle)fixture.UserData).Width, ((Rectangle)fixture.UserData).Height),
-                    Color.White,
-                    fixture.Body.Rotation,
-                    new Vector2(((Rectangle)fixture.UserData).Width/2, ((Rectangle)fixture.UserData).Height/2),
-                    1f,
-                    SpriteEffects.None,
-                    0f
-                );
+                if (!fixture.IsSensor)
+                {
+                    spriteBatch.Draw(
+                        playerSprite,
+                        ConvertUnits.ToDisplayUnits(fixture.Body.Position) + new Vector2(((Rectangle)fixture.UserData).X, ((Rectangle)fixture.UserData).Y),
+                        new Rectangle(0, 0, ((Rectangle)fixture.UserData).Width, ((Rectangle)fixture.UserData).Height),
+                        Color.White,
+                        fixture.Body.Rotation,
+                        new Vector2(((Rectangle)fixture.UserData).Width / 2, ((Rectangle)fixture.UserData).Height / 2),
+                        1f,
+                        SpriteEffects.None,
+                        0f
+                    );
+                } else
+                {
+                    spriteBatch.Draw(
+                        playerSprite,
+                        ConvertUnits.ToDisplayUnits(fixture.Body.Position) + new Vector2(((Rectangle)fixture.UserData).X, ((Rectangle)fixture.UserData).Y),
+                        new Rectangle(0, 0, ((Rectangle)fixture.UserData).Width, ((Rectangle)fixture.UserData).Height),
+                        Color.Red,
+                        fixture.Body.Rotation,
+                        new Vector2(((Rectangle)fixture.UserData).Width / 2, ((Rectangle)fixture.UserData).Height / 2),
+                        1f,
+                        SpriteEffects.None,
+                        0f
+                    );
+                }
             }
 
             /*////////////////////
