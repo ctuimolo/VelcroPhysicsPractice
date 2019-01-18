@@ -34,5 +34,3 @@ C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\bin\Windows\x86\Debug\Co
 C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\bin\Windows\x86\Debug\Content\yellow.xnb
 C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\bin\Windows\x86\Debug\MonoGame.Framework.dll
 C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\bin\Windows\x86\Debug\Content\orange.xnb
-C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\bin\Windows\x86\Debug\VelcroPhysicsPractice.exe.CodeAnalysisLog.xml
-C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\bin\Windows\x86\Debug\VelcroPhysicsPractice.exe.lastcodeanalysissucceeded

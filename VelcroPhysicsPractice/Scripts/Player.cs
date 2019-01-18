@@ -27,9 +27,14 @@ namespace VelcroPhysicsPractice.Scripts
         // Game logic misc. fields
         private KeyboardState _oldKeyState;
 
-        // Debugs and self Hitboxes
+        // Hitboxes fields
         private Dictionary<Fixture, int> currentCollisions;
         private int floorCollisionsCount = 0;
+        public Hitbox bodyHitbox;
+        public Hitbox feetHitbox;
+        Fixture feetCollider;
+
+        // Debug fields and strings
         bool drawDebug = true;
         private bool afterCollision = false;
         private string afterCollisionString;
@@ -41,9 +46,6 @@ namespace VelcroPhysicsPractice.Scripts
         private bool isOverlappingPink;
         private string isOverlappingPinkString;
         private readonly SpriteFont font;
-        public Hitbox bodyHitbox;
-        public Hitbox feetHitbox;
-        Fixture feetCollider;
 
         public Player(ContentManager rootContent, World rootWorld, List<Hitbox> rootWorldHitboxes, SpriteBatch rootSpriteBatch, Vector2 setPosition)
         {
@@ -69,12 +71,7 @@ namespace VelcroPhysicsPractice.Scripts
             body.FixtureList[0].UserData = new Rectangle(0,0,32,20);
             body.FixedRotation = true;
             body.GravityScale = gravityScale;
-            /*body.FixtureList[0].CollisionCategories = VelcroPhysics.Dynamics.Contacts;
-            body.FixtureList[0].CollisionCategories = VelcroPhysics.Collision.Filtering.Category.Cat1;
-            body.FixtureList[0].CollidesWith = VelcroPhysics.Collision.Filtering.Category.Cat1 & VelcroPhysics.Collision.Filtering.Category.Cat1;*/
             body.Friction = 0;
-
-            //body.OnCollision += Collision;
 
             FixtureFactory.AttachRectangle(
                 ConvertUnits.ToSimUnits(20),
@@ -84,15 +81,6 @@ namespace VelcroPhysicsPractice.Scripts
                 body,
                 new Rectangle(0, -10, 20, 20)
             );
-
-            /*FixtureFactory.AttachRectangle(
-                ConvertUnits.ToSimUnits(10),
-                ConvertUnits.ToSimUnits(10),
-                1f,
-                ConvertUnits.ToSimUnits(new Vector2(18, -5)),
-                body,
-                new Rectangle(18, -5, 10, 10)
-            );*/
 
             foreach (Fixture fixture in body.FixtureList)
             {
@@ -114,20 +102,6 @@ namespace VelcroPhysicsPractice.Scripts
             feetCollider.IsSensor = true;
             feetCollider.OnCollision += FloorCollision;
             feetCollider.OnSeparation += FloorSeparation;
-
-            //////////////////////////////////
-            // Debug fields
-            //feetHitbox = new Hitbox(rootWorld, rootSpriteBatch, rootContent, this, new Rectangle(0, (int)size.Y / 2, (int)size.X, 2), "red", CollisionType.wall);
-            //bodyHitbox = new Hitbox(rootWorld, rootSpriteBatch, rootContent, this, new Rectangle(0, 0, (int)size.X, (int)size.Y), "yellow");
-            //rootWorldHitboxes.Add(feetHitbox);
-            //rootWorldHitboxes.Add(bodyHitbox);
-
-            //Hitboxes = new List<Hitbox> {
-            //   feetHitbox,
-            //    bodyHitbox
-            //};
-
-            //collisions = new List<Hitbox>();
         }
 
         public override void LoadContent()
@@ -140,33 +114,7 @@ namespace VelcroPhysicsPractice.Scripts
 
         void Collision(Fixture fixtureA, Fixture fixtureB, Contact contact, ContactVelocityConstraint impulse)
         {
-            // Ensure that fixtureB is not owned by this Body
-            // will be replaced with reference to Fixture.UserData reference template
-
-            /* TODO
-             * 
-             * Create class for Fixture UserData
-             * Must contain:
-             * -> owner body (to reference parent nodes)
-             * -> offset Vector2 to parent position
-             * -> width/height Vector2
-             */
-
-            //if (!ReferenceEquals(fixtureA.Body, fixtureB.Body))
-            //{
-                /*Console.WriteLine("Collision @ X: " + ConvertUnits.ToDisplayUnits(fixtureA.Body.Position.X));
-                Console.WriteLine("            Y: " + ConvertUnits.ToDisplayUnits(fixtureA.Body.Position.Y));
-                Console.WriteLine(impulse.Normal);
-
-                Console.WriteLine("A: " + fixtureA.Body.Position.Y);
-                Console.WriteLine("B: " + fixtureB.Body.Position.Y);*/
-
-                afterCollision = true;
-                if (impulse.Normal.Y > 0)
-                {
-                    //sFloored = true;
-                }
-            //}
+            afterCollision = true;
         }
 
         void FloorCollision(Fixture fixtureA, Fixture fixtureB, Contact contact)
@@ -270,12 +218,6 @@ namespace VelcroPhysicsPractice.Scripts
         {
             KeyboardState state = Keyboard.GetState();
 
-            /*if (state.IsKeyDown(Keys.W))
-                body.LinearVelocity = new Vector2(body.LinearVelocity.X, -10);
-
-            if (state.IsKeyDown(Keys.S))
-                body.LinearVelocity = new Vector2(body.LinearVelocity.X, 10);*/
-
             if (state.IsKeyDown(Keys.A))
                 body.LinearVelocity = new Vector2(-10f, body.LinearVelocity.Y);
 
@@ -285,13 +227,9 @@ namespace VelcroPhysicsPractice.Scripts
             if (!state.IsKeyDown(Keys.D) && !state.IsKeyDown(Keys.A))
                 body.LinearVelocity = new Vector2(0, body.LinearVelocity.Y);
 
-            /*if (!state.IsKeyDown(Keys.S) && !state.IsKeyDown(Keys.W))
-                body.LinearVelocity = new Vector2(body.LinearVelocity.X, 0);*/
-
             if (state.IsKeyDown(Keys.Space) && _oldKeyState.IsKeyUp(Keys.Space))
             {
                 body.LinearVelocity = new Vector2(body.LinearVelocity.X, -20f);
-                //isFloored = false;
             }
 
             if (state.IsKeyDown(Keys.F1) && _oldKeyState.IsKeyUp(Keys.F1))
@@ -304,19 +242,10 @@ namespace VelcroPhysicsPractice.Scripts
         {
             position = ConvertUnits.ToDisplayUnits(body.Position);
             HandleKeyboard();
-            /*if(bodyHitbox.collisions.Count > 0)
-            {
-                isOverlapping = true;
-            }
-            if (feetHitbox.collisions.Count > 0)
-            {
-                isFloored = true;
-            }*/
             if (body.LinearVelocity.Y > 40)
             {
                 body.LinearVelocity = new Vector2(body.LinearVelocity.X, 40);
             }
-
 
             //////////////////////////////////////////////////////////////
             ///// Setup debug string
@@ -328,15 +257,6 @@ namespace VelcroPhysicsPractice.Scripts
             isOverlappingOrangeString  = "   Hitbox Collisions:    " + (isOverlappingOrange ? "true" : "false");
             isOverlappingPinkString = "   Hitbox Collisions:    " + (isOverlappingPink ? "true" : "false");
             afterCollisionString = "Collisions present:    " + (afterCollision ? "true" : "false");
-
-            /////// Reset collisions to default
-            /*foreach (Hitbox hitbox in Hitboxes)
-            {
-                hitbox.collisions.Clear();
-            }*/
-            //////////////////////////////////////////////////////////////
-            //isFloored = false;
-            //afterCollision = false;
         }
 
         public override void Draw()
@@ -378,15 +298,6 @@ namespace VelcroPhysicsPractice.Scripts
                     );
                 }
             }
-
-            /*////////////////////
-            if (drawDebug)
-            {
-                foreach (Hitbox Hitbox in Hitboxes)
-                {
-                    Hitbox.Draw();
-                }
-            }*/
         }
     }
 }

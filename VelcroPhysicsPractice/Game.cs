@@ -129,30 +129,6 @@ namespace VelcroPhysicsPractice
             // Send to collisions, interacting objects
             _world.Step((float)gameTime.ElapsedGameTime.TotalMilliseconds * 0.001f);
 
-            /*foreach (Contact contact in _world.ContactList)
-            {
-                contact.FixtureA.Body.OnCollision += Collision;
-            }*/
-
-
-            // Update Hitboxes positions
-            /*foreach (Hitbox hitbox in _worldHitboxes)
-            {
-                hitbox.UpdatePosition();
-            }*/
-
-            // Resolve Hitbox AABB overlap
-            /*foreach (GameObject self in _renderedGameObjects)
-            {
-                foreach (GameObject other in _renderedGameObjects)
-                {
-                    if(!ReferenceEquals(self, other))
-                    {
-                        ResolveHitboxOverlaps(self, other);
-                    }
-                }
-            }*/
-
             // update every game object
             foreach (GameObject obj in _renderedGameObjects)
             {
