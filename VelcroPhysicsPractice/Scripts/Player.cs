@@ -28,6 +28,7 @@ namespace VelcroPhysicsPractice.Scripts
         private KeyboardState _oldKeyState;
 
         // Debugs and self Hitboxes
+        private Dictionary<Fixture, int> currentCollisions;
         bool drawDebug = true;
         private bool afterCollision = false;
         private string afterCollisionString;
@@ -38,6 +39,8 @@ namespace VelcroPhysicsPractice.Scripts
         private string isOverlappingOrangeString;
         private bool isOverlappingPink;
         private string isOverlappingPinkString;
+        private int orangeClsns = 0;
+        private int pinkClsns = 0;
         private readonly SpriteFont font;
         public Hitbox bodyHitbox;
         public Hitbox feetHitbox;
@@ -50,6 +53,7 @@ namespace VelcroPhysicsPractice.Scripts
             size = new Vector2(32, 20);
             playerOrigin = new Vector2(size.X/2, size.Y/2);
             font = rootContent.Load<SpriteFont>("font");
+            currentCollisions = new Dictionary<Fixture, int>();
 
             // VelcroPhysics body configuration
             body = BodyFactory.CreateRectangle(
@@ -94,7 +98,6 @@ namespace VelcroPhysicsPractice.Scripts
             {
                 fixture.AfterCollision += Collision;
                 fixture.OnCollision += SensorCollsion;
-                //fixture.OnCollision += WallCollision;
                 fixture.OnSeparation += SensorSeparation;
                 fixture.OnSeparation += WallSeparation;
             }
@@ -136,8 +139,8 @@ namespace VelcroPhysicsPractice.Scripts
              * -> width/height Vector2
              */
 
-            if (!ReferenceEquals(fixtureA.Body, fixtureB.Body))
-            {
+            //if (!ReferenceEquals(fixtureA.Body, fixtureB.Body))
+            //{
                 /*Console.WriteLine("Collision @ X: " + ConvertUnits.ToDisplayUnits(fixtureA.Body.Position.X));
                 Console.WriteLine("            Y: " + ConvertUnits.ToDisplayUnits(fixtureA.Body.Position.Y));
                 Console.WriteLine(impulse.Normal);
@@ -150,7 +153,7 @@ namespace VelcroPhysicsPractice.Scripts
                 {
                     isFloored = true;
                 }
-            }
+            //}
         }
 
         void WallCollision(Fixture fixtureA, Fixture fixtureB, Contact contact)
@@ -170,29 +173,25 @@ namespace VelcroPhysicsPractice.Scripts
             {
                 switch(((CollisionPackage)fixtureB.Body.UserData).value) {
                     case "orange":
-                        isOverlappingOrange = true;
+                        if(currentCollisions.ContainsKey(fixtureB))
+                        {
+                            currentCollisions[fixtureB] += 1;
+                            isOverlappingOrange = true;
+                        } else
+                        {
+                            currentCollisions.Add(fixtureB, 1);
+                        }
                         break;
                     case "purple":
-                        isOverlappingPink = true;
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
-
-        void SensorEndContact(Contact contact)
-        {
-            Fixture fixtureB = contact.FixtureB;
-            if (fixtureB.IsSensor)
-            {
-                switch (((CollisionPackage)fixtureB.Body.UserData).value)
-                {
-                    case "orange":
-                        isOverlappingOrange = false;
-                        break;
-                    case "purple":
-                        isOverlappingPink = false;
+                        if (currentCollisions.ContainsKey(fixtureB))
+                        {
+                            currentCollisions[fixtureB] += 1;
+                            isOverlappingPink = true;
+                        }
+                        else
+                        {
+                            currentCollisions.Add(fixtureB, 1);
+                        }
                         break;
                     default:
                         break;
@@ -207,10 +206,26 @@ namespace VelcroPhysicsPractice.Scripts
                 switch (((CollisionPackage)fixtureB.Body.UserData).value)
                 {
                     case "orange":
-                        isOverlappingOrange = false;
+                        if(currentCollisions.ContainsKey(fixtureB))
+                        {
+                            currentCollisions[fixtureB] -= 1;
+                            if (currentCollisions[fixtureB] == 0)
+                            {
+                                isOverlappingOrange = false;
+                                currentCollisions.Remove(fixtureB);
+                            }
+                        } 
                         break;
                     case "purple":
-                        isOverlappingPink = false;
+                        if (currentCollisions.ContainsKey(fixtureB))
+                        {
+                            currentCollisions[fixtureB] -= 1;
+                            if (currentCollisions[fixtureB] == 0)
+                            {
+                                isOverlappingPink = false;
+                                currentCollisions.Remove(fixtureB);
+                            }
+                        }
                         break;
                     default:
                         break;
@@ -256,6 +271,7 @@ namespace VelcroPhysicsPractice.Scripts
         {
             position = ConvertUnits.ToDisplayUnits(body.Position);
             HandleKeyboard();
+            Console.WriteLine(currentCollisions.Count);
             /*if(bodyHitbox.collisions.Count > 0)
             {
                 isOverlapping = true;
