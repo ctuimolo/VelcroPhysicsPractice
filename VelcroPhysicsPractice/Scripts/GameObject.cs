@@ -12,14 +12,10 @@ namespace VelcroPhysicsPractice.Scripts
 
     public abstract class GameObject
     {
-        public Body body = null;
-        public Vector2 size;
-        public Vector2 position;
-        public List<Hitbox> Hitboxes;
-        public CollisionType collisionType = CollisionType.none;
         public abstract void Initialize();
         public abstract void Draw();
         public abstract void LoadContent();
         public abstract void Update();
+        public abstract void DrawDebug();
     }
 }

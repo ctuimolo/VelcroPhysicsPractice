@@ -17,7 +17,7 @@ namespace VelcroPhysicsPractice.Scripts
         public string value;
     }
 
-    public class Hitbox
+    public class Hitbox : GameObject
     {
         // Monogame drawing fields
         private SpriteBatch spriteBatch;
@@ -47,7 +47,7 @@ namespace VelcroPhysicsPractice.Scripts
             origin = new Vector2(size.X/2, size.Y/2);
             if (owner != null)
             {
-                position = ConvertUnits.ToDisplayUnits(owner.body.Position) + offset;
+                position = ConvertUnits.ToDisplayUnits(body.Position) + offset;
             } else
             {
                 position = offset;
@@ -74,26 +74,27 @@ namespace VelcroPhysicsPractice.Scripts
             body.FixtureList[0].IsSensor = true;
         }
 
-        public void LoadContent()
+        public override void LoadContent()
         {
         }
 
-        public void Initialize()
+        public override void Initialize()
         {
         }
 
-        public void AddCollision(Hitbox other)
-        {
-        }
-
-        public void UpdatePosition()
+        public override void Update()
         {
             if(owner != null) { 
-                position = ConvertUnits.ToDisplayUnits(owner.body.Position) + offset;
+                position = ConvertUnits.ToDisplayUnits(body.Position) + offset;
             }
         }
 
-        public void Draw()
+        public override void Draw()
+        {
+
+        }
+
+        public override void DrawDebug()
         {
             spriteBatch.Draw(
                 sprite,

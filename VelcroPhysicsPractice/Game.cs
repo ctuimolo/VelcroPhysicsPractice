@@ -29,6 +29,7 @@ namespace VelcroPhysicsPractice
 
         // Debug
         private bool drawDebug = false;
+        private SpriteFont font;
         private KeyboardState _oldKeyState;
 
         public Game()
@@ -63,12 +64,14 @@ namespace VelcroPhysicsPractice
             _view = Matrix.Identity;
             _batch = new SpriteBatch(_graphics.GraphicsDevice);
             ConvertUnits.SetDisplayUnitToSimUnitRatio(20f);
+            font = Content.Load<SpriteFont>("font");
 
             ////////////////////
             //    ADD GAME OBJECTS HERE
             ///////////////////
             _renderedGameObjects = new List<GameObject> {
                 new Wall(Content, _world, _worldHitboxes, _batch, new Rectangle(0,420,800,80)),
+                new Wall(Content, _world, _worldHitboxes, _batch, new Rectangle(560,367,40,20)),
                 new Wall(Content, _world, _worldHitboxes, _batch, new Rectangle(0,0,4,480)),
                 new Wall(Content, _world, _worldHitboxes, _batch, new Rectangle(0,400,5,480)),
                 new Wall(Content, _world, _worldHitboxes, _batch, new Rectangle(796,0,4,480)),
@@ -80,29 +83,20 @@ namespace VelcroPhysicsPractice
                 new Wall(Content, _world, _worldHitboxes, _batch, new Rectangle(390,388,40,32)),
                 new Wall(Content, _world, _worldHitboxes, _batch, new Rectangle(432,388,40,32)),
                 new Wall(Content, _world, _worldHitboxes, _batch, new Rectangle(474,388,40,32)),
-                new Player(Content, _world,_worldHitboxes,  _batch, new Vector2(350,230)),
-            };
+                new Player(Content, _world,  _batch, new Vector2(350,230)),
 
-            Hitbox testHitbox1 = new Hitbox(_world, _batch, Content, null, new Rectangle(440, 330, 40, 40), "orange", "orange");
-            _worldHitboxes.Add(testHitbox1);
-
-            Hitbox testHitbox2 = new Hitbox(_world, _batch, Content, null, new Rectangle(300, 300, 80, 40), "purple", "purple");
-            _worldHitboxes.Add(testHitbox2);
-
-            Hitbox testHitbox3 = new Hitbox(_world, _batch, Content, null, new Rectangle(90, 290, 40, 20), "purple", "purple");
-            _worldHitboxes.Add(testHitbox3);
-
-            Hitbox testHitbox4 = new Hitbox(_world, _batch, Content, null, new Rectangle(550, 290, 40, 120), "purple", "purple");
-            _worldHitboxes.Add(testHitbox4);
-
-            Hitbox testHitbox5 = new Hitbox(_world, _batch, Content, null, new Rectangle(60, 290, 20, 20), "orange", "orange");
-            _worldHitboxes.Add(testHitbox5);
+                new Hitbox(_world, _batch, Content, null, new Rectangle(440, 330, 40, 40), "orange", "orange"),
+                new Hitbox(_world, _batch, Content, null, new Rectangle(90, 290, 40, 20), "purple", "purple"),
+                new Hitbox(_world, _batch, Content, null, new Rectangle(300, 300, 80, 40), "purple", "purple"),
+                new Hitbox(_world, _batch, Content, null, new Rectangle(550, 290, 40, 120), "purple", "purple"),
+                new Hitbox(_world, _batch, Content, null, new Rectangle(60, 290, 20, 20), "orange", "orange"),
+             };
 
             // Initialize debug
             _font = Content.Load<SpriteFont>("font");
         }
 
-        private void ResolveHitboxOverlaps(GameObject self, GameObject other)
+        /*private void ResolveHitboxOverlaps(GameObject self, GameObject other)
         {
             foreach (Hitbox ownHitbox in self.Hitboxes)
             {
@@ -119,7 +113,7 @@ namespace VelcroPhysicsPractice
                     }
                 }
             }
-        }
+        }*/
 
         protected override void Update(GameTime gameTime)
         {
@@ -158,16 +152,14 @@ namespace VelcroPhysicsPractice
             GraphicsDevice.Clear(Color.Black);
             _batch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, _view);
 
+            _batch.DrawString(font, "Toggle Hitbox view:   [F1]", new Vector2(10, 10), Color.White);
+
             foreach (GameObject obj in _renderedGameObjects)
             {
                 obj.Draw();
-            }
-
-            if (drawDebug)
-            {
-                foreach(Hitbox hitbox in _worldHitboxes)
+                if(drawDebug)
                 {
-                    hitbox.Draw();
+                    obj.DrawDebug();
                 }
             }
 

@@ -21,6 +21,9 @@ namespace VelcroPhysicsPractice.Scripts
 
         // Player VelcroPhysics fields
         private Vector2 origin;
+        private Vector2 size;
+        private Vector2 position;
+        private Body body;
 
         // Debugs and self Hitboxes
         private bool drawDebug = true;
@@ -35,7 +38,6 @@ namespace VelcroPhysicsPractice.Scripts
             sprite = rootContent.Load<Texture2D>("grey");
             origin = new Vector2(size.X / 2, size.Y / 2);
             position = new Vector2(coordinates.X, coordinates.Y);
-            collisionType = CollisionType.wall;
 
             // VelcroPhysics body configuration
             body = BodyFactory.CreateRectangle(
@@ -56,7 +58,6 @@ namespace VelcroPhysicsPractice.Scripts
             //hitbox = new Hitbox(rootWorld, rootSpriteBatch, rootContent, this, new Rectangle(0, 0, (int)size.X, (int)size.Y), "blue");
             //rootWorldHitboxes.Add(hitbox);
             //Hitboxes = new List<Hitbox>() { hitbox };
-            collisionType = CollisionType.wall;
         }
 
         public override void LoadContent()
@@ -88,6 +89,10 @@ namespace VelcroPhysicsPractice.Scripts
                 SpriteEffects.None,
                 0f
             );
+        }
+
+        public override void DrawDebug()
+        {
         }
     }
 }

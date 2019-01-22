@@ -45,6 +45,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scripts\GameObject.cs" />
     <Compile Include="Scripts\Hitbox.cs" />
+    <Compile Include="Scripts\BodyCollisionHandler.cs" />
+    <Compile Include="Scripts\HitboxSpawner.cs" />
     <Compile Include="Scripts\Player.cs" />
     <Compile Include="Scripts\Wall.cs" />
     <Compile Include="Scripts\WorldHandler.cs" />
