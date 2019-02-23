@@ -16,6 +16,8 @@ namespace VelcroPhysicsPractice.Scripts
 {
     public class BodyCollisionHandler
     {
+        WorldHandler worldHandler;
+
         // BodyCollisionHandler Monogame drawing fields
         private readonly Texture2D BodyCollisionHandlerSprite;
 
@@ -48,17 +50,36 @@ namespace VelcroPhysicsPractice.Scripts
         private string isOverlappingPinkString;
         private readonly SpriteFont font;
 
-        public BodyCollisionHandler(ContentManager rootContent, World rootWorld, SpriteBatch rootSpriteBatch, Vector2 setPosition, Vector2 setSize)
+        public BodyCollisionHandler(GameObject owner, WorldHandler rootWorldHandler, ContentManager rootContent, SpriteBatch rootSpriteBatch, Vector2 setPosition, Vector2 setSize)
         {
             // BodyCollisionHandler fields
+            worldHandler = rootWorldHandler;
             BodyCollisionHandlerSprite = rootContent.Load<Texture2D>("white");
             size = setSize;
             BodyCollisionHandlerOrigin = new Vector2(size.X/2, size.Y/2);
             font = rootContent.Load<SpriteFont>("font");
             currentCollisions = new Dictionary<Fixture, int>();
 
+            body = worldHandler.AddBody(
+                owner,
+                setPosition,
+                setSize
+            );
+            bodyHitbox = worldHandler.AddHitbox(
+                body,
+                Vector2.Zero,
+                setSize,
+                "red"
+            );
+            feetHitbox = worldHandler.AddHitbox(
+                body,
+                new Vector2(0, size.Y / 2 + 1),
+                new Vector2(size.X, 1),
+                "red"
+            );
+
             // VelcroPhysics body configuration
-            body = BodyFactory.CreateRectangle(
+            /*body = BodyFactory.CreateRectangle(
                 rootWorld,
                 ConvertUnits.ToSimUnits(size.X),
                 ConvertUnits.ToSimUnits(size.Y),
@@ -92,7 +113,7 @@ namespace VelcroPhysicsPractice.Scripts
             );
             feetCollider.IsSensor = true;
             feetCollider.OnCollision += FloorCollision;
-            feetCollider.OnSeparation += FloorSeparation;
+            feetCollider.OnSeparation += FloorSeparation;*/
         }
 
 

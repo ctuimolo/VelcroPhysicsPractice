@@ -22,9 +22,10 @@ namespace VelcroPhysicsPractice.Scripts
         // Monogame drawing fields
         private SpriteBatch spriteBatch;
         private readonly Texture2D sprite;
+        private ContentManager contentManager;
 
         // Hitboxfields
-        public GameObject owner;
+        public Body owner;
         public Vector2 origin;
         public Vector2 offset;
         public Vector2 size;
@@ -32,10 +33,30 @@ namespace VelcroPhysicsPractice.Scripts
         private CollisionPackage collisionPackage;
         public string value;
 
-        // VelcroPhysics bodies
-        private Body body;
+        public delegate void enact();
 
-        public Hitbox(World rootWorld, SpriteBatch rootSpriteBatch, ContentManager rootContent, GameObject setOwner, Rectangle coordinates, string color, string setValue = "")
+        // VelcroPhysics bodies
+        //private Body body;
+
+        public Hitbox(ContentManager setContentManager, SpriteBatch setSpriteBatch, Body setOwner, Vector2 setOffset, Vector2 setSize, string color)
+        {
+            contentManager = setContentManager;
+            spriteBatch = setSpriteBatch;
+            owner = setOwner;
+            size = setSize;
+            origin = new Vector2(size.X / 2, size.Y / 2);
+            offset = setOffset;
+            if (owner != null)
+            {
+                position = ConvertUnits.ToDisplayUnits(owner.Position) + offset;
+            } else
+            {
+                position = offset;
+            }
+            sprite = contentManager.Load<Texture2D>(color);
+        }
+
+        /*public Hitbox(World rootWorld, SpriteBatch rootSpriteBatch, ContentManager rootContent, GameObject setOwner, Rectangle coordinates, string color, string setValue = "")
         {
             spriteBatch = rootSpriteBatch;
             owner = setOwner;
@@ -72,7 +93,7 @@ namespace VelcroPhysicsPractice.Scripts
             body.FixedRotation = true;
             body.Friction = 0;
             body.FixtureList[0].IsSensor = true;
-        }
+        }*/
 
         public override void LoadContent()
         {
@@ -85,7 +106,7 @@ namespace VelcroPhysicsPractice.Scripts
         public override void Update()
         {
             if(owner != null) { 
-                position = ConvertUnits.ToDisplayUnits(body.Position) + offset;
+                position = ConvertUnits.ToDisplayUnits(owner.Position) + offset;
             }
         }
 
@@ -98,10 +119,10 @@ namespace VelcroPhysicsPractice.Scripts
         {
             spriteBatch.Draw(
                 sprite,
-                ConvertUnits.ToDisplayUnits(body.Position),
+                position,
                 new Rectangle(0, 0, (int)size.X, (int)size.Y),
                 new Color(255,255,255,120),
-                body.Rotation,
+                0f,
                 origin,
                 1f,
                 SpriteEffects.None,

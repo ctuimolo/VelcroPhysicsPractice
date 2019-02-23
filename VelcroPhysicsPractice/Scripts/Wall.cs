@@ -30,7 +30,7 @@ namespace VelcroPhysicsPractice.Scripts
         public Hitbox hitbox;
         private KeyboardState _oldKeyState;
 
-        public Wall(ContentManager rootContent, World rootWorld, List<Hitbox> rootWorldHitboxes, SpriteBatch rootSpriteBatch, Rectangle coordinates)
+        public Wall(WorldHandler worldHandler, ContentManager rootContent, List<Hitbox> rootWorldHitboxes, SpriteBatch rootSpriteBatch, Rectangle coordinates)
         {
             // Object fields
             spriteBatch = rootSpriteBatch;
@@ -39,8 +39,23 @@ namespace VelcroPhysicsPractice.Scripts
             origin = new Vector2(size.X / 2, size.Y / 2);
             position = new Vector2(coordinates.X, coordinates.Y);
 
+            body = worldHandler.AddKinematicBody
+            (
+                this,
+                position,
+                size
+            );
+
+            worldHandler.AddHitbox
+            (
+                body,
+                Vector2.Zero,
+                size,
+                "blue"
+            );
+
             // VelcroPhysics body configuration
-            body = BodyFactory.CreateRectangle(
+            /*body = BodyFactory.CreateRectangle(
                 rootWorld,
                 ConvertUnits.ToSimUnits(size.X),
                 ConvertUnits.ToSimUnits(size.Y),
@@ -51,7 +66,7 @@ namespace VelcroPhysicsPractice.Scripts
                 this
             );
             body.FixedRotation = true;
-            body.Friction = 0;
+            body.Friction = 0;*/
 
             /////////////
             /// Debug Hitbox

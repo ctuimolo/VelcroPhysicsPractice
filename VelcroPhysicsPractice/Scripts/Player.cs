@@ -33,11 +33,11 @@ namespace VelcroPhysicsPractice.Scripts
         // Game logic misc. fields
         private KeyboardState _oldKeyState;
 
-        public Player(ContentManager rootContent, World rootWorld, SpriteBatch rootSpriteBatch, Vector2 setPosition)
+        public Player(WorldHandler worldHandler, ContentManager rootContent, SpriteBatch rootSpriteBatch, Vector2 setPosition)
         {
             // Initialize MonoGame drawing fields
             spriteBatch = rootSpriteBatch;
-            playerSprite = rootContent.Load<Texture2D>("green");
+            playerSprite = rootContent.Load<Texture2D>("white");
             drawRect = new Rectangle(0,0,32,32);
 
             // Initialize player coordinates
@@ -45,7 +45,13 @@ namespace VelcroPhysicsPractice.Scripts
             position = setPosition;
 
             // Initialize body physics handler
-            collisionHandler = new BodyCollisionHandler(rootContent, rootWorld, rootSpriteBatch, setPosition, size);
+            collisionHandler = new BodyCollisionHandler(this, worldHandler, rootContent, rootSpriteBatch, setPosition, size);
+            Hitbox.enact hitboxCollision = footCollision;
+        }
+
+        public static void footCollision()
+        {
+
         }
 
         public override void Initialize()
