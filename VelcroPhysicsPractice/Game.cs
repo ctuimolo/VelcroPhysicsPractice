@@ -84,7 +84,7 @@ namespace VelcroPhysicsPractice
                 new Wall(worldHandler, Content, _worldHitboxes, _batch, new Rectangle(0,0,800,4)),
                 new Wall(worldHandler, Content, _worldHitboxes, _batch, new Rectangle(190,400,70,20)),
                 new Wall(worldHandler, Content, _worldHitboxes, _batch, new Rectangle(60,325,70,20)),
-                new Wall(worldHandler, Content, _worldHitboxes, _batch, new Rectangle(390,388,40,32)),
+                new Wall(worldHandler, Content, _worldHitboxes, _batch, new Rectangle(390,398,40,32)),
                 new Wall(worldHandler, Content, _worldHitboxes, _batch, new Rectangle(432,388,40,32)),
                 new Wall(worldHandler, Content, _worldHitboxes, _batch, new Rectangle(474,388,40,32)),
                 new Player(worldHandler, Content,  _batch, new Vector2(350,230)),
@@ -96,31 +96,16 @@ namespace VelcroPhysicsPractice
                 new Hitbox(_world, _batch, Content, null, new Rectangle(60, 290, 20, 20), "orange", "orange"),*/
              };
 
-            worldHandler.AddHitbox(null, new Vector2(360, 350), new Vector2(40, 40), "purple");
-            worldHandler.AddHitbox(null, new Vector2(380, 340), new Vector2(40, 40), "orange");
+            worldHandler.AddHitbox(null, new Vector2(360, 350), new Vector2(50, 50), "purple");
+            worldHandler.AddHitbox(null, new Vector2(380, 340), new Vector2(40, 80), "orange");
+            worldHandler.AddHitbox(null, new Vector2(440, 290), new Vector2(80, 40), "purple");
+            worldHandler.AddHitbox(null, new Vector2(300, 300), new Vector2(40, 20), "orange");
+            worldHandler.AddHitbox(null, new Vector2(550, 290), new Vector2(20, 120), "purple");
+            worldHandler.AddHitbox(null, new Vector2(60, 290), new Vector2(40, 40), "orange");
 
             // Initialize debug
             _font = Content.Load<SpriteFont>("font");
         }
-
-        /*private void ResolveHitboxOverlaps(GameObject self, GameObject other)
-        {
-            foreach (Hitbox ownHitbox in self.Hitboxes)
-            {
-                foreach (Hitbox otherHitbox in other.Hitboxes)
-                {
-                    // check AABB overlap
-                    if (!ReferenceEquals(ownHitbox, otherHitbox) &&
-                        (ownHitbox.position.X - ownHitbox.size.X / 2) <= (otherHitbox.position.X + ownHitbox.size.X / 2) &&
-                        (ownHitbox.position.X - ownHitbox.size.X / 2) <= (otherHitbox.position.X + ownHitbox.size.X / 2) &&
-                        (ownHitbox.position.Y + ownHitbox.size.Y / 2) >= (otherHitbox.position.Y - ownHitbox.size.Y / 2) &&
-                        (ownHitbox.position.Y - ownHitbox.size.Y / 2) <= (otherHitbox.position.Y + ownHitbox.size.Y / 2))
-                    {
-                        ownHitbox.AddCollision(otherHitbox);
-                    }
-                }
-            }
-        }*/
 
         protected override void Update(GameTime gameTime)
         {
@@ -130,6 +115,12 @@ namespace VelcroPhysicsPractice
             // Send to collisions, interacting objects
             //_world.Step((float)gameTime.ElapsedGameTime.TotalMilliseconds * 0.001f);
             worldHandler.PhysicsStep(gameTime);
+
+            // update every game object
+            foreach (GameObject obj in _renderedGameObjects)
+            {
+                obj.ResolveCollisions();
+            }
 
             // update every game object
             foreach (GameObject obj in _renderedGameObjects)

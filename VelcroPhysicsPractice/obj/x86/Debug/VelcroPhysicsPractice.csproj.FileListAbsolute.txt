@@ -34,3 +34,16 @@ C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\bin\Windows\x86\Debug\Co
 C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\bin\Windows\x86\Debug\Content\yellow.xnb
 C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\bin\Windows\x86\Debug\MonoGame.Framework.dll
 C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\bin\Windows\x86\Debug\Content\orange.xnb
+C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\bin\Windows\x86\Debug\Content\Content\black.xnb
+C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\bin\Windows\x86\Debug\Content\Content\blue.xnb
+C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\bin\Windows\x86\Debug\Content\Content\font.xnb
+C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\bin\Windows\x86\Debug\Content\Content\green.xnb
+C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\bin\Windows\x86\Debug\Content\Content\grey.xnb
+C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\bin\Windows\x86\Debug\Content\Content\orange.xnb
+C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\bin\Windows\x86\Debug\Content\Content\pink.xnb
+C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\bin\Windows\x86\Debug\Content\Content\purple.xnb
+C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\bin\Windows\x86\Debug\Content\Content\red.xnb
+C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\bin\Windows\x86\Debug\Content\Content\white.xnb
+C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\bin\Windows\x86\Debug\Content\Content\yellow.xnb
+C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\bin\Windows\x86\Debug\SharpDX.Direct3D9.dll
+C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\bin\Windows\x86\Debug\SharpDX.Direct3D9.xml

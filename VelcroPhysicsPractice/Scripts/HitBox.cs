@@ -11,13 +11,20 @@ using System.Collections.Generic;
 
 namespace VelcroPhysicsPractice.Scripts
 {
-    public struct CollisionPackage
+    public enum CollisionType
     {
-        public CollisionType type;
-        public string value;
+        none,
+        wall,
+        invoker,
+    };
+
+    public class CollisionPackage
+    {
+        public CollisionType type = CollisionType.none;
+        public string value = "";
     }
 
-    public class Hitbox : GameObject
+    public class Hitbox
     {
         // Monogame drawing fields
         private SpriteBatch spriteBatch;
@@ -30,7 +37,7 @@ namespace VelcroPhysicsPractice.Scripts
         public Vector2 offset;
         public Vector2 size;
         public Vector2 position;
-        private CollisionPackage collisionPackage;
+        public CollisionPackage collisionPackage;
         public string value;
 
         public delegate void enact();
@@ -54,68 +61,30 @@ namespace VelcroPhysicsPractice.Scripts
                 position = offset;
             }
             sprite = contentManager.Load<Texture2D>(color);
+            collisionPackage = new CollisionPackage();
         }
 
-        /*public Hitbox(World rootWorld, SpriteBatch rootSpriteBatch, ContentManager rootContent, GameObject setOwner, Rectangle coordinates, string color, string setValue = "")
-        {
-            spriteBatch = rootSpriteBatch;
-            owner = setOwner;
-
-            sprite = rootContent.Load<Texture2D>(color);
-
-            offset = new Vector2(coordinates.X, coordinates.Y);
-            size = new Vector2(coordinates.Width, coordinates.Height);
-            origin = new Vector2(size.X/2, size.Y/2);
-            if (owner != null)
-            {
-                position = ConvertUnits.ToDisplayUnits(body.Position) + offset;
-            } else
-            {
-                position = offset;
-            }
-
-            collisionPackage = new CollisionPackage()
-            {
-                type = CollisionType.invoker,
-                value = setValue,
-            };
-
-            body = BodyFactory.CreateRectangle(
-                rootWorld,
-                ConvertUnits.ToSimUnits(size.X),
-                ConvertUnits.ToSimUnits(size.Y),
-                1f,
-                ConvertUnits.ToSimUnits(position + new Vector2(size.X / 2, size.Y / 2)),
-                0,
-                BodyType.Kinematic,
-                collisionPackage
-            );
-            body.FixedRotation = true;
-            body.Friction = 0;
-            body.FixtureList[0].IsSensor = true;
-        }*/
-
-        public override void LoadContent()
+        public void LoadContent()
         {
         }
 
-        public override void Initialize()
+        public void Initialize()
         {
         }
 
-        public override void Update()
+        public void Update()
         {
             if(owner != null) { 
                 position = ConvertUnits.ToDisplayUnits(owner.Position) + offset;
             }
         }
 
-        public override void Draw()
+        public void Draw()
         {
 
         }
 
-        public override void DrawDebug()
+        public void DrawDebug()
         {
             spriteBatch.Draw(
                 sprite,

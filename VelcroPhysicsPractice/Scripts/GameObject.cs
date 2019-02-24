@@ -4,11 +4,6 @@ using Microsoft.Xna.Framework;
 
 namespace VelcroPhysicsPractice.Scripts
 {
-    public enum CollisionType {
-        none,
-        wall,
-        invoker,
-    };
 
     public abstract class GameObject
     {
@@ -16,6 +11,7 @@ namespace VelcroPhysicsPractice.Scripts
         public abstract void Draw();
         public abstract void LoadContent();
         public abstract void Update();
+        public abstract void ResolveCollisions();
         public abstract void DrawDebug();
     }
 }

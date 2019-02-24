@@ -46,13 +46,16 @@ namespace VelcroPhysicsPractice.Scripts
                 size
             );
 
-            worldHandler.AddHitbox
+            hitbox = worldHandler.AddHitbox
             (
                 body,
                 Vector2.Zero,
                 size,
                 "blue"
             );
+
+            hitbox.collisionPackage.type = CollisionType.wall;
+            hitbox.collisionPackage.value = "wall";
 
             // VelcroPhysics body configuration
             /*body = BodyFactory.CreateRectangle(
@@ -80,6 +83,10 @@ namespace VelcroPhysicsPractice.Scripts
         }
 
         public override void Initialize()
+        {
+        }
+
+        public override void ResolveCollisions()
         {
         }
 

@@ -80,6 +80,7 @@ namespace VelcroPhysicsPractice.Scripts
                 size,
                 color
             );
+            hitbox.collisionPackage.value = color;
             _worldHitboxes.Add(hitbox);
             return hitbox;
         }
@@ -98,15 +99,15 @@ namespace VelcroPhysicsPractice.Scripts
             return false;
         }
 
-        public void checkHitboxCollision(Hitbox self)
+        public void CheckHitboxCollision(Hitbox self, List<CollisionPackage> collisions)
         {
             foreach (Hitbox other in _worldHitboxes)
             {
-                if(!ReferenceEquals(self, other))
+                if(!ReferenceEquals(self.owner, other.owner))
                 {
                     if(AABBoverlapping(self, other))
                     {
-                        // enact collision on self, use delegates?
+                        collisions.Add(other.collisionPackage);
                     }
                 }
             }
