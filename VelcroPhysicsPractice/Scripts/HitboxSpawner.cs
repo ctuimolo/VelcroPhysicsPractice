@@ -20,6 +20,8 @@ namespace VelcroPhysicsPractice.Scripts
 
     struct StaticHitbox
     {
+
+
         Hitbox hitbox;
         int id;
     }
