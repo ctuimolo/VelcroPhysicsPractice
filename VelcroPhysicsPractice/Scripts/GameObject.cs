@@ -8,7 +8,7 @@ namespace VelcroPhysicsPractice.Scripts
     public abstract class GameObject
     {
         public abstract void Initialize();
-        public abstract void Draw();
+        public abstract void Draw(GameTime gameTime);
         public abstract void LoadContent();
         public abstract void Update();
         public abstract void ResolveCollisions();

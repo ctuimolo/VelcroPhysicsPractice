@@ -31,6 +31,12 @@ namespace VelcroPhysicsPractice.Scripts
         private bool inputAction1;
         private bool inputAction2;
 
+        // Animation handler things
+        private double AnimationTimer   { get; set; }
+        private double AnimationStep    { get; } = 60; // in seconds
+        private double AnimationDeltaTime   { get; set; }
+        private double AnimationTimeStart   { get; set; }
+
         // Debug fields and strings
         private bool    afterCollision = false;
         private bool    isOverlappingOrange;
@@ -152,7 +158,7 @@ namespace VelcroPhysicsPractice.Scripts
             collisionHandler.body.LinearVelocity = velocity;
         }
 
-        public override void Draw()
+        public override void Draw(GameTime gameTime)
         {
             spriteBatch.Draw(
                 playerSprite,
@@ -165,24 +171,37 @@ namespace VelcroPhysicsPractice.Scripts
                 SpriteEffects.None,
                 0f
             );
+
+            AnimationTimer += gameTime.ElapsedGameTime.TotalSeconds;
+            if (AnimationTimer >=  1f / AnimationStep)
+            {
+                AnimationTimer = 0f;
+                if (AnimationDeltaTime > AnimationStep)
+                    AnimationDeltaTime = 0;
+                else
+                    AnimationDeltaTime++;
+            }
+
+            spriteBatch.DrawString(font, "Player() : DeltaTime : " + AnimationDeltaTime, new Vector2(10, 70), Color.Pink);
         }
 
         public override void DrawDebug()
         {
             positionDebugString = "Position: \n" +
-                                 "X: " + (int)(collisionHandler.getDisplayPosition().X - size.X / 2) + "\n" +
-                                 "Y: " + (int)(collisionHandler.getDisplayPosition().Y - size.Y / 2) + "\n";
+                                  "X: " + (int)(collisionHandler.getDisplayPosition().X - size.X / 2) + "\n" +
+                                  "Y: " + (int)(collisionHandler.getDisplayPosition().Y - size.Y / 2) + "\n";
 
-            isFlooredString = "                   Grounded:    " + (isFloored ? "true" : "false");
-            isOverlappingOrangeString = "   Hitbox Collisions:    " + (isOverlappingOrange ? "true" : "false");
-            isOverlappingPinkString = "   Hitbox Collisions:    " + (isOverlappingPink ? "true" : "false");
-            afterCollisionString = "Collisions present:    " + (afterCollision ? "true" : "false");
+            isFlooredString             = "Grounded:            " + (isFloored           ? "true" : "false");
+            isOverlappingOrangeString   = "Hitbox Collisions:   " + (isOverlappingOrange ? "true" : "false");
+            isOverlappingPinkString     = "Hitbox Collisions:   " + (isOverlappingPink   ? "true" : "false");
+            afterCollisionString        = "Collisions present:  " + (afterCollision      ? "true" : "false");
 
-            spriteBatch.DrawString(font, positionDebugString, collisionHandler.getDisplayPosition() + new Vector2(-60, -68), Color.CornflowerBlue);
-            spriteBatch.DrawString(font, isFlooredString, collisionHandler.getDisplayPosition() + new Vector2(-60, -82), Color.Gray);
-            spriteBatch.DrawString(font, afterCollisionString, collisionHandler.getDisplayPosition() + new Vector2(-60, -96), Color.Gray);
-            spriteBatch.DrawString(font, "A " + isOverlappingPinkString, collisionHandler.getDisplayPosition() + new Vector2(-20, -54), Color.Violet);
-            spriteBatch.DrawString(font, "B " + isOverlappingOrangeString, collisionHandler.getDisplayPosition() + new Vector2(-20, -40), Color.Orange);
+            spriteBatch.DrawString(font, positionDebugString,   collisionHandler.getDisplayPosition() + new Vector2(-60, -68), Color.CornflowerBlue);
+            spriteBatch.DrawString(font, isFlooredString,       collisionHandler.getDisplayPosition() + new Vector2(-60, -82), Color.Gray);
+            spriteBatch.DrawString(font, afterCollisionString,  collisionHandler.getDisplayPosition() + new Vector2(-60, -96), Color.Gray);
+
+            spriteBatch.DrawString(font, "A " + isOverlappingPinkString,   collisionHandler.getDisplayPosition() + new Vector2(-10, -54), Color.Violet);
+            spriteBatch.DrawString(font, "B " + isOverlappingOrangeString, collisionHandler.getDisplayPosition() + new Vector2(-10, -40), Color.Orange);
         }
     }
 }

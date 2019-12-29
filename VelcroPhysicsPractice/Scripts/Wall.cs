@@ -80,7 +80,7 @@ namespace VelcroPhysicsPractice.Scripts
             _oldKeyState = state;
         }
 
-        public override void Draw()
+        public override void Draw(GameTime gameTime)
         {
             spriteBatch.Draw(
                 sprite,
