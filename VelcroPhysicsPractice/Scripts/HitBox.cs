@@ -30,6 +30,7 @@ namespace VelcroPhysicsPractice.Scripts
         private SpriteBatch spriteBatch;
         private readonly Texture2D sprite;
         private ContentManager contentManager;
+        private WorldHandler worldHander;
 
         // Hitboxfields
         public Body owner;
@@ -39,16 +40,19 @@ namespace VelcroPhysicsPractice.Scripts
         public Vector2 position;
         public CollisionPackage collisionPackage;
         public string value;
+        public bool enabled = true;
+        public bool delete = false;
 
         public delegate void enact();
 
         // VelcroPhysics bodies
         //private Body body;
 
-        public Hitbox(ContentManager setContentManager, SpriteBatch setSpriteBatch, Body setOwner, Vector2 setOffset, Vector2 setSize, string color)
+        public Hitbox(WorldHandler rootWorldHandler, Body setOwner, Vector2 setOffset, Vector2 setSize, string color, CollisionType type, string value)
         {
-            contentManager = setContentManager;
-            spriteBatch = setSpriteBatch;
+            worldHander = rootWorldHandler;
+            contentManager = worldHander.ContentManager;
+            spriteBatch = worldHander.SpriteBatch;
             owner = setOwner;
             size = setSize;
             origin = new Vector2(size.X / 2, size.Y / 2);
@@ -61,7 +65,11 @@ namespace VelcroPhysicsPractice.Scripts
                 position = offset;
             }
             sprite = contentManager.Load<Texture2D>(color);
-            collisionPackage = new CollisionPackage();
+            collisionPackage = new CollisionPackage 
+            {
+                value = value,
+                type = type
+            };
         }
 
         public void LoadContent()

@@ -1,28 +1,32 @@
-﻿using VelcroPhysics.Dynamics;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
-
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 
+using VelcroPhysics.Dynamics;
 using VelcroPhysics.Factories;
 using VelcroPhysics.Utilities;
+
+using System.Collections.Generic;
 
 namespace VelcroPhysicsPractice.Scripts
 {
 
     public class WorldHandler
     {
-        private World _world;
-        private List<Hitbox> _worldHitboxes;
-        private SpriteBatch _spriteBatch;
-        private ContentManager _contentManager;
+        private World           _world;             // Physics bodies only, no collision flags
+        private List<Hitbox>    _worldHitboxes;     // Non-physics hitboxes, collision flags
+        private SpriteBatch     _spriteBatch;
+        private ContentManager  _contentManager;
+
+        public ContentManager   ContentManager  { get => _contentManager;   }
+        public SpriteBatch      SpriteBatch     { get => _spriteBatch;      }
+        public List<Hitbox>     WorldHitboxes   { get => _worldHitboxes;    }
 
         public WorldHandler(ContentManager rootContentManager, SpriteBatch rootSpriteBatch, Vector2 gravity)
         {
-            _world = new World(gravity);
-            _worldHitboxes = new List<Hitbox>();
-            _spriteBatch = rootSpriteBatch;
+            _world          = new World(gravity);
+            _worldHitboxes  = new List<Hitbox>();
+            _spriteBatch    = rootSpriteBatch;
             _contentManager = rootContentManager;
         }
 
@@ -69,18 +73,18 @@ namespace VelcroPhysicsPractice.Scripts
             return body;
         }
 
-        public Hitbox AddHitbox(Body owner, Vector2 offset, Vector2 size, string color)
+        public Hitbox AddHitbox(Body owner, Vector2 offset, Vector2 size, string color, CollisionType type, string value)
         {
             Hitbox hitbox = new Hitbox
             (
-                _contentManager,
-                _spriteBatch,
+                this,
                 owner,
                 offset,
                 size,
-                color
+                color,
+                type,
+                value
             );
-            hitbox.collisionPackage.value = color;
             _worldHitboxes.Add(hitbox);
             return hitbox;
         }
@@ -103,11 +107,14 @@ namespace VelcroPhysicsPractice.Scripts
         {
             foreach (Hitbox other in _worldHitboxes)
             {
-                if(!ReferenceEquals(self.owner, other.owner))
+                if (!ReferenceEquals(self.owner, other.owner))
                 {
-                    if(AABBoverlapping(self, other))
+                    if (other.enabled == true)
                     {
-                        collisions.Add(other.collisionPackage);
+                        if (AABBoverlapping(self, other))
+                        {
+                            collisions.Add(other.collisionPackage);
+                        }
                     }
                 }
             }

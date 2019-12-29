@@ -1,70 +1,68 @@
-﻿using System.Collections.Generic;
-
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
-using VelcroPhysics.Dynamics;
-using VelcroPhysics.Collision.ContactSystem;
-using VelcroPhysics.Dynamics.Solver;
-using VelcroPhysics.Factories;
-using VelcroPhysics.Utilities;
-using System;
-
-using VelcroPhysicsPractice.Scripts;
 
 namespace VelcroPhysicsPractice.Scripts
 {
     class Player : GameObject
     {
         // MonoGame Drawing Fields
-        private readonly Texture2D playerSprite;
+        private Texture2D   playerSprite;
         private SpriteBatch spriteBatch;
-        private Rectangle drawRect;
+        private Rectangle   drawRect;
 
         // BodyCollisionHandler and physics world fields
-        BodyCollisionHandler collisionHandler;
+        private WorldHandler         worldHandler;
+        private BodyCollisionHandler collisionHandler;
 
         // Player coordinate fields
         private Vector2 origin;
-        public Vector2 size = new Vector2(32,32);
-        public Vector2 position;
+        public  Vector2 size = new Vector2(32,32);
+        public  Vector2 position;
+        private Vector2 velocity = new Vector2(0, 0);
 
         // Game logic misc. fields
         private KeyboardState _oldKeyState;
 
-        // Debug fields and strings
-        private bool afterCollision = false;
-        private string afterCollisionString;
-        private string positionDebugString;
-        public bool isFloored;
-        private string isFlooredString;
-        private bool isOverlappingOrange;
-        private string isOverlappingOrangeString;
-        private bool isOverlappingPink;
-        private string isOverlappingPinkString;
-        private readonly SpriteFont font;
+        // Input handler eventually
+        private bool inputLeft;
+        private bool inputRight;
+        private bool inputJump;
+        private bool inputAction1;
+        private bool inputAction2;
 
-        public Player(WorldHandler worldHandler, ContentManager rootContent, SpriteBatch rootSpriteBatch, Vector2 setPosition)
+        // Debug fields and strings
+        private bool    afterCollision = false;
+        private bool    isOverlappingOrange;
+        private bool    isOverlappingPink;
+        public  bool    isFloored;
+        private string  afterCollisionString;
+        private string  positionDebugString;
+        private string  isFlooredString;
+        private string  isOverlappingOrangeString;
+        private string  isOverlappingPinkString;
+        private SpriteFont font;
+
+        public Player(WorldHandler rootWorldHandler, Vector2 setPosition)
         {
             // Initialize MonoGame drawing fields
-            spriteBatch = rootSpriteBatch;
-            playerSprite = rootContent.Load<Texture2D>("white");
-            font = rootContent.Load<SpriteFont>("font");
-            drawRect = new Rectangle(0,0,32,32);
+            worldHandler    = rootWorldHandler;
+            spriteBatch     = rootWorldHandler.SpriteBatch;
+            playerSprite    = worldHandler.ContentManager.Load<Texture2D>("white");
+            font            = worldHandler.ContentManager.Load<SpriteFont>("font");
+            drawRect        = new Rectangle(0,0,32,32);
 
             // Initialize player coordinates
-            origin = new Vector2(size.X/2,size.Y/2);
-            position = setPosition;
+            origin      = new Vector2(size.X/2,size.Y/2);
+            position    = setPosition;
 
             // Initialize body physics handler
-            collisionHandler = new BodyCollisionHandler(this, worldHandler, rootContent, rootSpriteBatch, setPosition, size);
+            collisionHandler = new BodyCollisionHandler(this, worldHandler, setPosition, size);
             Hitbox.enact hitboxCollision = footCollision;
         }
 
         public static void footCollision()
         {
-
         }
 
         public override void Initialize()
@@ -78,19 +76,42 @@ namespace VelcroPhysicsPractice.Scripts
         private void HandleKeyboard()
         {
             KeyboardState state = Keyboard.GetState();
-            if (state.IsKeyDown(Keys.A))
-                collisionHandler.body.LinearVelocity = new Vector2(-10f, collisionHandler.body.LinearVelocity.Y);
 
-            if (state.IsKeyDown(Keys.D))
-                collisionHandler.body.LinearVelocity = new Vector2(10f, collisionHandler.body.LinearVelocity.Y);
+            inputLeft       = state.IsKeyDown(Keys.A);
+            inputRight      = state.IsKeyDown(Keys.D);
+            inputJump       = state.IsKeyDown(Keys.Space);
+            inputAction1    = state.IsKeyDown(Keys.J);
 
-            if (!state.IsKeyDown(Keys.D) && !state.IsKeyDown(Keys.A))
-                collisionHandler.body.LinearVelocity = new Vector2(0, collisionHandler.body.LinearVelocity.Y);
+            if (inputLeft)
+            {
+                velocity.X = -10f;
+            }
+
+            if (inputRight)
+            {
+                velocity.X = 10f;
+            }
+
+            if (!inputRight && !inputLeft)
+            {
+                velocity.X = 0f;
+            }
+
+            if (inputRight && inputLeft)
+            {
+                velocity.X = 0f;
+            }
 
             if (state.IsKeyDown(Keys.Space) && _oldKeyState.IsKeyUp(Keys.Space))
             {
-                collisionHandler.body.LinearVelocity = new Vector2(collisionHandler.body.LinearVelocity.X, -20f);
+                velocity.Y = -20f;
             }
+
+            if (inputAction1)
+            {
+                worldHandler.AddHitbox(collisionHandler.body, new Vector2(10, 10), new Vector2(50, 50), "purple", CollisionType.invoker, "purple");
+            }
+
             _oldKeyState = state;
         }
 
@@ -104,7 +125,9 @@ namespace VelcroPhysicsPractice.Scripts
             // World collisions are set, do update here
             isFloored = collisionHandler.isFloored;
             isOverlappingOrange = false;
-            isOverlappingPink = false;
+            isOverlappingPink   = false;
+            velocity = collisionHandler.body.LinearVelocity;
+
             if (collisionHandler.currentCollisions.Count > 0)
             {
                 afterCollision = true;
@@ -126,6 +149,7 @@ namespace VelcroPhysicsPractice.Scripts
 
             // Take keyboard input
             HandleKeyboard();
+            collisionHandler.body.LinearVelocity = velocity;
         }
 
         public override void Draw()

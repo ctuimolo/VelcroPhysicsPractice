@@ -30,52 +30,34 @@ namespace VelcroPhysicsPractice.Scripts
         public Hitbox hitbox;
         private KeyboardState _oldKeyState;
 
-        public Wall(WorldHandler worldHandler, ContentManager rootContent, List<Hitbox> rootWorldHitboxes, SpriteBatch rootSpriteBatch, Rectangle coordinates)
+        public Wall(WorldHandler rootWorldHandler, Rectangle coordinates)
         {
             // Object fields
-            spriteBatch = rootSpriteBatch;
+            spriteBatch = rootWorldHandler.SpriteBatch;
             size = new Vector2(coordinates.Width, coordinates.Height);
-            sprite = rootContent.Load<Texture2D>("grey");
+            sprite = rootWorldHandler.ContentManager.Load<Texture2D>("grey");
             origin = new Vector2(size.X / 2, size.Y / 2);
             position = new Vector2(coordinates.X, coordinates.Y);
 
-            body = worldHandler.AddKinematicBody
+            body = rootWorldHandler.AddKinematicBody
             (
                 this,
                 position,
                 size
             );
 
-            hitbox = worldHandler.AddHitbox
+            hitbox = rootWorldHandler.AddHitbox
             (
                 body,
                 Vector2.Zero,
                 size,
-                "blue"
+                "blue",
+                CollisionType.wall,
+                "wall"
             );
 
             hitbox.collisionPackage.type = CollisionType.wall;
             hitbox.collisionPackage.value = "wall";
-
-            // VelcroPhysics body configuration
-            /*body = BodyFactory.CreateRectangle(
-                rootWorld,
-                ConvertUnits.ToSimUnits(size.X),
-                ConvertUnits.ToSimUnits(size.Y),
-                1f,
-                ConvertUnits.ToSimUnits(position + new Vector2(size.X/2, size.Y/2)),
-                0,
-                BodyType.Kinematic,
-                this
-            );
-            body.FixedRotation = true;
-            body.Friction = 0;*/
-
-            /////////////
-            /// Debug Hitbox
-            //hitbox = new Hitbox(rootWorld, rootSpriteBatch, rootContent, this, new Rectangle(0, 0, (int)size.X, (int)size.Y), "blue");
-            //rootWorldHitboxes.Add(hitbox);
-            //Hitboxes = new List<Hitbox>() { hitbox };
         }
 
         public override void LoadContent()

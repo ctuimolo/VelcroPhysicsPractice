@@ -44,14 +44,14 @@ namespace VelcroPhysicsPractice.Scripts
         public bool isFloored;
         private readonly SpriteFont font;
 
-        public BodyCollisionHandler(GameObject owner, WorldHandler rootWorldHandler, ContentManager rootContent, SpriteBatch rootSpriteBatch, Vector2 setPosition, Vector2 setSize)
+        public BodyCollisionHandler(GameObject owner, WorldHandler rootWorldHandler, Vector2 setPosition, Vector2 setSize)
         {
             // BodyCollisionHandler fields
             worldHandler = rootWorldHandler;
-            BodyCollisionHandlerSprite = rootContent.Load<Texture2D>("white");
+            BodyCollisionHandlerSprite = worldHandler.ContentManager.Load<Texture2D>("white");
             size = setSize;
             BodyCollisionHandlerOrigin = new Vector2(size.X/2, size.Y/2);
-            font = rootContent.Load<SpriteFont>("font");
+            font = worldHandler.ContentManager.Load<SpriteFont>("font");
             //currentCollisions = new Dictionary<Fixture, int>();
             currentCollisions = new List<CollisionPackage>();
             currentFloorCollisions = new List<CollisionPackage>();
@@ -61,17 +61,35 @@ namespace VelcroPhysicsPractice.Scripts
                 setPosition,
                 setSize
             );
-            bodyHitbox = worldHandler.AddHitbox(
+
+            bodyHitbox = AddHitbox(
                 body,
                 Vector2.Zero,
                 setSize,
-                "red"
+                "red",
+                CollisionType.invoker,
+                "Player body"
             );
-            feetHitbox = worldHandler.AddHitbox(
+
+            feetHitbox = AddHitbox(
                 body,
                 new Vector2(0, size.Y / 2),
                 new Vector2(size.X, 2),
-                "red"
+                "red",
+                CollisionType.invoker,
+                "Player feet"
+            );
+        }
+
+        public Hitbox AddHitbox(Body owner, Vector2 offset, Vector2 size, string color, CollisionType type, string value)
+        {
+            return worldHandler.AddHitbox(
+                body,
+                offset,
+                size,
+                color,
+                type,
+                value
             );
         }
 
