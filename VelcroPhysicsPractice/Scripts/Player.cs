@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
+using System;
+
 namespace VelcroPhysicsPractice.Scripts
 {
     class Player : GameObject
@@ -32,10 +34,10 @@ namespace VelcroPhysicsPractice.Scripts
         private bool inputAction2;
 
         // Animation handler things
-        private double AnimationTimer   { get; set; }
-        private double AnimationStep    { get; } = 60; // in seconds
-        private double AnimationDeltaTime   { get; set; }
-        private double AnimationTimeStart   { get; set; }
+        private double AnimationTimer       { get; set; }   
+        private double AnimationStep        { get; }        = TimeSpan.TicksPerSecond / 60; // in TimeSpan ticks 1/60fps
+        private double AnimationDeltaTime   { get; set; }   
+        private double AnimationTimeStart   { get; set; }  
 
         // Debug fields and strings
         private bool    afterCollision = false;
@@ -172,17 +174,22 @@ namespace VelcroPhysicsPractice.Scripts
                 0f
             );
 
-            AnimationTimer += gameTime.ElapsedGameTime.TotalSeconds;
-            if (AnimationTimer >=  1f / AnimationStep)
+            AnimationTimer += gameTime.ElapsedGameTime.Ticks;
+            if (AnimationTimer >= AnimationStep)
             {
-                AnimationTimer = 0f;
-                if (AnimationDeltaTime > AnimationStep)
+                AnimationTimer = AnimationTimer % AnimationStep;
+                if(AnimationDeltaTime >= 60)
+                {
                     AnimationDeltaTime = 0;
-                else
+                } else
+                {
                     AnimationDeltaTime++;
-            }
+                }
+            } 
 
-            spriteBatch.DrawString(font, "Player() : DeltaTime : " + AnimationDeltaTime, new Vector2(10, 70), Color.Pink);
+            spriteBatch.DrawString(font, "gameTime.ElapsedGameTime (ms)    : " + gameTime.ElapsedGameTime.Milliseconds, new Vector2(10, 70), Color.Pink);
+            spriteBatch.DrawString(font, "gameTime.ElapsedGameTime (ticks) : " + gameTime.ElapsedGameTime.Ticks, new Vector2(10, 82), Color.Pink);
+            spriteBatch.DrawString(font, "Player() : AnimationDeltaTime : " + AnimationDeltaTime, new Vector2(10, 94), Color.Pink);
         }
 
         public override void DrawDebug()

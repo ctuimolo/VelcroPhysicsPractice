@@ -32,9 +32,9 @@ namespace VelcroPhysicsPractice
         private bool drawDebug = false;
         private SpriteFont font;
         private KeyboardState _oldKeyState;
-        private double FrameCount  { get; set; }
-        private double FrameRate   { get; set; }
-        private int    TargetFPS   { get; }
+        private int FrameCount      { get; set; }
+        private int TargetFPS       { get; }
+        private double FrameRate    { get; set; }
 
         public Game()
         {
@@ -45,8 +45,8 @@ namespace VelcroPhysicsPractice
                 SynchronizeWithVerticalRetrace = true
             };
 
-            TargetFPS = 144;
-            TargetElapsedTime = TimeSpan.FromSeconds(1f / TargetFPS);
+            TargetFPS = 60;
+            TargetElapsedTime = TimeSpan.FromTicks(TimeSpan.TicksPerSecond / TargetFPS);
 
             Content.RootDirectory   = "Content";
             _worldHitboxes          = new List<Hitbox>();
@@ -134,7 +134,7 @@ namespace VelcroPhysicsPractice
         {
 
             // FPS and update count debug
-            if (FrameCount > TargetFPS)
+            if (FrameCount >= TargetFPS)
                 FrameCount = 0;
             else
                 FrameCount++;
