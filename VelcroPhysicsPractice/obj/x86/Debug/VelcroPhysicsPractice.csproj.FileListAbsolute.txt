@@ -47,3 +47,5 @@ C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\bin\Windows\x86\Debug\Co
 C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\bin\Windows\x86\Debug\Content\Content\yellow.xnb
 C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\bin\Windows\x86\Debug\SharpDX.Direct3D9.dll
 C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\bin\Windows\x86\Debug\SharpDX.Direct3D9.xml
+C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\bin\Windows\x86\Debug\Content\suika_idle.xnb
+C:\Projects\VelcroPhysicsPractice\VelcroPhysicsPractice\bin\Windows\x86\Debug\Content\big_green.xnb

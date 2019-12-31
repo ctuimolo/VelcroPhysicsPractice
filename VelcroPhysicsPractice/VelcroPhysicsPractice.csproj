@@ -43,6 +43,8 @@
     <Compile Include="Game.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scripts\Animation.cs" />
+    <Compile Include="Scripts\AnimationHandler.cs" />
     <Compile Include="Scripts\GameObject.cs" />
     <Compile Include="Scripts\Hitbox.cs" />
     <Compile Include="Scripts\BodyCollisionHandler.cs" />

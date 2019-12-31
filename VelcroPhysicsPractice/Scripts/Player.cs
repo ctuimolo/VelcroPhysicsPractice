@@ -2,16 +2,26 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-using System;
-
 namespace VelcroPhysicsPractice.Scripts
 {
+    enum AnimationStates
+    {
+        Idle,
+        Walking
+    }
+
+    enum PlayerOrientation
+    {
+        Right,
+        Left
+    }
+
     class Player : GameObject
     {
         // MonoGame Drawing Fields
-        private Texture2D   playerSprite;
         private SpriteBatch spriteBatch;
         private Rectangle   drawRect;
+        private int drawIndex;
 
         // BodyCollisionHandler and physics world fields
         private WorldHandler         worldHandler;
@@ -19,12 +29,13 @@ namespace VelcroPhysicsPractice.Scripts
 
         // Player coordinate fields
         private Vector2 origin;
-        public  Vector2 size = new Vector2(32,32);
+        public  Vector2 size = new Vector2(28,56);
         public  Vector2 position;
         private Vector2 velocity = new Vector2(0, 0);
 
         // Game logic misc. fields
         private KeyboardState _oldKeyState;
+        private PlayerOrientation facing;
 
         // Input handler eventually
         private bool inputLeft;
@@ -34,10 +45,8 @@ namespace VelcroPhysicsPractice.Scripts
         private bool inputAction2;
 
         // Animation handler things
-        private double AnimationTimer       { get; set; }   
-        private double AnimationStep        { get; }        = TimeSpan.TicksPerSecond / 60; // in TimeSpan ticks 1/60fps
-        private double AnimationDeltaTime   { get; set; }   
-        private double AnimationTimeStart   { get; set; }  
+        public AnimationHandler AnimationHandler { get; }
+        private Animation idleAnimation;
 
         // Debug fields and strings
         private bool    afterCollision = false;
@@ -49,24 +58,30 @@ namespace VelcroPhysicsPractice.Scripts
         private string  isFlooredString;
         private string  isOverlappingOrangeString;
         private string  isOverlappingPinkString;
-        private SpriteFont font;
+        private readonly SpriteFont font;
 
         public Player(WorldHandler rootWorldHandler, Vector2 setPosition)
         {
             // Initialize MonoGame drawing fields
-            worldHandler    = rootWorldHandler;
-            spriteBatch     = rootWorldHandler.SpriteBatch;
-            playerSprite    = worldHandler.ContentManager.Load<Texture2D>("white");
-            font            = worldHandler.ContentManager.Load<SpriteFont>("font");
-            drawRect        = new Rectangle(0,0,32,32);
+            worldHandler = rootWorldHandler;
+            spriteBatch = rootWorldHandler.SpriteBatch;
+            drawIndex = 0;
+            drawRect = new Rectangle(0, 0, 150, 150);
+            font = rootWorldHandler.ContentManager.Load<SpriteFont>("font");
 
             // Initialize player coordinates
-            origin      = new Vector2(size.X/2,size.Y/2);
-            position    = setPosition;
+            origin = new Vector2(size.X / 2, size.Y / 2);
+            position = setPosition;
 
             // Initialize body physics handler
             collisionHandler = new BodyCollisionHandler(this, worldHandler, setPosition, size);
             Hitbox.enact hitboxCollision = footCollision;
+
+            // Initialize Animation handler fields
+            AnimationHandler = new AnimationHandler(worldHandler);
+            AnimationHandler.AddAnimation((int)AnimationStates.Idle, "suika_idle", new Vector2 (150,150), new Vector2 (60,150), 18);
+            AnimationHandler.State = (int)AnimationStates.Idle;
+            facing = PlayerOrientation.Right;
         }
 
         public static void footCollision()
@@ -90,14 +105,16 @@ namespace VelcroPhysicsPractice.Scripts
             inputJump       = state.IsKeyDown(Keys.Space);
             inputAction1    = state.IsKeyDown(Keys.J);
 
-            if (inputLeft)
+            if (inputLeft && !inputRight)
             {
                 velocity.X = -10f;
+                facing = PlayerOrientation.Left;
             }
 
-            if (inputRight)
+            if (inputRight && !inputLeft)
             {
                 velocity.X = 10f;
+                facing = PlayerOrientation.Right;
             }
 
             if (!inputRight && !inputLeft)
@@ -163,33 +180,28 @@ namespace VelcroPhysicsPractice.Scripts
         public override void Draw(GameTime gameTime)
         {
             spriteBatch.Draw(
-                playerSprite,
-                collisionHandler.getDisplayPosition(),
+                AnimationHandler.GetFrame(gameTime),
+                collisionHandler.getDisplayPosition() - new Vector2(60,94),
                 drawRect,
                 Color.White,
                 0,
                 origin,
                 1f,
-                SpriteEffects.None,
+                facing == PlayerOrientation.Right ? SpriteEffects.None : SpriteEffects.FlipHorizontally,
                 0f
             );
 
-            AnimationTimer += gameTime.ElapsedGameTime.Ticks;
-            if (AnimationTimer >= AnimationStep)
-            {
-                AnimationTimer = AnimationTimer % AnimationStep;
-                if(AnimationDeltaTime >= 60)
-                {
-                    AnimationDeltaTime = 0;
-                } else
-                {
-                    AnimationDeltaTime++;
-                }
-            } 
+            drawIndex += 1;
+            if (drawIndex >= 18)
+                drawIndex = 0;
 
-            spriteBatch.DrawString(font, "gameTime.ElapsedGameTime (ms)    : " + gameTime.ElapsedGameTime.Milliseconds, new Vector2(10, 70), Color.Pink);
-            spriteBatch.DrawString(font, "gameTime.ElapsedGameTime (ticks) : " + gameTime.ElapsedGameTime.Ticks, new Vector2(10, 82), Color.Pink);
-            spriteBatch.DrawString(font, "Player() : AnimationDeltaTime : " + AnimationDeltaTime, new Vector2(10, 94), Color.Pink);
+            drawRect.X = (150 * drawIndex) % 900;
+            drawRect.Y = 150 * ((150 * drawIndex) / 900);
+
+            spriteBatch.DrawString(font, "drawRect.X : " + drawRect.X, new Vector2(10, 106), Color.Pink);
+            spriteBatch.DrawString(font, "drawRect.Y : " + drawRect.Y, new Vector2(10, 118), Color.Pink);
+            spriteBatch.DrawString(font, "drawIndex  : " + drawIndex, new Vector2(10, 130), Color.Pink);
+
         }
 
         public override void DrawDebug()
