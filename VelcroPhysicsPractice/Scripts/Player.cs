@@ -10,22 +10,13 @@ namespace VelcroPhysicsPractice.Scripts
         Walking
     }
 
-    enum PlayerOrientation
-    {
-        Right,
-        Left
-    }
-
     class Player : GameObject
     {
         // MonoGame Drawing Fields
         private SpriteBatch spriteBatch;
-        private Rectangle   drawRect;
-        private int drawIndex;
 
         // BodyCollisionHandler and physics world fields
         private WorldHandler         worldHandler;
-        private BodyCollisionHandler collisionHandler;
 
         // Player coordinate fields
         private Vector2 origin;
@@ -35,7 +26,6 @@ namespace VelcroPhysicsPractice.Scripts
 
         // Game logic misc. fields
         private KeyboardState _oldKeyState;
-        private PlayerOrientation facing;
 
         // Input handler eventually
         private bool inputLeft;
@@ -45,8 +35,6 @@ namespace VelcroPhysicsPractice.Scripts
         private bool inputAction2;
 
         // Animation handler things
-        public AnimationHandler AnimationHandler { get; }
-        private Animation idleAnimation;
 
         // Debug fields and strings
         private bool    afterCollision = false;
@@ -65,8 +53,6 @@ namespace VelcroPhysicsPractice.Scripts
             // Initialize MonoGame drawing fields
             worldHandler = rootWorldHandler;
             spriteBatch = rootWorldHandler.SpriteBatch;
-            drawIndex = 0;
-            drawRect = new Rectangle(0, 0, 150, 150);
             font = rootWorldHandler.ContentManager.Load<SpriteFont>("font");
 
             // Initialize player coordinates
@@ -74,14 +60,14 @@ namespace VelcroPhysicsPractice.Scripts
             position = setPosition;
 
             // Initialize body physics handler
-            collisionHandler = new BodyCollisionHandler(this, worldHandler, setPosition, size);
+            CollisionHandler = new BodyCollisionHandler(this, worldHandler, setPosition, size);
             Hitbox.enact hitboxCollision = footCollision;
 
             // Initialize Animation handler fields
-            AnimationHandler = new AnimationHandler(worldHandler);
-            AnimationHandler.AddAnimation((int)AnimationStates.Idle, "suika_idle", new Vector2 (150,150), new Vector2 (60,150), 18);
+            AnimationHandler = new AnimationHandler(worldHandler, this);
+            AnimationHandler.AddAnimation((int)AnimationStates.Idle, "suika_idle", new Vector2 (150,150), new Vector2 (60,150), 18, 2);
             AnimationHandler.State = (int)AnimationStates.Idle;
-            facing = PlayerOrientation.Right;
+            AnimationHandler.facing = PlayerOrientation.Right;
         }
 
         public static void footCollision()
@@ -108,13 +94,13 @@ namespace VelcroPhysicsPractice.Scripts
             if (inputLeft && !inputRight)
             {
                 velocity.X = -10f;
-                facing = PlayerOrientation.Left;
+                AnimationHandler.facing = PlayerOrientation.Left;
             }
 
             if (inputRight && !inputLeft)
             {
                 velocity.X = 10f;
-                facing = PlayerOrientation.Right;
+                AnimationHandler.facing = PlayerOrientation.Right;
             }
 
             if (!inputRight && !inputLeft)
@@ -134,7 +120,7 @@ namespace VelcroPhysicsPractice.Scripts
 
             if (inputAction1)
             {
-                worldHandler.AddHitbox(collisionHandler.body, new Vector2(10, 10), new Vector2(50, 50), "purple", CollisionType.invoker, "purple");
+                worldHandler.AddHitbox(CollisionHandler.body, new Vector2(10, 10), new Vector2(50, 50), "purple", CollisionType.invoker, "purple");
             }
 
             _oldKeyState = state;
@@ -142,21 +128,21 @@ namespace VelcroPhysicsPractice.Scripts
 
         public override void ResolveCollisions()
         {
-            collisionHandler.CheckWorldCollisions();
+            CollisionHandler.CheckWorldCollisions();
         }
 
         public override void Update()
         {
             // World collisions are set, do update here
-            isFloored = collisionHandler.isFloored;
+            isFloored = CollisionHandler.isFloored;
             isOverlappingOrange = false;
             isOverlappingPink   = false;
-            velocity = collisionHandler.body.LinearVelocity;
+            velocity = CollisionHandler.body.LinearVelocity;
 
-            if (collisionHandler.currentCollisions.Count > 0)
+            if (CollisionHandler.currentCollisions.Count > 0)
             {
                 afterCollision = true;
-                foreach (CollisionPackage collision in collisionHandler.currentCollisions)
+                foreach (CollisionPackage collision in CollisionHandler.currentCollisions)
                 {
                     if (collision.value == "orange")
                     {
@@ -174,53 +160,31 @@ namespace VelcroPhysicsPractice.Scripts
 
             // Take keyboard input
             HandleKeyboard();
-            collisionHandler.body.LinearVelocity = velocity;
+            CollisionHandler.body.LinearVelocity = velocity;
         }
 
         public override void Draw(GameTime gameTime)
         {
-            spriteBatch.Draw(
-                AnimationHandler.GetFrame(gameTime),
-                collisionHandler.getDisplayPosition() - new Vector2(60,94),
-                drawRect,
-                Color.White,
-                0,
-                origin,
-                1f,
-                facing == PlayerOrientation.Right ? SpriteEffects.None : SpriteEffects.FlipHorizontally,
-                0f
-            );
-
-            drawIndex += 1;
-            if (drawIndex >= 18)
-                drawIndex = 0;
-
-            drawRect.X = (150 * drawIndex) % 900;
-            drawRect.Y = 150 * ((150 * drawIndex) / 900);
-
-            spriteBatch.DrawString(font, "drawRect.X : " + drawRect.X, new Vector2(10, 106), Color.Pink);
-            spriteBatch.DrawString(font, "drawRect.Y : " + drawRect.Y, new Vector2(10, 118), Color.Pink);
-            spriteBatch.DrawString(font, "drawIndex  : " + drawIndex, new Vector2(10, 130), Color.Pink);
-
+            AnimationHandler.DrawFrame();
         }
 
         public override void DrawDebug()
         {
             positionDebugString = "Position: \n" +
-                                  "X: " + (int)(collisionHandler.getDisplayPosition().X - size.X / 2) + "\n" +
-                                  "Y: " + (int)(collisionHandler.getDisplayPosition().Y - size.Y / 2) + "\n";
+                                  "X: " + (int)(CollisionHandler.getDisplayPosition().X - size.X / 2) + "\n" +
+                                  "Y: " + (int)(CollisionHandler.getDisplayPosition().Y - size.Y / 2) + "\n";
 
             isFlooredString             = "Grounded:            " + (isFloored           ? "true" : "false");
             isOverlappingOrangeString   = "Hitbox Collisions:   " + (isOverlappingOrange ? "true" : "false");
             isOverlappingPinkString     = "Hitbox Collisions:   " + (isOverlappingPink   ? "true" : "false");
             afterCollisionString        = "Collisions present:  " + (afterCollision      ? "true" : "false");
 
-            spriteBatch.DrawString(font, positionDebugString,   collisionHandler.getDisplayPosition() + new Vector2(-60, -68), Color.CornflowerBlue);
-            spriteBatch.DrawString(font, isFlooredString,       collisionHandler.getDisplayPosition() + new Vector2(-60, -82), Color.Gray);
-            spriteBatch.DrawString(font, afterCollisionString,  collisionHandler.getDisplayPosition() + new Vector2(-60, -96), Color.Gray);
+            spriteBatch.DrawString(font, positionDebugString,   CollisionHandler.getDisplayPosition() + new Vector2(-60, -68), Color.CornflowerBlue);
+            spriteBatch.DrawString(font, isFlooredString,       CollisionHandler.getDisplayPosition() + new Vector2(-60, -82), Color.Gray);
+            spriteBatch.DrawString(font, afterCollisionString,  CollisionHandler.getDisplayPosition() + new Vector2(-60, -96), Color.Gray);
 
-            spriteBatch.DrawString(font, "A " + isOverlappingPinkString,   collisionHandler.getDisplayPosition() + new Vector2(-10, -54), Color.Violet);
-            spriteBatch.DrawString(font, "B " + isOverlappingOrangeString, collisionHandler.getDisplayPosition() + new Vector2(-10, -40), Color.Orange);
+            spriteBatch.DrawString(font, "A " + isOverlappingPinkString,   CollisionHandler.getDisplayPosition() + new Vector2(-10, -54), Color.Violet);
+            spriteBatch.DrawString(font, "B " + isOverlappingOrangeString, CollisionHandler.getDisplayPosition() + new Vector2(-10, -40), Color.Orange);
         }
     }
 }
