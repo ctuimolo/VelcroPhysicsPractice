@@ -2,7 +2,6 @@
 **.pdb
 **.cache
 **.manifest
-**/obj
 **/.vs/
 **/obj/
 **/bin/
