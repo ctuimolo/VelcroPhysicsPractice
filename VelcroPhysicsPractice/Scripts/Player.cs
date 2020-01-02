@@ -7,7 +7,9 @@ namespace VelcroPhysicsPractice.Scripts
     enum AnimationStates
     {
         Idle,
-        Walking
+        Walking,
+        Rising,
+        Falling
     }
 
     class Player : GameObject
@@ -82,9 +84,26 @@ namespace VelcroPhysicsPractice.Scripts
                 8,
                 4
             );
+            AnimationHandler.AddAnimation(
+                (int)AnimationStates.Falling,
+                "suika_fall",
+                126, 102,
+                new Vector2(63, 102 - size.Y / 2 - 1),
+                3,
+                6,
+                0, 1
+            );
+            AnimationHandler.AddAnimation(
+                (int)AnimationStates.Rising,
+                "suika_rise",
+                110, 110,
+                new Vector2(110, 55 - size.Y / 2 - 1),
+                2,
+                4
+            );
             AnimationHandler.ChangeAnimation((int)AnimationStates.Idle);
             AnimationHandler.facing = PlayerOrientation.Right;
-        }
+        } 
 
         public static void footCollision()
         {
@@ -111,26 +130,38 @@ namespace VelcroPhysicsPractice.Scripts
             {
                 velocity.X = -walkSpeed;
                 AnimationHandler.facing = PlayerOrientation.Left;
-                AnimationHandler.ChangeAnimation((int)AnimationStates.Walking);
+                if(CollisionHandler.isFloored)
+                {
+                    AnimationHandler.ChangeAnimation((int)AnimationStates.Walking);
+                }
             }
 
             if (inputRight && !inputLeft)
             {
                 velocity.X = walkSpeed;
                 AnimationHandler.facing = PlayerOrientation.Right;
-                AnimationHandler.ChangeAnimation((int)AnimationStates.Walking);
+                if (CollisionHandler.isFloored)
+                {
+                    AnimationHandler.ChangeAnimation((int)AnimationStates.Walking);
+                }
             }
 
             if (!inputRight && !inputLeft)
             {
                 velocity.X = 0f;
-                AnimationHandler.ChangeAnimation((int)AnimationStates.Idle);
+                if (CollisionHandler.isFloored)
+                {
+                    AnimationHandler.ChangeAnimation((int)AnimationStates.Idle);
+                }
             }
 
             if (inputRight && inputLeft)
             {
                 velocity.X = 0f;
-                AnimationHandler.ChangeAnimation((int)AnimationStates.Idle);
+                if (CollisionHandler.isFloored)
+                {
+                    AnimationHandler.ChangeAnimation((int)AnimationStates.Idle);
+                }
             }
 
             if (state.IsKeyDown(Keys.Space) && _oldKeyState.IsKeyUp(Keys.Space))
@@ -157,6 +188,10 @@ namespace VelcroPhysicsPractice.Scripts
             isFloored = CollisionHandler.isFloored;
             isOverlappingOrange = false;
             isOverlappingPink   = false;
+            if(!CollisionHandler.isFloored)
+            {
+                AnimationHandler.ChangeAnimation((int)AnimationStates.Falling);
+            }
             velocity = CollisionHandler.body.LinearVelocity;
 
             if (CollisionHandler.currentCollisions.Count > 0)

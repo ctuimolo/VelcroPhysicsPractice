@@ -21,5 +21,7 @@
     <File>C:/Projects/VelcroPhysicsPractice/VelcroPhysicsPractice/Content/Sprites/suika_idle/suika_idle.png</File>
     <File>C:/Projects/VelcroPhysicsPractice/VelcroPhysicsPractice/Content/suika_idle_padded.png</File>
     <File>C:/Projects/VelcroPhysicsPractice/VelcroPhysicsPractice/Content/suika_walk.png</File>
+    <File>C:/Projects/VelcroPhysicsPractice/VelcroPhysicsPractice/Content/suika_fall.png</File>
+    <File>C:/Projects/VelcroPhysicsPractice/VelcroPhysicsPractice/Content/suika_rise.png</File>
   </SourceFiles>
 </SourceFileCollection>

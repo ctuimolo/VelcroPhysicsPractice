@@ -45,7 +45,7 @@ namespace VelcroPhysicsPractice.Scripts
             //test = Game.SpriteSheetLoader.Load("Sprites/Suika_idle/suika_idle.png");
         }
 
-        public void AddAnimation(int key, string spriteSheetDirectory, int frameWidth, int frameHeight, Vector2 offset, int frameCount, int setFrameDelay, int startIndex = 0)
+        public void AddAnimation(int key, string spriteSheetDirectory, int frameWidth, int frameHeight, Vector2 offset, int frameCount, int setFrameDelay, int startIndex = 0, int loopIndex = 0)
         {
             AnimationDic.Add(key, new Animation(worldHandler, 
                 this, 
@@ -54,7 +54,8 @@ namespace VelcroPhysicsPractice.Scripts
                 frameCount,
                 setFrameDelay, 
                 offset,
-                startIndex
+                startIndex,
+                loopIndex
             ));
         }
 
@@ -96,7 +97,7 @@ namespace VelcroPhysicsPractice.Scripts
                 animationTimer = 0;
                 drawIndex++;
                 if (drawIndex >= currentAnimation.FrameCount)
-                    drawIndex = 0;
+                    drawIndex = currentAnimation.LoopIndex;
             }
 
 

@@ -20,6 +20,7 @@ namespace VelcroPhysicsPractice.Scripts
         public int       FrameCount  { get; set; }
         public int       FrameDelay  { get; set; }
         public int       StartIndex  { get; set; }
+        public int       LoopIndex   { get; set; }
 
         public Animation( WorldHandler rootWorldHandler, 
                           AnimationHandler rootAnimationHandler, 
@@ -28,7 +29,8 @@ namespace VelcroPhysicsPractice.Scripts
                           int setFrameCount, 
                           int setframeDelay, 
                           Vector2 setOffset,
-                          int startIndex = 0)
+                          int startIndex = 0,
+                          int loopIndex  = 0)
         {
             worldHandler = rootWorldHandler;
             owner = rootAnimationHandler;
@@ -42,6 +44,7 @@ namespace VelcroPhysicsPractice.Scripts
             font = rootWorldHandler.ContentManager.Load<SpriteFont>("font");
             FrameCount = setFrameCount;
             StartIndex = startIndex;
+            LoopIndex  = loopIndex;
         }
 
         public Texture2D GetFrame()
