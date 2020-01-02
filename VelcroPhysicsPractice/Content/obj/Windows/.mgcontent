@@ -17,5 +17,9 @@
     <File>C:/Projects/VelcroPhysicsPractice/VelcroPhysicsPractice/Content/orange.png</File>
     <File>C:/Projects/VelcroPhysicsPractice/VelcroPhysicsPractice/Content/suika_idle.png</File>
     <File>C:/Projects/VelcroPhysicsPractice/VelcroPhysicsPractice/Content/big_green.png</File>
+    <File>C:/Projects/VelcroPhysicsPractice/VelcroPhysicsPractice/Content/suika_idle_opaque.png</File>
+    <File>C:/Projects/VelcroPhysicsPractice/VelcroPhysicsPractice/Content/Sprites/suika_idle/suika_idle.png</File>
+    <File>C:/Projects/VelcroPhysicsPractice/VelcroPhysicsPractice/Content/suika_idle_padded.png</File>
+    <File>C:/Projects/VelcroPhysicsPractice/VelcroPhysicsPractice/Content/suika_walk.png</File>
   </SourceFiles>
 </SourceFileCollection>

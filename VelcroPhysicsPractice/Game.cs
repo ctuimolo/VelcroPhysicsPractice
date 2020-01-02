@@ -26,10 +26,10 @@ namespace VelcroPhysicsPractice
          
         // Game Objects to make
         private List<GameObject> _renderedGameObjects;
-        private List<Hitbox> _worldHitboxes;
+        private List<Hitbox> _worldHitboxes; 
 
         // Debug
-        private bool drawDebug = false;
+        private bool drawDebug = false; 
         private SpriteFont font;
         private KeyboardState _oldKeyState;
         private int     FrameCount  { get; set; }
@@ -47,7 +47,6 @@ namespace VelcroPhysicsPractice
             TargetElapsedTime = TimeSpan.FromTicks(TimeSpan.TicksPerSecond / TargetFPS);
 
             Content.RootDirectory   = "Content";
-            _worldHitboxes          = new List<Hitbox>();
         }
 
         protected override void LoadContent()
@@ -56,6 +55,7 @@ namespace VelcroPhysicsPractice
             _view  = Matrix.Identity;
             ConvertUnits.SetDisplayUnitToSimUnitRatio(20f);
             font = Content.Load<SpriteFont>("font");
+            _worldHitboxes = new List<Hitbox>();
 
             worldHandler = new WorldHandler(Content, _batch, new Vector2(0, 100f));
 
