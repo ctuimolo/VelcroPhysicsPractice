@@ -1,9 +1,5 @@
-./VelcroPhysicsPractice/obj/x86/*
-*/*.cache
-*.sln
-*/*.exe
-*/*.manifest
-/.vs/
 **.exe
 **.pdb
 **.cache
+**.manifest
+.vs/
