@@ -18,7 +18,7 @@ namespace VelcroPhysicsPractice.Scripts
 
         public List<Hitbox> WorldHitboxes   { get; private set; }
 
-        public WorldHandler(ContentManager rootContentManager, SpriteBatch rootSpriteBatch, Vector2 gravity)
+        public WorldHandler(Vector2 gravity)
         {
             _world          = new World(gravity);
             _worldHitboxes  = new List<Hitbox>();
@@ -38,7 +38,7 @@ namespace VelcroPhysicsPractice.Scripts
                 owner
             );
 
-            body.FixtureList[0].UserData = new Rectangle(0, 0, (int)size.X, (int)size.Y);
+            //body.FixtureList[0].UserData = new Rectangle(0, 0, (int)size.X, (int)size.Y);
             body.FixedRotation = true;
             body.GravityScale = gravityScale;
             body.Friction = 0;
@@ -60,10 +60,9 @@ namespace VelcroPhysicsPractice.Scripts
                 Owner
             );
 
-            body.FixtureList[0].UserData = new Rectangle(0, 0, (int)size.X, (int)size.Y);
+            //body.FixtureList[0].UserData = new Rectangle(0, 0, (int)size.X, (int)size.Y);
             body.FixedRotation = true;
             body.Friction = 0;
-
             return body;
         }
 

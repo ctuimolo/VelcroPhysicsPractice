@@ -38,6 +38,7 @@ namespace VelcroPhysicsPractice.Scripts
             _size                       = size;
             _bodyCollisionHandlerOrigin = new Vector2(_size.X/2, _size.Y/2);
             _font = Game.Assets.Load<SpriteFont>("font");
+
             CurrentCollisions = new List<CollisionPackage>();
             CurrentFloorCollisions = new List<CollisionPackage>();
 

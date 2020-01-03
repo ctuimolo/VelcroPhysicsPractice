@@ -50,7 +50,7 @@ namespace VelcroPhysicsPractice
         {
             // Init spritebatch and physics engine
             SpriteBatch = new SpriteBatch(Graphics.GraphicsDevice);
-            World = new WorldHandler(Content, SpriteBatch, new Vector2(0, 100f));
+            World = new WorldHandler(new Vector2(0, 100f));
 
             ConvertUnits.SetDisplayUnitToSimUnitRatio(20f);
             _view = Matrix.Identity;

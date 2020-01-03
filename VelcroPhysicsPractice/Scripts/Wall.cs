@@ -15,47 +15,44 @@ namespace VelcroPhysicsPractice.Scripts
 {
     public class Wall : GameObject
     {
-        // Player Monogame drawing fields
-        private readonly Texture2D sprite;
+        private readonly Vector2    _origin;
+        private readonly Vector2    _size;
+        private readonly Vector2    _position;
+        private readonly Texture2D  _sprite;
 
-        // Player VelcroPhysics fields
-        private Vector2 origin;
-        private Vector2 size;
-        private Vector2 position;
-        private Body body;
-
-        // Debugs and self Hitboxes
-        private bool drawDebug = true;
-        public Hitbox hitbox;
+        private bool _drawDebug = true;
         private KeyboardState _oldKeyState;
+
+        public Body     Body    { get; private set; }
+        public Hitbox   Hitbox  { get; private set; }
 
         public Wall(Rectangle coordinates)
         {
             // Object fields
-            size = new Vector2(coordinates.Width, coordinates.Height);
-            sprite = Game.Assets.Load<Texture2D>("grey");
-            origin = new Vector2(size.X / 2, size.Y / 2);
-            position = new Vector2(coordinates.X, coordinates.Y);
+            _size = new Vector2(coordinates.Width, coordinates.Height);
+            _sprite = Game.Assets.Load<Texture2D>("grey");
+            _origin = new Vector2(_size.X / 2, _size.Y / 2);
+            _position = new Vector2(coordinates.X, coordinates.Y);
 
-            body = Game.World.AddKinematicBody
+            Body = Game.World.AddKinematicBody
             (
                 this,
-                position,
-                size
+                _position,
+                _size
             );
 
-            hitbox = Game.World.AddHitbox
+            Hitbox = Game.World.AddHitbox
             (
-                body,
+                Body,
                 Vector2.Zero,
-                size,
+                _size,
                 "blue",
                 CollisionType.wall,
                 "wall"
             );
 
-            hitbox.CollisionPackage.type = CollisionType.wall;
-            hitbox.CollisionPackage.Value = "wall";
+            Hitbox.CollisionPackage.type = CollisionType.wall;
+            Hitbox.CollisionPackage.Value = "wall";
         }
 
         public override void LoadContent()
@@ -74,19 +71,19 @@ namespace VelcroPhysicsPractice.Scripts
         {
             KeyboardState state = Keyboard.GetState();
             if (state.IsKeyDown(Keys.F1) && _oldKeyState.IsKeyUp(Keys.F1))
-                drawDebug = !drawDebug;
+                _drawDebug = !_drawDebug;
             _oldKeyState = state;
         }
 
         public override void Draw(GameTime gameTime)
         {
             Game.SpriteBatch.Draw(
-                sprite,
-                ConvertUnits.ToDisplayUnits(body.Position),
-                new Rectangle(0, 0, (int)size.X, (int)size.Y), 
+                _sprite,
+                ConvertUnits.ToDisplayUnits(Body.Position),
+                new Rectangle(0, 0, (int)_size.X, (int)_size.Y), 
                 Color.White,
-                body.Rotation,
-                origin,
+                Body.Rotation,
+                _origin,
                 1f,
                 SpriteEffects.None,
                 0f
