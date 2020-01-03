@@ -13,21 +13,15 @@ namespace VelcroPhysicsPractice.Scripts
 
     public class WorldHandler
     {
-        private World           _world;             // Physics bodies only, no collision flags
-        private List<Hitbox>    _worldHitboxes;     // Non-physics hitboxes, collision flags
-        private SpriteBatch     _spriteBatch;
-        private ContentManager  _contentManager;
+        private readonly World          _world;             // Physics bodies only, no collision flags
+        private readonly List<Hitbox>   _worldHitboxes;     // Non-physics hitboxes, collision flags
 
-        public ContentManager   ContentManager  { get => _contentManager;   }
-        public SpriteBatch      SpriteBatch     { get => _spriteBatch;      }
-        public List<Hitbox>     WorldHitboxes   { get => _worldHitboxes;    }
+        public List<Hitbox> WorldHitboxes   { get; private set; }
 
         public WorldHandler(ContentManager rootContentManager, SpriteBatch rootSpriteBatch, Vector2 gravity)
         {
             _world          = new World(gravity);
             _worldHitboxes  = new List<Hitbox>();
-            _spriteBatch    = rootSpriteBatch;
-            _contentManager = rootContentManager;
         }
 
         public Body AddBody(GameObject owner, Vector2 position, Vector2 size, float gravityScale = 1)
@@ -52,7 +46,7 @@ namespace VelcroPhysicsPractice.Scripts
             return body;
         }
 
-        public Body AddKinematicBody(GameObject owner, Vector2 position, Vector2 size)
+        public Body AddKinematicBody(GameObject Owner, Vector2 position, Vector2 size)
         {
             Body body = BodyFactory.CreateRectangle
             (
@@ -63,7 +57,7 @@ namespace VelcroPhysicsPractice.Scripts
                 ConvertUnits.ToSimUnits(position + new Vector2(size.X / 2, size.Y / 2)),
                 0,
                 BodyType.Kinematic,
-                owner
+                Owner
             );
 
             body.FixtureList[0].UserData = new Rectangle(0, 0, (int)size.X, (int)size.Y);
@@ -73,12 +67,11 @@ namespace VelcroPhysicsPractice.Scripts
             return body;
         }
 
-        public Hitbox AddHitbox(Body owner, Vector2 offset, Vector2 size, string color, CollisionType type, string value)
+        public Hitbox AddHitbox(Body Owner, Vector2 offset, Vector2 size, string color, CollisionType type, string value)
         {
             Hitbox hitbox = new Hitbox
             (
-                this,
-                owner,
+                Owner,
                 offset,
                 size,
                 color,
@@ -92,10 +85,10 @@ namespace VelcroPhysicsPractice.Scripts
         private bool AABBoverlapping(Hitbox self, Hitbox other)
         {
             // if self.left >= other.right && self.right <= other.left
-            if ((self.position.X - self.size.X / 2) <= (other.position.X + other.size.X / 2) &&
-               (self.position.X + self.size.X / 2) >= (other.position.X - other.size.X / 2) &&
-               (self.position.Y - self.size.Y / 2) <= (other.position.Y + other.size.Y / 2) &&
-               (self.position.Y + self.size.Y / 2) >= (other.position.Y - other.size.Y / 2))
+            if ((self.Position.X - self.Size.X / 2) <= (other.Position.X + other.Size.X / 2) &&
+               (self.Position.X + self.Size.X / 2) >= (other.Position.X - other.Size.X / 2) &&
+               (self.Position.Y - self.Size.Y / 2) <= (other.Position.Y + other.Size.Y / 2) &&
+               (self.Position.Y + self.Size.Y / 2) >= (other.Position.Y - other.Size.Y / 2))
             {
                 return true;
             }
@@ -107,13 +100,13 @@ namespace VelcroPhysicsPractice.Scripts
         {
             foreach (Hitbox other in _worldHitboxes)
             {
-                if (!ReferenceEquals(self.owner, other.owner))
+                if (!ReferenceEquals(self.Owner, other.Owner))
                 {
-                    if (other.enabled == true)
+                    if (other.Enabled == true)
                     {
                         if (AABBoverlapping(self, other))
                         {
-                            collisions.Add(other.collisionPackage);
+                            collisions.Add(other.CollisionPackage);
                         }
                     }
                 }

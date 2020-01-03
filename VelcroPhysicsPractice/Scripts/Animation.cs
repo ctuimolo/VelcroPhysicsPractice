@@ -5,63 +5,54 @@ namespace VelcroPhysicsPractice.Scripts
 {
     class Animation
     {
-        private readonly WorldHandler worldHandler;
-        private readonly AnimationHandler owner;
-        private readonly SpriteBatch spriteBatch;
-        private readonly SpriteFont font;
-        private readonly int drawWidth;
-        private readonly int drawHeight;
+        private readonly AnimationHandler   _owner;
+        private readonly SpriteFont         _font;
+        private readonly int                _drawWidth;
+        private readonly int                _drawHeight;
 
-        private Rectangle drawRect;
+        private Rectangle _drawRect;
 
-        public Texture2D SpriteSheet { get; set; }
-        public Rectangle DrawRect    { get; set; }
+        public Texture2D SpriteSheet { get; private set; }
         public Vector2   Offset      { get; set; }
         public int       FrameCount  { get; set; }
         public int       FrameDelay  { get; set; }
         public int       StartIndex  { get; set; }
         public int       LoopIndex   { get; set; }
 
-        public Animation( AnimationHandler rootAnimationHandler, 
-                          string spriteSheetDirectory, 
-                          Rectangle setDrawRect, 
-                          int setFrameCount, 
-                          int setframeDelay, 
-                          Vector2 setOffset,
-                          int startIndex = 0,
-                          int loopIndex  = 0)
+        public Animation( AnimationHandler  owner, 
+                          string    spriteSheetDirectory, 
+                          Rectangle drawRect, 
+                          int       setFrameCount, 
+                          int       setframeDelay, 
+                          Vector2   setOffset,
+                          int       startIndex = 0,
+                          int       loopIndex  = 0 )
         {
-            worldHandler = Game.World;
-            owner = rootAnimationHandler;
-            spriteBatch  = owner.SpriteBatch;
-            SpriteSheet  = owner.ContentManager.Load<Texture2D>(spriteSheetDirectory);
-            FrameDelay   = setframeDelay;
-            drawRect = setDrawRect;
-            drawWidth = setDrawRect.Width;
-            drawHeight = setDrawRect.Height;
-            Offset = setOffset;
-            font =  Game.Assets.Load<SpriteFont>("font");
-            FrameCount = setFrameCount;
-            StartIndex = startIndex;
-            LoopIndex  = loopIndex;
-        }
+            _owner        = owner;
+            SpriteSheet  = Game.Assets.Load<Texture2D>(spriteSheetDirectory);
+            _drawRect     = new Rectangle(drawRect.X, drawRect.Y, drawRect.Width, drawRect.Height);
+            _drawWidth    = drawRect.Width;
+            _drawHeight   = drawRect.Height;
+            _font         = Game.Assets.Load<SpriteFont>("font");
 
-        public Texture2D GetFrame()
-        {
-            return SpriteSheet;
+            FrameDelay  = setframeDelay;
+            Offset      = setOffset;
+            FrameCount  = setFrameCount;
+            StartIndex  = startIndex;
+            LoopIndex   = loopIndex;
         }
 
         public Rectangle GetDrawRect(int drawIndex)
         {
-            drawRect.X = (drawWidth * drawIndex) % SpriteSheet.Width;
-            drawRect.Y = drawHeight * ((drawWidth * drawIndex) / SpriteSheet.Width);
-            return drawRect;
+            _drawRect.X = (_drawWidth * drawIndex) % SpriteSheet.Width;
+            _drawRect.Y = _drawHeight * ((_drawWidth * drawIndex) / SpriteSheet.Width);
+            return _drawRect;
         }
 
         public void DrawDebug()
         {
-            spriteBatch.DrawString(font, "drawRect.X : " + drawRect.X, new Vector2(10, 76), Color.Pink);
-            spriteBatch.DrawString(font, "drawRect.Y : " + drawRect.Y, new Vector2(10, 88), Color.Pink);
+            Game.SpriteBatch.DrawString(_font, "_drawRect.X : " + _drawRect.X, new Vector2(10, 76), Color.Pink);
+            Game.SpriteBatch.DrawString(_font, "_drawRect.Y : " + _drawRect.Y, new Vector2(10, 88), Color.Pink);
         }
     }
 }

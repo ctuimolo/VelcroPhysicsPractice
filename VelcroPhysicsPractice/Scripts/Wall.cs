@@ -17,7 +17,6 @@ namespace VelcroPhysicsPractice.Scripts
     {
         // Player Monogame drawing fields
         private readonly Texture2D sprite;
-        private SpriteBatch spriteBatch;
 
         // Player VelcroPhysics fields
         private Vector2 origin;
@@ -30,23 +29,22 @@ namespace VelcroPhysicsPractice.Scripts
         public Hitbox hitbox;
         private KeyboardState _oldKeyState;
 
-        public Wall(WorldHandler rootWorldHandler, Rectangle coordinates)
+        public Wall(Rectangle coordinates)
         {
             // Object fields
-            spriteBatch = rootWorldHandler.SpriteBatch;
             size = new Vector2(coordinates.Width, coordinates.Height);
-            sprite = rootWorldHandler.ContentManager.Load<Texture2D>("grey");
+            sprite = Game.Assets.Load<Texture2D>("grey");
             origin = new Vector2(size.X / 2, size.Y / 2);
             position = new Vector2(coordinates.X, coordinates.Y);
 
-            body = rootWorldHandler.AddKinematicBody
+            body = Game.World.AddKinematicBody
             (
                 this,
                 position,
                 size
             );
 
-            hitbox = rootWorldHandler.AddHitbox
+            hitbox = Game.World.AddHitbox
             (
                 body,
                 Vector2.Zero,
@@ -56,8 +54,8 @@ namespace VelcroPhysicsPractice.Scripts
                 "wall"
             );
 
-            hitbox.collisionPackage.type = CollisionType.wall;
-            hitbox.collisionPackage.value = "wall";
+            hitbox.CollisionPackage.type = CollisionType.wall;
+            hitbox.CollisionPackage.Value = "wall";
         }
 
         public override void LoadContent()
@@ -82,7 +80,7 @@ namespace VelcroPhysicsPractice.Scripts
 
         public override void Draw(GameTime gameTime)
         {
-            spriteBatch.Draw(
+            Game.SpriteBatch.Draw(
                 sprite,
                 ConvertUnits.ToDisplayUnits(body.Position),
                 new Rectangle(0, 0, (int)size.X, (int)size.Y), 

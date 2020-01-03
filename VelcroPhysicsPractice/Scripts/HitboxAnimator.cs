@@ -4,16 +4,13 @@ namespace VelcroPhysicsPractice.Scripts
 {
     class HitboxAnimator
     {
-        private WorldHandler worldHandler;
 
-        public HitboxAnimator(WorldHandler rootWorldHandler)
+        public HitboxAnimator()
         {
-            worldHandler = rootWorldHandler;
         }
 
         public void AnimationUpdate()
         {
-
         }
     }
 }

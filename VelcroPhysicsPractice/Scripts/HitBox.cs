@@ -21,53 +21,48 @@ namespace VelcroPhysicsPractice.Scripts
     public class CollisionPackage
     {
         public CollisionType type = CollisionType.none;
-        public string value = "";
+        public string Value = "";
     }
 
     public class Hitbox
     {
         // Monogame drawing fields
-        private SpriteBatch spriteBatch;
-        private readonly Texture2D sprite;
-        private ContentManager contentManager;
-        private WorldHandler worldHander;
+        private readonly Texture2D  _sprite;
+        private readonly Vector2    _origin;
 
-        // Hitboxfields
-        public Body owner;
-        public Vector2 origin;
-        public Vector2 offset;
-        public Vector2 size;
-        public Vector2 position;
-        public CollisionPackage collisionPackage;
-        public string value;
-        public bool enabled = true;
-        public bool delete = false;
+        public Body     Owner    { get; private set; }
+        public Vector2  Offset   { get; set; }
+        public Vector2  Size     { get; set; }
+        public Vector2  Position { get; set; }
+
+        public CollisionPackage CollisionPackage    { get; set; }
+        public bool     Enabled { get; set; } = true;
+        public bool     Delete  { get; set; } = false;
 
         public delegate void enact();
 
-        // VelcroPhysics bodies
-        //private Body body;
-
-        public Hitbox(WorldHandler rootWorldHandler, Body setOwner, Vector2 setOffset, Vector2 setSize, string color, CollisionType type, string value)
+        public Hitbox(Body owner, Vector2 offset, Vector2 size, string color, CollisionType type, string value)
         {
-            worldHander = rootWorldHandler;
-            contentManager = worldHander.ContentManager;
-            spriteBatch = worldHander.SpriteBatch;
-            owner = setOwner;
-            size = setSize;
-            origin = new Vector2(size.X / 2, size.Y / 2);
-            offset = setOffset;
-            if (owner != null)
+            _origin = new Vector2(size.X / 2, size.Y / 2);
+
+            Size    = size;
+            Owner   = owner;
+            Offset  = offset;
+
+            if (Owner != null)
             {
-                position = ConvertUnits.ToDisplayUnits(owner.Position) + offset;
-            } else
-            {
-                position = offset;
+                Position = ConvertUnits.ToDisplayUnits(Owner.Position) + Offset;
             }
-            sprite = contentManager.Load<Texture2D>(color);
-            collisionPackage = new CollisionPackage 
+            else
             {
-                value = value,
+                Position = Offset;
+            }
+
+            _sprite = Game.Assets.Load<Texture2D>(color);
+
+            CollisionPackage = new CollisionPackage 
+            {
+                Value = value,
                 type = type
             };
         }
@@ -82,8 +77,8 @@ namespace VelcroPhysicsPractice.Scripts
 
         public void Update()
         {
-            if(owner != null) { 
-                position = ConvertUnits.ToDisplayUnits(owner.Position) + offset;
+            if(Owner != null) { 
+                Position = ConvertUnits.ToDisplayUnits(Owner.Position) + Offset;
             }
         }
 
@@ -94,13 +89,13 @@ namespace VelcroPhysicsPractice.Scripts
 
         public void DrawDebug()
         {
-            spriteBatch.Draw(
-                sprite,
-                position,
-                new Rectangle(0, 0, (int)size.X, (int)size.Y),
+            Game.SpriteBatch.Draw(
+                _sprite,
+                Position,
+                new Rectangle(0, 0, (int)Size.X, (int)Size.Y),
                 new Color(255,255,255,120),
                 0f,
-                origin,
+                _origin,
                 1f,
                 SpriteEffects.None,
                 0f

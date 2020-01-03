@@ -16,65 +16,51 @@ namespace VelcroPhysicsPractice.Scripts
 {
     public class BodyCollisionHandler
     {
-        WorldHandler worldHandler;
+        // _bodyCollisionHandler Monogame drawing fields
+        private readonly Texture2D  _bodyCollisionHandlerSprite;
+        private readonly Vector2    _bodyCollisionHandlerOrigin;
+        private readonly SpriteFont _font;
 
-        // BodyCollisionHandler Monogame drawing fields
-        private readonly Texture2D BodyCollisionHandlerSprite;
+        // hold all collisions 
+        private readonly Vector2 _size;
 
-        // BodyCollisionHandler VelcroPhysics fields
-        private Vector2 BodyCollisionHandlerOrigin;
-        //private readonly float gravityScale = 1;
+        private Hitbox  _bodyHitbox;
+        private Hitbox  _feetHitbox;
+        private Vector2 _position;
 
-        // hold all collisions here
-        public List<CollisionPackage> currentCollisions;
-        public List<CollisionPackage> currentFloorCollisions;
+        public List<CollisionPackage> CurrentCollisions         { get; private set; }
+        public List<CollisionPackage> CurrentFloorCollisions    { get; private set; }
+        public Body    Body         { get; private set; }
+        public bool    IsFloored    { get; private set; }
 
-        // Game logic misc. fields
-        // Hitboxes fields
-        //private Dictionary<Fixture, int> currentCollisions;
-        //private int floorCollisionsCount = 0;
-        public Hitbox bodyHitbox;
-        public Hitbox feetHitbox;
-        public Vector2 size;
-        public Vector2 position;
-        //private Fixture feetCollider;
-        public Body body;
-
-        // Debug fields and strings
-        public bool isFloored;
-        private readonly SpriteFont font;
-
-        public BodyCollisionHandler(GameObject owner, WorldHandler rootWorldHandler, Vector2 setPosition, Vector2 setSize)
+        public BodyCollisionHandler(GameObject owner, Vector2 startPosition, Vector2 size)
         {
-            // BodyCollisionHandler fields
-            worldHandler = rootWorldHandler;
-            BodyCollisionHandlerSprite = worldHandler.ContentManager.Load<Texture2D>("white");
-            size = setSize;
-            BodyCollisionHandlerOrigin = new Vector2(size.X/2, size.Y/2);
-            font = worldHandler.ContentManager.Load<SpriteFont>("font");
-            //currentCollisions = new Dictionary<Fixture, int>();
-            currentCollisions = new List<CollisionPackage>();
-            currentFloorCollisions = new List<CollisionPackage>();
+            _bodyCollisionHandlerSprite = Game.Assets.Load<Texture2D>("white");
+            _size                       = size;
+            _bodyCollisionHandlerOrigin = new Vector2(_size.X/2, _size.Y/2);
+            _font = Game.Assets.Load<SpriteFont>("font");
+            CurrentCollisions = new List<CollisionPackage>();
+            CurrentFloorCollisions = new List<CollisionPackage>();
 
-            body = worldHandler.AddBody(
+            Body = Game.World.AddBody(
                 owner,
-                setPosition,
-                setSize
+                startPosition,
+                size
             );
 
-            bodyHitbox = AddHitbox(
-                body,
+            _bodyHitbox = AddHitbox(
+                Body,
                 Vector2.Zero,
-                setSize,
+                size,
                 "red",
                 CollisionType.invoker,
-                "Player body"
+                "Player _body"
             );
 
-            feetHitbox = AddHitbox(
-                body,
-                new Vector2(0, size.Y / 2),
-                new Vector2(size.X, 2),
+            _feetHitbox = AddHitbox(
+                Body,
+                new Vector2(0, _size.Y / 2),
+                new Vector2(_size.X, 2),
                 "red",
                 CollisionType.invoker,
                 "Player feet"
@@ -83,8 +69,8 @@ namespace VelcroPhysicsPractice.Scripts
 
         public Hitbox AddHitbox(Body owner, Vector2 offset, Vector2 size, string color, CollisionType type, string value)
         {
-            return worldHandler.AddHitbox(
-                body,
+            return Game.World.AddHitbox(
+                Body,
                 offset,
                 size,
                 color,
@@ -95,38 +81,38 @@ namespace VelcroPhysicsPractice.Scripts
 
         public void ClearCollisions()
         {
-            currentCollisions.Clear();
-            currentFloorCollisions.Clear();
+            CurrentCollisions.Clear();
+            CurrentFloorCollisions.Clear();
         }
 
         public void CheckWorldCollisions()
         {
             ClearCollisions();
-            worldHandler.CheckHitboxCollision(bodyHitbox, currentCollisions);
-            worldHandler.CheckHitboxCollision(feetHitbox, currentFloorCollisions);
+            Game.World.CheckHitboxCollision(_bodyHitbox, CurrentCollisions);
+            Game.World.CheckHitboxCollision(_feetHitbox, CurrentFloorCollisions);
             CheckFloored();
         }
 
         public void CheckFloored()
         {
-            if (currentFloorCollisions.Count > 0)
+            if (CurrentFloorCollisions.Count > 0)
             {
-                foreach (CollisionPackage collision in currentFloorCollisions)
+                foreach (CollisionPackage collision in CurrentFloorCollisions)
                 {
                     if(collision.type == CollisionType.wall)
                     {
-                        isFloored = true;
+                        IsFloored = true;
                     }
                 }
             } else
             {
-                isFloored = false;
+                IsFloored = false;
             }
         }
 
-        public Vector2 getDisplayPosition()
+        public Vector2 GetDisplayPosition()
         {
-            return ConvertUnits.ToDisplayUnits(body.Position);
+            return ConvertUnits.ToDisplayUnits(Body.Position);
         }
 
         public void DebugDraw(SpriteBatch spriteBatch)
