@@ -22,8 +22,7 @@ namespace VelcroPhysicsPractice.Scripts
         public int       StartIndex  { get; set; }
         public int       LoopIndex   { get; set; }
 
-        public Animation( WorldHandler rootWorldHandler, 
-                          AnimationHandler rootAnimationHandler, 
+        public Animation( AnimationHandler rootAnimationHandler, 
                           string spriteSheetDirectory, 
                           Rectangle setDrawRect, 
                           int setFrameCount, 
@@ -32,7 +31,7 @@ namespace VelcroPhysicsPractice.Scripts
                           int startIndex = 0,
                           int loopIndex  = 0)
         {
-            worldHandler = rootWorldHandler;
+            worldHandler = Game.World;
             owner = rootAnimationHandler;
             spriteBatch  = owner.SpriteBatch;
             SpriteSheet  = owner.ContentManager.Load<Texture2D>(spriteSheetDirectory);
@@ -41,7 +40,7 @@ namespace VelcroPhysicsPractice.Scripts
             drawWidth = setDrawRect.Width;
             drawHeight = setDrawRect.Height;
             Offset = setOffset;
-            font = rootWorldHandler.ContentManager.Load<SpriteFont>("font");
+            font =  Game.Assets.Load<SpriteFont>("font");
             FrameCount = setFrameCount;
             StartIndex = startIndex;
             LoopIndex  = loopIndex;

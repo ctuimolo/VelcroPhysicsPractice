@@ -47,7 +47,7 @@ namespace VelcroPhysicsPractice.Scripts
 
         public void AddAnimation(int key, string spriteSheetDirectory, int frameWidth, int frameHeight, Vector2 offset, int frameCount, int setFrameDelay, int startIndex = 0, int loopIndex = 0)
         {
-            AnimationDic.Add(key, new Animation(worldHandler, 
+            AnimationDic.Add(key, new Animation( 
                 this, 
                 spriteSheetDirectory,
                 new Rectangle(0,0,frameWidth,frameHeight),
