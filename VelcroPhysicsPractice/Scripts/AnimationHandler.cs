@@ -33,29 +33,9 @@ namespace VelcroPhysicsPractice.Scripts
             _font           = Game.Assets.Load<SpriteFont>("font");
         }
 
-        public void AddAnimation( int key, 
-                                  string spriteSheetDirectory,
-                                  int frameWidth,
-                                  int frameHeight,
-                                  Vector2 offset,
-                                  int frameCount,
-                                  int setFrameDelay,
-                                  int startIndex = 0,
-                                  int loopIndex = 0 )
+        public void AddAnimation(int key, Animation animation)
         {
-            _animationDic.Add(
-                key, 
-                new Animation( 
-                    this, 
-                    spriteSheetDirectory,
-                    new Rectangle(0,0,frameWidth,frameHeight),
-                    frameCount,
-                    setFrameDelay, 
-                    offset,
-                    startIndex,
-                    loopIndex
-                )
-            );
+            _animationDic.Add(key, animation);
         }
 
         public void ChangeAnimation(int state)
@@ -90,13 +70,26 @@ namespace VelcroPhysicsPractice.Scripts
                 0f
             );
 
-            _animationTimer++;
-            if(_animationTimer >= _currentAnimation.FrameDelay)
+            if (_currentAnimation.Play)
             {
-                _animationTimer = 0;
-                _drawIndex++;
-                if (_drawIndex >= _currentAnimation.FrameCount)
-                    _drawIndex = _currentAnimation.LoopIndex;
+                _animationTimer++;
+                if(_animationTimer >= _currentAnimation.FrameDelay)
+                {
+                    _animationTimer = 0;
+                    _drawIndex++;
+                    if (_drawIndex >= _currentAnimation.FrameCount)
+                    {
+                        if (_currentAnimation.Loop)
+                        {
+                            _drawIndex = _currentAnimation.LoopIndex;
+                        }
+                        else
+                        {
+                            _drawIndex--;
+                            _currentAnimation.Play = false;
+                        }
+                    }
+                }
             }
 
 

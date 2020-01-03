@@ -56,40 +56,53 @@ namespace VelcroPhysicsPractice.Scripts
             Hitbox.enact hitboxCollision = footCollision;
 
             AnimationHandler.AddAnimation(
-                (int)AnimationStates.Idle, 
-                "suika_idle_padded",
-                152, 152,
-                new Vector2 (76,152 - _size.Y / 2 - 1), 
-                18, 
-                6
+                (int)AnimationStates.Idle,
+                new Animation
+                {
+                    SpriteSheet = Game.Assets.Load<Texture2D>("suika_idle_padded"),
+                    DrawRect    = new Rectangle(0,0,152,152),
+                    Offset      = new Vector2(76, 152 - _size.Y / 2 - 1),
+                    FrameCount  = 18,
+                    FrameDelay  = 6,
+                }
             );
 
             AnimationHandler.AddAnimation(
                 (int)AnimationStates.Walking,
-                "suika_walk",
-                96, 96,
-                new Vector2(48, 96 - _size.Y / 2 - 1),
-                8,
-                4
+                new Animation
+                {
+                    SpriteSheet = Game.Assets.Load<Texture2D>("suika_walk"),
+                    DrawRect    = new Rectangle(0, 0, 96, 96),
+                    Offset      = new Vector2(48, 96 - _size.Y / 2 - 1),
+                    FrameCount  = 8,
+                    FrameDelay  = 4
+                }
             );
 
             AnimationHandler.AddAnimation(
                 (int)AnimationStates.Falling,
-                "suika_fall",
-                126, 102,
-                new Vector2(63, 102 - _size.Y / 2 - 1),
-                3,
-                6,
-                0, 1
+                new Animation
+                {
+                    SpriteSheet = Game.Assets.Load<Texture2D>("suika_fall"),
+                    DrawRect    = new Rectangle(0, 0, 126, 102),
+                    Offset      = new Vector2(63, 102 - _size.Y / 2 - 1),
+                    FrameCount  = 3,
+                    FrameDelay  = 6,
+                    LoopIndex   = 1
+                }
             );
 
             AnimationHandler.AddAnimation(
-                (int)AnimationStates.Rising,
-                "suika_rise",
-                110, 110,
-                new Vector2(110, 55 - _size.Y / 2 - 1),
-                2,
-                4
+               (int)AnimationStates.Rising,
+                new Animation
+                {
+                    SpriteSheet = Game.Assets.Load<Texture2D>("suika_rise"),
+                    DrawRect    = new Rectangle(0, 0, 110, 110),
+                    Offset      = new Vector2(55, 110 - _size.Y / 2 - 1),
+                    FrameCount  = 2,
+                    FrameDelay  = 4,
+                    Loop        = false
+                }
             );
 
             AnimationHandler.ChangeAnimation((int)AnimationStates.Idle);

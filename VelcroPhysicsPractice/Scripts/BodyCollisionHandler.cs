@@ -26,7 +26,6 @@ namespace VelcroPhysicsPractice.Scripts
 
         private Hitbox  _bodyHitbox;
         private Hitbox  _feetHitbox;
-        private Vector2 _position;
 
         public List<CollisionPackage> CurrentCollisions         { get; private set; }
         public List<CollisionPackage> CurrentFloorCollisions    { get; private set; }

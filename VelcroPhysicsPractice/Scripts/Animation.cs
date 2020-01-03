@@ -3,56 +3,36 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace VelcroPhysicsPractice.Scripts
 {
-    class Animation
+    public class Animation
     {
-        private readonly AnimationHandler   _owner;
         private readonly SpriteFont         _font;
-        private readonly int                _drawWidth;
-        private readonly int                _drawHeight;
 
-        private Rectangle _drawRect;
-
-        public Texture2D SpriteSheet { get; private set; }
+        public Texture2D SpriteSheet { get; set; }
+        public Rectangle DrawRect;
         public Vector2   Offset      { get; set; }
         public int       FrameCount  { get; set; }
         public int       FrameDelay  { get; set; }
         public int       StartIndex  { get; set; }
         public int       LoopIndex   { get; set; }
+        public bool      Loop        { get; set; } = true;
+        public bool      Play        { get; set; } = true;
 
-        public Animation( AnimationHandler  owner, 
-                          string    spriteSheetDirectory, 
-                          Rectangle drawRect, 
-                          int       setFrameCount, 
-                          int       setframeDelay, 
-                          Vector2   setOffset,
-                          int       startIndex = 0,
-                          int       loopIndex  = 0 )
+        public Animation()
         {
-            _owner        = owner;
-            SpriteSheet  = Game.Assets.Load<Texture2D>(spriteSheetDirectory);
-            _drawRect     = new Rectangle(drawRect.X, drawRect.Y, drawRect.Width, drawRect.Height);
-            _drawWidth    = drawRect.Width;
-            _drawHeight   = drawRect.Height;
-            _font         = Game.Assets.Load<SpriteFont>("font");
-
-            FrameDelay  = setframeDelay;
-            Offset      = setOffset;
-            FrameCount  = setFrameCount;
-            StartIndex  = startIndex;
-            LoopIndex   = loopIndex;
+            _font       = Game.Assets.Load<SpriteFont>("font");
         }
 
         public Rectangle GetDrawRect(int drawIndex)
         {
-            _drawRect.X = (_drawWidth * drawIndex) % SpriteSheet.Width;
-            _drawRect.Y = _drawHeight * ((_drawWidth * drawIndex) / SpriteSheet.Width);
-            return _drawRect;
+            DrawRect.X = (DrawRect.Width * drawIndex) % SpriteSheet.Width;
+            DrawRect.Y = DrawRect.Height * ((DrawRect.Width * drawIndex) / SpriteSheet.Width);
+            return DrawRect;
         }
 
         public void DrawDebug()
         {
-            Game.SpriteBatch.DrawString(_font, "_drawRect.X : " + _drawRect.X, new Vector2(10, 76), Color.Pink);
-            Game.SpriteBatch.DrawString(_font, "_drawRect.Y : " + _drawRect.Y, new Vector2(10, 88), Color.Pink);
+            Game.SpriteBatch.DrawString(_font, "DrawRect.X : " + DrawRect.X, new Vector2(10, 76), Color.Pink);
+            Game.SpriteBatch.DrawString(_font, "DrawRect.Y : " + DrawRect.Y, new Vector2(10, 88), Color.Pink);
         }
     }
 }
