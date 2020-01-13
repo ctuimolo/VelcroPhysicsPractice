@@ -67,9 +67,8 @@
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\..\Humper-master\Sources\Humper\Humper.csproj">
+    <ProjectReference Include="..\Humper\Humper.csproj">
       <Project>{1dd7d455-8710-44a5-b275-8606eb78d80e}</Project>
       <Name>Humper</Name>
     </ProjectReference>
