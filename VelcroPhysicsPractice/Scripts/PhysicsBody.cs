@@ -24,7 +24,7 @@ namespace VelcroPhysicsPractice.Scripts
         public PhysicsBody(GameObject owner, IBox body)
         {
             _bodySprite = Game.Assets.Load<Texture2D>("white");
-            _font       = Game.Assets.Load<SpriteFont>("font");
+            _font       = Game.Assets.Load<SpriteFont>("font"); 
 
             Owner       = owner;
             BoxCollider = body;

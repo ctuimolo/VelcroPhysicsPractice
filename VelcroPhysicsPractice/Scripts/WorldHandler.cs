@@ -19,7 +19,6 @@ namespace VelcroPhysicsPractice.Scripts
     {
         private readonly World              _world;
         private readonly List<PhysicsBody>  _dynamicBodies;
-        private ICollisionResponse          _simulatorBox;
 
         public float Gravity        { get; set; } = 0.6f;
         public float MaxFallSpeed   { get; set; } = 12f;
@@ -44,10 +43,7 @@ namespace VelcroPhysicsPractice.Scripts
         {
             foreach (PhysicsBody body in _dynamicBodies)
             {
-                //body.ClearCollisions();
-                body.IsFloored = false;
-                body.CurrentCollisions.Clear();
-
+                body.ClearCollisions();
                 if (body.GravityEnabled && body.Velocity.Y < MaxFallSpeed)
                 {
                     if(body.Velocity.Y + Gravity <= MaxFallSpeed)
@@ -58,8 +54,7 @@ namespace VelcroPhysicsPractice.Scripts
                         body.Velocity.Y = MaxFallSpeed;
                     }
                 }
-
-                body.BoxCollider.Simulate(
+                body.BoxCollider.Move(
                     body.BoxCollider.X + body.Velocity.X,
                     body.BoxCollider.Y + body.Velocity.Y, 
                     (collision) =>
@@ -68,33 +63,16 @@ namespace VelcroPhysicsPractice.Scripts
                         {
                             if (collision.Other.Data != null)
                                 body.CurrentCollisions.Add(collision);
-                            return CollisionResponse.Create(collision, CollisionResponses.Cross);
-                        } 
-                        if (collision.Other.HasTag(PhysicsType.Wall))
-                        {
-                            if (body.Velocity.Y > 0 && collision.Hit.Normal.Y < 0)
-                            {
-                                body.IsFloored = true;
-                            }
-                            return CollisionResponse.Create(collision, CollisionResponses.Slide);
-                        }
-                        return CollisionResponse.Create(collision, CollisionResponses.None);
-                    });
-
-                body.BoxCollider.Move(
-                    body.BoxCollider.X + body.Velocity.X,
-                    body.BoxCollider.Y + body.Velocity.Y,
-                    (collision) =>
-                    {
-                        if (collision.Other.HasTag(PhysicsType.Hitbox))
-                        {
-                            return CollisionResponses.None;
+                            return CollisionResponses.Cross;
                         }
                         if (collision.Other.HasTag(PhysicsType.Wall))
                         {
+                            if (collision.Other.Data != null)
+                                body.CurrentCollisions.Add(collision);
                             if (body.Velocity.Y > 0 && collision.Hit.Normal.Y < 0)
                             {
                                 body.Velocity.Y = 0;
+                                body.IsFloored = true;
                             }
                             else if (body.Velocity.Y < 0 && collision.Hit.Normal.Y > 0)
                             {
