@@ -1,131 +1,118 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework;
+﻿using System;
 
-using VelcroPhysics.Dynamics;
-using VelcroPhysics.Factories;
-using VelcroPhysics.Utilities;
+using Microsoft.Xna.Framework;
 
 using System.Collections.Generic;
 
+using Humper;
+using Humper.Responses;
+
 namespace VelcroPhysicsPractice.Scripts
 {
+    public enum PhysicsType
+    {
+        Wall,
+        Hitbox
+    }
 
     public class WorldHandler
     {
-        private readonly World          _world;             // Physics bodies only, no collision flags
-        private readonly List<Hitbox>   _worldHitboxes;     // Non-physics hitboxes, collision flags
+        private readonly World              _world;
+        private readonly List<PhysicsBody>  _dynamicBodies;
+        private ICollisionResponse          _simulatorBox;
 
-        public List<Hitbox> WorldHitboxes   { get; private set; }
+        public float Gravity        { get; set; } = 0.6f;
+        public float MaxFallSpeed   { get; set; } = 12f;
 
-        public WorldHandler(Vector2 gravity)
+        public WorldHandler()
         {
-            _world          = new World(gravity);
-            _worldHitboxes  = new List<Hitbox>();
+            _world          = new World(Game.Graphics.PreferredBackBufferWidth, Game.Graphics.PreferredBackBufferHeight);
+            _dynamicBodies  = new List<PhysicsBody>();
         }
 
-        public Body AddBody(GameObject owner, Vector2 position, Vector2 size, float gravityScale = 1)
+        public PhysicsBody AddBody(GameObject owner, Vector2 position, Vector2 size, bool isDynamic = true)
         {
-            Body body = BodyFactory.CreateRectangle
-            (
-                _world,
-                ConvertUnits.ToSimUnits(size.X),
-                ConvertUnits.ToSimUnits(size.Y),
-                1f,
-                ConvertUnits.ToSimUnits(position + new Vector2(size.X / 2, size.Y /2)),
-                0,
-                BodyType.Dynamic,
-                owner
-            );
-
-            //body.FixtureList[0].UserData = new Rectangle(0, 0, (int)size.X, (int)size.Y);
-            body.FixedRotation = true;
-            body.GravityScale = gravityScale;
-            body.Friction = 0;
-
-            return body;
-        }
-
-        public Body AddKinematicBody(GameObject Owner, Vector2 position, Vector2 size)
-        {
-            Body body = BodyFactory.CreateRectangle
-            (
-                _world,
-                ConvertUnits.ToSimUnits(size.X),
-                ConvertUnits.ToSimUnits(size.Y),
-                1f,
-                ConvertUnits.ToSimUnits(position + new Vector2(size.X / 2, size.Y / 2)),
-                0,
-                BodyType.Kinematic,
-                Owner
-            );
-
-            //body.FixtureList[0].UserData = new Rectangle(0, 0, (int)size.X, (int)size.Y);
-            body.FixedRotation = true;
-            body.Friction = 0;
-            return body;
-        }
-
-        public Hitbox AddHitbox(Body Owner, Vector2 offset, Vector2 size, string color, CollisionType type, string value)
-        {
-            Hitbox hitbox = new Hitbox
-            (
-                Owner,
-                offset,
-                size,
-                color,
-                type,
-                value
-            );
-            _worldHitboxes.Add(hitbox);
-            return hitbox;
-        }
-
-        private bool AABBoverlapping(Hitbox self, Hitbox other)
-        {
-            // if self.left >= other.right && self.right <= other.left
-            if ((self.Position.X - self.Size.X / 2) <= (other.Position.X + other.Size.X / 2) &&
-               (self.Position.X + self.Size.X / 2) >= (other.Position.X - other.Size.X / 2) &&
-               (self.Position.Y - self.Size.Y / 2) <= (other.Position.Y + other.Size.Y / 2) &&
-               (self.Position.Y + self.Size.Y / 2) >= (other.Position.Y - other.Size.Y / 2))
+            PhysicsBody newBody = new PhysicsBody(owner, _world.Create(position.X, position.Y, size.X, size.Y));
+            if (isDynamic)
             {
-                return true;
+                _dynamicBodies.Add(newBody);
             }
-
-            return false;
+            return newBody;
         }
 
-        public void CheckHitboxCollision(Hitbox self, List<CollisionPackage> collisions)
+        public void PhysicsStep()
         {
-            foreach (Hitbox other in _worldHitboxes)
+            foreach (PhysicsBody body in _dynamicBodies)
             {
-                if (!ReferenceEquals(self.Owner, other.Owner))
+                //body.ClearCollisions();
+                body.IsFloored = false;
+                body.CurrentCollisions.Clear();
+
+                if (body.GravityEnabled && body.Velocity.Y < MaxFallSpeed)
                 {
-                    if (other.Enabled == true)
+                    if(body.Velocity.Y + Gravity <= MaxFallSpeed)
                     {
-                        if (AABBoverlapping(self, other))
-                        {
-                            collisions.Add(other.CollisionPackage);
-                        }
+                        body.Velocity.Y += Gravity;
+                    } else
+                    {
+                        body.Velocity.Y = MaxFallSpeed;
                     }
                 }
-            }
-        }
 
-        public void PhysicsStep(GameTime gameTime)
-        {
-            _world.Step((float)gameTime.ElapsedGameTime.TotalMilliseconds * 0.001f);
-            foreach (Hitbox hitbox in _worldHitboxes)
-            {
-                hitbox.Update();
-            }
-        }
+                body.BoxCollider.Simulate(
+                    body.BoxCollider.X + body.Velocity.X,
+                    body.BoxCollider.Y + body.Velocity.Y, 
+                    (collision) =>
+                    {
+                        if (collision.Other.HasTag(PhysicsType.Hitbox))
+                        {
+                            if (collision.Other.Data != null)
+                                body.CurrentCollisions.Add(collision);
+                            return CollisionResponse.Create(collision, CollisionResponses.Cross);
+                        } 
+                        if (collision.Other.HasTag(PhysicsType.Wall))
+                        {
+                            if (body.Velocity.Y > 0 && collision.Hit.Normal.Y < 0)
+                            {
+                                body.IsFloored = true;
+                            }
+                            return CollisionResponse.Create(collision, CollisionResponses.Slide);
+                        }
+                        return CollisionResponse.Create(collision, CollisionResponses.None);
+                    });
 
-        public void DrawDebug()
-        {
-            foreach (Hitbox hitbox in _worldHitboxes)
-            {
-                hitbox.DrawDebug();
+                body.BoxCollider.Move(
+                    body.BoxCollider.X + body.Velocity.X,
+                    body.BoxCollider.Y + body.Velocity.Y,
+                    (collision) =>
+                    {
+                        if (collision.Other.HasTag(PhysicsType.Hitbox))
+                        {
+                            return CollisionResponses.None;
+                        }
+                        if (collision.Other.HasTag(PhysicsType.Wall))
+                        {
+                            if (body.Velocity.Y > 0 && collision.Hit.Normal.Y < 0)
+                            {
+                                body.Velocity.Y = 0;
+                            }
+                            else if (body.Velocity.Y < 0 && collision.Hit.Normal.Y > 0)
+                            {
+                                body.Velocity.Y = 0;
+                            }
+                            if (body.Velocity.X > 0 && collision.Hit.Normal.X < 0)
+                            {
+                                body.Velocity.X = 0;
+                            }
+                            else if (body.Velocity.X < 0 && collision.Hit.Normal.X > 0)
+                            {
+                                body.Velocity.X = 0;
+                            }
+                            return CollisionResponses.Slide;
+                        }
+
+                        return CollisionResponses.None;
+                    });
             }
         }
     }

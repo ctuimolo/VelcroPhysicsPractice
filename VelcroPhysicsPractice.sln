@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VelcroPhysicsPractice", "Ve
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VelcroPhysics.MonoGame", "VelcroPhysics\VelcroPhysics\VelcroPhysics.MonoGame.csproj", "{2F382393-E6EE-4066-853A-8B45C19813A4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aether.Physics2D.WINDOWS.MG", "..\Aether.Physics2D-master\Physics2D\Aether.Physics2D.WINDOWS.MG.csproj", "{58A4F378-3FC5-4616-BC62-5FF5DF676627}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Humper", "..\Humper-master\Sources\Humper\Humper.csproj", "{1DD7D455-8710-44A5-B275-8606EB78D80E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,6 +34,22 @@ Global
 		{2F382393-E6EE-4066-853A-8B45C19813A4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2F382393-E6EE-4066-853A-8B45C19813A4}.Release|x86.ActiveCfg = Release|Any CPU
 		{2F382393-E6EE-4066-853A-8B45C19813A4}.Release|x86.Build.0 = Release|Any CPU
+		{58A4F378-3FC5-4616-BC62-5FF5DF676627}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58A4F378-3FC5-4616-BC62-5FF5DF676627}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58A4F378-3FC5-4616-BC62-5FF5DF676627}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{58A4F378-3FC5-4616-BC62-5FF5DF676627}.Debug|x86.Build.0 = Debug|Any CPU
+		{58A4F378-3FC5-4616-BC62-5FF5DF676627}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58A4F378-3FC5-4616-BC62-5FF5DF676627}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58A4F378-3FC5-4616-BC62-5FF5DF676627}.Release|x86.ActiveCfg = Release|Any CPU
+		{58A4F378-3FC5-4616-BC62-5FF5DF676627}.Release|x86.Build.0 = Release|Any CPU
+		{1DD7D455-8710-44A5-B275-8606EB78D80E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DD7D455-8710-44A5-B275-8606EB78D80E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DD7D455-8710-44A5-B275-8606EB78D80E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1DD7D455-8710-44A5-B275-8606EB78D80E}.Debug|x86.Build.0 = Debug|Any CPU
+		{1DD7D455-8710-44A5-B275-8606EB78D80E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DD7D455-8710-44A5-B275-8606EB78D80E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DD7D455-8710-44A5-B275-8606EB78D80E}.Release|x86.ActiveCfg = Release|Any CPU
+		{1DD7D455-8710-44A5-B275-8606EB78D80E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -5,8 +5,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
-using VelcroPhysics.Dynamics;
-using VelcroPhysics.Utilities;
 
 using VelcroPhysicsPractice.Scripts;
 
@@ -44,15 +42,15 @@ namespace VelcroPhysicsPractice
             TargetElapsedTime = TimeSpan.FromTicks(TimeSpan.TicksPerSecond / _targetFPS);
             Content.RootDirectory   = "Content";
             Assets = Content;
+
         }
 
         protected override void LoadContent()
         {
             // Init spritebatch and physics engine
             SpriteBatch = new SpriteBatch(Graphics.GraphicsDevice);
-            World = new WorldHandler(new Vector2(0, 100f));
+            World = new WorldHandler();
 
-            ConvertUnits.SetDisplayUnitToSimUnitRatio(20f);
             _view = Matrix.Identity;
             _font = Content.Load<SpriteFont>("font");
 
@@ -76,14 +74,17 @@ namespace VelcroPhysicsPractice
                 new Wall(new Rectangle(474,388,40,32)),
 
                 new Player(new Vector2(350,230)),
-             };
 
-            World.AddHitbox(null, new Vector2(360, 350), new Vector2( 50,  50), "purple", CollisionType.invoker, "purple");
-            World.AddHitbox(null, new Vector2(380, 340), new Vector2( 40,  80), "orange", CollisionType.invoker, "orange");
-            World.AddHitbox(null, new Vector2(440, 290), new Vector2( 80,  40), "purple", CollisionType.invoker, "purple");
-            World.AddHitbox(null, new Vector2(300, 300), new Vector2( 40,  20), "orange", CollisionType.invoker, "orange");
-            World.AddHitbox(null, new Vector2(550, 290), new Vector2( 20, 120), "purple", CollisionType.invoker, "purple");
-            World.AddHitbox(null, new Vector2( 60, 290), new Vector2( 40,  40), "orange", CollisionType.invoker, "orange");
+                new Hitbox(null, new Vector2(370,320), new Vector2( 50, 50), "purple", "test"),
+                new Hitbox(null, new Vector2(420,310), new Vector2( 30, 60), "orange", "test"),
+                new Hitbox(null, new Vector2(550,290), new Vector2( 20,120), "purple", "test"),
+                new Hitbox(null, new Vector2( 60,290), new Vector2( 40, 40), "orange", "test"),
+                new Hitbox(null, new Vector2(440,290), new Vector2( 80, 40), "purple", "test"),
+                new Hitbox(null, new Vector2(300,250), new Vector2( 40, 20), "orange", "test"),
+                new Hitbox(null, new Vector2(280,340), new Vector2( 20, 50), "purple", "test"),
+                new Hitbox(null, new Vector2(300,340), new Vector2( 20, 50), "orange", "test"),
+                new Hitbox(null, new Vector2(320,340), new Vector2( 20, 50), "purple", "test"),
+             };
 
             // Initialize debug
             _font = Content.Load<SpriteFont>("font");
@@ -112,7 +113,7 @@ namespace VelcroPhysicsPractice
 
             // Physics world step, and then resolve collisions
             // Send to collisions, interacting objects
-            World.PhysicsStep(gameTime);
+            World.PhysicsStep();
 
             // update every game object
             foreach (GameObject obj in _renderedGameObjects)
@@ -127,7 +128,6 @@ namespace VelcroPhysicsPractice
             }
 
             HandleKeyboard();
-            base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime) // calls after Update()
@@ -151,16 +151,11 @@ namespace VelcroPhysicsPractice
 
             foreach (GameObject obj in _renderedGameObjects)
             {
-                obj.Draw(gameTime);
+                obj.Draw();
                 if(_drawDebug)
                 {
                     obj.DrawDebug();
                 }
-            }
-
-            if (_drawDebug)
-            {
-                World.DrawDebug();
             }
 
             SpriteBatch.End();

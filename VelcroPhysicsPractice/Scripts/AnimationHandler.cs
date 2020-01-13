@@ -60,7 +60,7 @@ namespace VelcroPhysicsPractice.Scripts
             _currentAnimation = _animationDic[_state];
             Game.SpriteBatch.Draw(
                 _currentAnimation.SpriteSheet,
-                _owner.CollisionHandler.GetDisplayPosition() - _currentAnimation.Offset,
+                new Vector2(_owner.Body.BoxCollider.X, _owner.Body.BoxCollider.Y) - _currentAnimation.Offset,
                 _currentAnimation.GetDrawRect(_drawIndex),
                 Color.White,
                 0,
@@ -86,12 +86,10 @@ namespace VelcroPhysicsPractice.Scripts
                         else
                         {
                             _drawIndex--;
-                            _currentAnimation.Play = false;
                         }
                     }
                 }
             }
-
 
             Game.SpriteBatch.DrawString(_font, "_drawIndex  : " + _drawIndex, new Vector2(10, 100), Color.Pink);
             _currentAnimation.DrawDebug();

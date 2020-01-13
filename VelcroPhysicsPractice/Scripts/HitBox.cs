@@ -1,101 +1,80 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Content;
-using VelcroPhysics.Dynamics;
 
-using VelcroPhysics.Utilities;
-using VelcroPhysics.Factories;
-
-using System;
-using System.Collections.Generic;
 
 namespace VelcroPhysicsPractice.Scripts
 {
-    public enum CollisionType
-    {
-        none,
-        wall,
-        invoker,
-    };
-
     public class CollisionPackage
     {
-        public CollisionType type = CollisionType.none;
-        public string Value = "";
+        public string Value;
     }
 
-    public class Hitbox
+    public class Hitbox : GameObject
     {
         // Monogame drawing fields
         private readonly Texture2D  _sprite;
-        private readonly Vector2    _origin;
 
-        public Body     Owner    { get; private set; }
-        public Vector2  Offset   { get; set; }
-        public Vector2  Size     { get; set; }
-        public Vector2  Position { get; set; }
+        public GameObject   Owner   { get; private set; } = null;
 
-        public CollisionPackage CollisionPackage    { get; set; }
-        public bool     Enabled { get; set; } = true;
-        public bool     Delete  { get; set; } = false;
+        public Vector2 Offset   { get; set; }
+        public Vector2 Position { get; set; }
 
         public delegate void enact();
 
-        public Hitbox(Body owner, Vector2 offset, Vector2 size, string color, CollisionType type, string value)
+        public Hitbox(GameObject owner, Vector2 offset, Vector2 size, string color, string value)
         {
-            _origin = new Vector2(size.X / 2, size.Y / 2);
+            _sprite = Game.Assets.Load<Texture2D>(color);
 
-            Size    = size;
-            Owner   = owner;
             Offset  = offset;
 
-            if (Owner != null)
+            if (owner != null )
             {
-                Position = ConvertUnits.ToDisplayUnits(Owner.Position) + Offset;
-            }
-            else
-            {
+                Owner = owner;
+                Position = new Vector2(owner.Body.BoxCollider.X + offset.X, owner.Body.BoxCollider.Y + offset.Y);
+            } else {
                 Position = Offset;
             }
 
-            _sprite = Game.Assets.Load<Texture2D>(color);
+            Body = Game.World.AddBody(this, Position, size, false);
+            Body.BoxCollider.AddTags(PhysicsType.Hitbox);
 
-            CollisionPackage = new CollisionPackage 
+            Body.BoxCollider.Data = new CollisionPackage()
             {
-                Value = value,
-                type = type
+                Value = color
             };
         }
 
-        public void LoadContent()
+        public override void Initialize()
         {
         }
 
-        public void Initialize()
+        public override void LoadContent()
+        {
+        } 
+
+        public override void Update()
         {
         }
 
-        public void Update()
+        public override void ResolveCollisions()
         {
-            if(Owner != null) { 
-                Position = ConvertUnits.ToDisplayUnits(Owner.Position) + Offset;
-            }
         }
 
-        public void Draw()
+        public override void Draw()
         {
-
         }
 
-        public void DrawDebug()
+        public override void DrawDebug()
         {
             Game.SpriteBatch.Draw(
                 _sprite,
-                Position,
-                new Rectangle(0, 0, (int)Size.X, (int)Size.Y),
-                new Color(255,255,255,120),
+                new Vector2(Body.BoxCollider.X, Body.BoxCollider.Y),
+                new Rectangle(0, 0, (int)Body.BoxCollider.Width, (int)Body.BoxCollider.Height),
+                new Color(Color.White, 0.25f),
                 0f,
-                _origin,
+                Vector2.Zero,
                 1f,
                 SpriteEffects.None,
                 0f

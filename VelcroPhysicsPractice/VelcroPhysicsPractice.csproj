@@ -49,6 +49,7 @@
     <Compile Include="Scripts\Hitbox.cs" />
     <Compile Include="Scripts\BodyCollisionHandler.cs" />
     <Compile Include="Scripts\HitboxAnimator.cs" />
+    <Compile Include="Scripts\PhysicsBody.cs" />
     <Compile Include="Scripts\Player.cs" />
     <Compile Include="Scripts\Wall.cs" />
     <Compile Include="Scripts\WorldHandler.cs" />
@@ -68,9 +69,9 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\VelcroPhysics\VelcroPhysics\VelcroPhysics.MonoGame.csproj">
-      <Project>{2f382393-e6ee-4066-853a-8b45c19813a4}</Project>
-      <Name>VelcroPhysics.MonoGame</Name>
+    <ProjectReference Include="..\..\Humper-master\Sources\Humper\Humper.csproj">
+      <Project>{1dd7d455-8710-44a5-b275-8606eb78d80e}</Project>
+      <Name>Humper</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

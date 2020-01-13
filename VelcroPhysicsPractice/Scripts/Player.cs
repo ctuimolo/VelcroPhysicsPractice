@@ -1,6 +1,10 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+
+using Humper;
 
 namespace VelcroPhysicsPractice.Scripts
 {
@@ -15,12 +19,10 @@ namespace VelcroPhysicsPractice.Scripts
     class Player : GameObject
     {
         // Player physics engine params
-        private readonly Vector2    _origin;
-        private readonly Vector2    _size      = new Vector2(14,56);
-        private readonly int        _walkSpeed = 6;
+        private readonly Vector2    _size = new Vector2(14,56);
+        private readonly float      _walkSpeed    = 3;
+        private readonly float      _jumpStrength = 8;
         private readonly SpriteFont _font;
-
-        private Vector2 _velocity;
 
         // Input handler eventually
         private KeyboardState _oldKeyState;
@@ -28,10 +30,8 @@ namespace VelcroPhysicsPractice.Scripts
         private bool _inputRight;
         private bool _inputJump;
         private bool _inputAction1;
-        private bool _inputAction2;
 
         // Debug fields and strings
-        private bool    _afterCollision = false;
         private bool    _isOverlappingOrange;
         private bool    _isOverlappingPink;
         private string  _afterCollisionString;
@@ -39,29 +39,25 @@ namespace VelcroPhysicsPractice.Scripts
         private string  _isFlooredString;
         private string  _isOverlappingOrangeString;
         private string  _isOverlappingPinkString;
+        private Texture2D _sprite;
 
         public Vector2 Position     { get; private set; }
-        public bool    IsFloored    { get; private set; }
 
         public Player(Vector2 setPosition)
         {
             _font       = Game.Assets.Load<SpriteFont>("font");
-            _origin     = new Vector2(_size.X / 2, _size.Y / 2);
-            _velocity   = new Vector2(0,0);
+            _sprite     = Game.Assets.Load<Texture2D>("red");
 
-            CollisionHandler    = new BodyCollisionHandler(this, setPosition, _size);
+            Body                = Game.World.AddBody(this, setPosition, _size);
+            Body.BoxCollider.AddTags(PhysicsType.Hitbox);
             AnimationHandler    = new AnimationHandler(this);
             Position            = setPosition;
 
-            Hitbox.enact hitboxCollision = footCollision;
-
             AnimationHandler.AddAnimation(
                 (int)AnimationStates.Idle,
-                new Animation
+                new Animation(new Rectangle(0, 0, 152, 152), _size)
                 {
                     SpriteSheet = Game.Assets.Load<Texture2D>("suika_idle_padded"),
-                    DrawRect    = new Rectangle(0,0,152,152),
-                    Offset      = new Vector2(76, 152 - _size.Y / 2 - 1),
                     FrameCount  = 18,
                     FrameDelay  = 6,
                 }
@@ -69,11 +65,9 @@ namespace VelcroPhysicsPractice.Scripts
 
             AnimationHandler.AddAnimation(
                 (int)AnimationStates.Walking,
-                new Animation
+                new Animation(new Rectangle(0, 0, 96, 96), _size)
                 {
                     SpriteSheet = Game.Assets.Load<Texture2D>("suika_walk"),
-                    DrawRect    = new Rectangle(0, 0, 96, 96),
-                    Offset      = new Vector2(48, 96 - _size.Y / 2 - 1),
                     FrameCount  = 8,
                     FrameDelay  = 4
                 }
@@ -81,11 +75,9 @@ namespace VelcroPhysicsPractice.Scripts
 
             AnimationHandler.AddAnimation(
                 (int)AnimationStates.Falling,
-                new Animation
+                new Animation(new Rectangle(0, 0, 126, 102), _size)
                 {
                     SpriteSheet = Game.Assets.Load<Texture2D>("suika_fall"),
-                    DrawRect    = new Rectangle(0, 0, 126, 102),
-                    Offset      = new Vector2(63, 102 - _size.Y / 2 - 1),
                     FrameCount  = 3,
                     FrameDelay  = 6,
                     LoopIndex   = 1
@@ -94,11 +86,10 @@ namespace VelcroPhysicsPractice.Scripts
 
             AnimationHandler.AddAnimation(
                (int)AnimationStates.Rising,
-                new Animation
+                new Animation(new Rectangle(0, 0, 110, 110), _size)
                 {
                     SpriteSheet = Game.Assets.Load<Texture2D>("suika_rise"),
-                    DrawRect    = new Rectangle(0, 0, 110, 110),
-                    Offset      = new Vector2(55, 110 - _size.Y / 2 - 1),
+                    Offset      = new Vector2(48, 53),
                     FrameCount  = 2,
                     FrameDelay  = 4,
                     Loop        = false
@@ -108,10 +99,6 @@ namespace VelcroPhysicsPractice.Scripts
             AnimationHandler.ChangeAnimation((int)AnimationStates.Idle);
             AnimationHandler.Facing = PlayerOrientation.Right;
         } 
-
-        public static void footCollision()
-        {
-        }
 
         public override void Initialize()
         {
@@ -126,15 +113,15 @@ namespace VelcroPhysicsPractice.Scripts
             KeyboardState state = Keyboard.GetState();
 
             _inputLeft       = state.IsKeyDown(Keys.A);
-            _inputRight       = state.IsKeyDown(Keys.D);
+            _inputRight      = state.IsKeyDown(Keys.D);
             _inputJump       = state.IsKeyDown(Keys.Space);
             _inputAction1    = state.IsKeyDown(Keys.J);
 
             if (_inputLeft && !_inputRight )
             {
-                _velocity.X = -_walkSpeed;
+                Body.Velocity.X = -_walkSpeed;
                 AnimationHandler.Facing = PlayerOrientation.Left;
-                if(CollisionHandler.IsFloored)
+                if(Body.IsFloored)
                 {
                     AnimationHandler.ChangeAnimation((int)AnimationStates.Walking);
                 }
@@ -142,9 +129,9 @@ namespace VelcroPhysicsPractice.Scripts
 
             if (_inputRight  && !_inputLeft)
             {
-                _velocity.X = _walkSpeed;
+                Body.Velocity.X = _walkSpeed;
                 AnimationHandler.Facing = PlayerOrientation.Right;
-                if (CollisionHandler.IsFloored)
+                if (Body.IsFloored)
                 {
                     AnimationHandler.ChangeAnimation((int)AnimationStates.Walking);
                 }
@@ -152,8 +139,8 @@ namespace VelcroPhysicsPractice.Scripts
 
             if (!_inputRight  && !_inputLeft)
             {
-                _velocity.X = 0f;
-                if (CollisionHandler.IsFloored)
+                Body.Velocity.X = 0;
+                if (Body.IsFloored)
                 {
                     AnimationHandler.ChangeAnimation((int)AnimationStates.Idle);
                 }
@@ -161,8 +148,8 @@ namespace VelcroPhysicsPractice.Scripts
 
             if (_inputRight  && _inputLeft)
             {
-                _velocity.X = 0f;
-                if (CollisionHandler.IsFloored)
+                Body.Velocity.X = 0;
+                if (Body.IsFloored)
                 {
                     AnimationHandler.ChangeAnimation((int)AnimationStates.Idle);
                 }
@@ -170,12 +157,12 @@ namespace VelcroPhysicsPractice.Scripts
 
             if (state.IsKeyDown(Keys.Space) && _oldKeyState.IsKeyUp(Keys.Space))
             {
-                _velocity.Y = -20f;
+                Body.Velocity.Y = -_jumpStrength;
             }
 
             if (_inputAction1)
             {
-                Game.World.AddHitbox(CollisionHandler.Body, new Vector2(10, 10), new Vector2(50, 50), "purple", CollisionType.invoker, "purple");
+                //Game.World.AddHitbox(CollisionHandler.Body, new Vector2(10, 10), new Vector2(50, 50), "purple", CollisionType.invoker, "purple");
             }
 
             _oldKeyState = state;
@@ -183,68 +170,107 @@ namespace VelcroPhysicsPractice.Scripts
 
         public override void ResolveCollisions()
         {
-            CollisionHandler.CheckWorldCollisions();
         }
 
         public override void Update()
         {
             // World collisions are set, do update here
-            IsFloored = CollisionHandler.IsFloored;
             _isOverlappingOrange = false;
             _isOverlappingPink   = false;
-            if(!CollisionHandler.IsFloored)
+            if (!Body.IsFloored)
             {
-                AnimationHandler.ChangeAnimation((int)AnimationStates.Falling);
-            }
-            _velocity = CollisionHandler.Body.LinearVelocity;
-
-            if (CollisionHandler.CurrentCollisions.Count > 0)
-            {
-                _afterCollision = true;
-                foreach (CollisionPackage collision in CollisionHandler.CurrentCollisions)
+                if (Body.Velocity.Y <= 0)
                 {
-                    if (collision.Value == "orange")
-                    {
-                        _isOverlappingOrange = true;
-                    }
-                    if (collision.Value == "purple")
-                    {
-                        _isOverlappingPink = true;
-                    }
+                    AnimationHandler.ChangeAnimation((int)AnimationStates.Rising);
                 }
-            } else
-            {
-                _afterCollision = false;
+                else
+                {
+                    AnimationHandler.ChangeAnimation((int)AnimationStates.Falling);
+                }
             }
+
+            if (Body.CurrentCollisions.Count > 0)
+            {
+                foreach (ICollision collision in Body.CurrentCollisions)
+                {
+                //    if (collision.Value == "orange")
+                //    {
+                //        _isOverlappingOrange = true;
+                //    }
+                //    if (collision.Value == "purple")
+                //    {
+                //        _isOverlappingPink = true;
+                //    }
+                }
+            } 
 
             // Take keyboard input
             HandleKeyboard();
-            CollisionHandler.Body.LinearVelocity = _velocity;
         }
 
-        public override void Draw(GameTime gameTime)
+        public override void Draw()
         {
             AnimationHandler.DrawFrame();
-            DrawDebug();
+
+            _PositionDebugString = "Position: \n" +
+                                  "X: " + (int)(Body.BoxCollider.X - _size.X / 2) + "\n" +
+                                  "Y: " + (int)(Body.BoxCollider.Y - _size.Y / 2) + "\n";
+
+            _isFlooredString = "Grounded:            " + (Body.IsFloored ? "true" : "false");
+            _isOverlappingOrangeString = "Hitbox Collisions:   " + (_isOverlappingOrange ? "true" : "false");
+            _isOverlappingPinkString = "Hitbox Collisions:   " + (_isOverlappingPink ? "true" : "false");
+            _afterCollisionString = "Collisions present:  " + (Body.CurrentCollisions.Count > 0 ? "true" : "false");
+
+            Game.SpriteBatch.DrawString(
+                _font,
+                "collision packages: " + Body.CurrentCollisions.Count,
+                new Vector2(10, 124),
+                Color.GreenYellow);
+
+            Game.SpriteBatch.DrawString(
+                _font,
+                _PositionDebugString,
+                new Vector2(Body.BoxCollider.X, Body.BoxCollider.Y) + new Vector2(-60, -88),
+                Color.CornflowerBlue);
+
+            Game.SpriteBatch.DrawString(
+                _font,
+                _isFlooredString,
+                new Vector2(Body.BoxCollider.X, Body.BoxCollider.Y) + new Vector2(-60, -102),
+                Color.Gray);
+
+            Game.SpriteBatch.DrawString(
+                _font,
+                _afterCollisionString,
+                new Vector2(Body.BoxCollider.X, Body.BoxCollider.Y) + new Vector2(-60, -116),
+                Color.Gray);
+
+            Game.SpriteBatch.DrawString(
+                _font,
+                "A " + _isOverlappingPinkString,
+                new Vector2(Body.BoxCollider.X, Body.BoxCollider.Y) + new Vector2(20, -64),
+                Color.Violet);
+
+            Game.SpriteBatch.DrawString(
+                _font,
+                "B " + _isOverlappingOrangeString,
+                new Vector2(Body.BoxCollider.X, Body.BoxCollider.Y) + new Vector2(20, -50),
+                Color.Orange);
         }
 
         public override void DrawDebug()
         {
-            _PositionDebugString = "Position: \n" +
-                                  "X: " + (int)(CollisionHandler.GetDisplayPosition().X - _size.X / 2) + "\n" +
-                                  "Y: " + (int)(CollisionHandler.GetDisplayPosition().Y - _size.Y / 2) + "\n";
-
-            _isFlooredString             = "Grounded:            " + (IsFloored           ? "true" : "false");
-            _isOverlappingOrangeString   = "Hitbox Collisions:   " + (_isOverlappingOrange ? "true" : "false");
-            _isOverlappingPinkString     = "Hitbox Collisions:   " + (_isOverlappingPink   ? "true" : "false");
-            _afterCollisionString        = "Collisions present:  " + (_afterCollision      ? "true" : "false");
-
-            Game.SpriteBatch.DrawString(_font, _PositionDebugString,   CollisionHandler.GetDisplayPosition() + new Vector2(-60, -88), Color.CornflowerBlue);
-            Game.SpriteBatch.DrawString(_font, _isFlooredString,       CollisionHandler.GetDisplayPosition() + new Vector2(-60, -102), Color.Gray);
-            Game.SpriteBatch.DrawString(_font, _afterCollisionString,  CollisionHandler.GetDisplayPosition() + new Vector2(-60, -116), Color.Gray);
-
-            Game.SpriteBatch.DrawString(_font, "A " + _isOverlappingPinkString,   CollisionHandler.GetDisplayPosition() + new Vector2(10, -54), Color.Violet);
-            Game.SpriteBatch.DrawString(_font, "B " + _isOverlappingOrangeString, CollisionHandler.GetDisplayPosition() + new Vector2(10, -40), Color.Orange);
+            Game.SpriteBatch.Draw(
+                _sprite,
+                new Vector2(Body.BoxCollider.X, Body.BoxCollider.Y),
+                new Rectangle(0, 0, (int)_size.X, (int)_size.Y),
+                new Color(Color.White, 0.25f),
+                0,
+                Vector2.Zero,
+                1f,
+                SpriteEffects.None,
+                0f
+            );
         }
     }
 }
