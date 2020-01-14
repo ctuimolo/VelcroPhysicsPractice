@@ -19,7 +19,7 @@ namespace VelcroPhysicsPractice.Scripts
     class Player : GameObject
     {
         // Player physics engine params
-        private readonly Vector2    _size = new Vector2(14,56);
+        private readonly Point      _size = new Point(14,56);
         private readonly float      _walkSpeed    = 3;
         private readonly float      _jumpStrength = 8;
         private readonly SpriteFont _font;
@@ -39,6 +39,7 @@ namespace VelcroPhysicsPractice.Scripts
         private string  _isFlooredString;
         private string  _isOverlappingOrangeString;
         private string  _isOverlappingPinkString;
+        private string  _listOfCollisions;
         private Texture2D _sprite;
 
         public Vector2 Position     { get; private set; }
@@ -49,7 +50,7 @@ namespace VelcroPhysicsPractice.Scripts
             _sprite     = Game.Assets.Load<Texture2D>("red");
 
             Body                = Game.World.AddBody(this, setPosition, _size);
-            Body.BoxCollider.AddTags(PhysicsType.Hitbox);
+            Body.AddChildHitbox(0, new Vector2(0,0), _size);
             AnimationHandler    = new AnimationHandler(this);
             Position            = setPosition;
 
@@ -60,8 +61,7 @@ namespace VelcroPhysicsPractice.Scripts
                     SpriteSheet = Game.Assets.Load<Texture2D>("suika_idle_padded"),
                     FrameCount  = 18,
                     FrameDelay  = 6,
-                }
-            );
+                });
 
             AnimationHandler.AddAnimation(
                 (int)AnimationStates.Walking,
@@ -70,8 +70,7 @@ namespace VelcroPhysicsPractice.Scripts
                     SpriteSheet = Game.Assets.Load<Texture2D>("suika_walk"),
                     FrameCount  = 8,
                     FrameDelay  = 4
-                }
-            );
+                });
 
             AnimationHandler.AddAnimation(
                 (int)AnimationStates.Falling,
@@ -81,8 +80,7 @@ namespace VelcroPhysicsPractice.Scripts
                     FrameCount  = 3,
                     FrameDelay  = 6,
                     LoopIndex   = 1
-                }
-            );
+                });
 
             AnimationHandler.AddAnimation(
                (int)AnimationStates.Rising,
@@ -93,20 +91,11 @@ namespace VelcroPhysicsPractice.Scripts
                     FrameCount  = 2,
                     FrameDelay  = 4,
                     Loop        = false
-                }
-            );
+                });
 
             AnimationHandler.ChangeAnimation((int)AnimationStates.Idle);
             AnimationHandler.Facing = PlayerOrientation.Right;
         } 
-
-        public override void Initialize()
-        {
-        }
-
-        public override void LoadContent()
-        {
-        }
 
         private void HandleKeyboard()
         {
@@ -189,20 +178,17 @@ namespace VelcroPhysicsPractice.Scripts
                 }
             }
 
-            if (Body.CurrentCollisions.Count > 0)
+            foreach (Hitbox collision in Body.CurrentCollisions)
             {
-                foreach (ICollision collision in Body.CurrentCollisions)
+                if (collision.Data.Value == "orange")
                 {
-                //    if (collision.Value == "orange")
-                //    {
-                //        _isOverlappingOrange = true;
-                //    }
-                //    if (collision.Value == "purple")
-                //    {
-                //        _isOverlappingPink = true;
-                //    }
+                    _isOverlappingOrange = true;
                 }
-            } 
+                if (collision.Data.Value == "purple")
+                {
+                    _isOverlappingPink = true;
+                }
+            }
 
             // Take keyboard input
             HandleKeyboard();
@@ -226,6 +212,21 @@ namespace VelcroPhysicsPractice.Scripts
                 "collision packages: " + Body.CurrentCollisions.Count,
                 new Vector2(10, 124),
                 Color.GreenYellow);
+            
+            _listOfCollisions = "";
+            foreach (Hitbox collision in Body.CurrentCollisions)
+            {
+                _listOfCollisions += "<" + collision.Position.X + "," + collision.Position.Y + " : " + collision.Data.String + ">\n";
+            }
+
+            if (Body.CurrentCollisions.Count > 0 )
+            {
+                Game.SpriteBatch.DrawString(
+                    _font,
+                    _listOfCollisions,
+                    new Vector2(10, 136),
+                    Color.GreenYellow);
+            }
 
             Game.SpriteBatch.DrawString(
                 _font,
@@ -260,17 +261,7 @@ namespace VelcroPhysicsPractice.Scripts
 
         public override void DrawDebug()
         {
-            Game.SpriteBatch.Draw(
-                _sprite,
-                new Vector2(Body.BoxCollider.X, Body.BoxCollider.Y),
-                new Rectangle(0, 0, (int)_size.X, (int)_size.Y),
-                new Color(Color.White, 0.25f),
-                0,
-                Vector2.Zero,
-                1f,
-                SpriteEffects.None,
-                0f
-            );
+            Body.DrawDebug();
         }
     }
 }

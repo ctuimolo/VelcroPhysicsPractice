@@ -8,11 +8,11 @@ namespace VelcroPhysicsPractice.Scripts
     {
         public PhysicsBody      Body               { get; protected set; }
         public AnimationHandler AnimationHandler   { get; protected set; }
-        public abstract void Initialize();
-        public abstract void LoadContent();
-        public abstract void Update();
-        public abstract void ResolveCollisions();
-        public abstract void Draw();
-        public abstract void DrawDebug();
+        public virtual void Initialize()        { }
+        public virtual void LoadContent()       { }
+        public virtual void Update()            { }
+        public virtual void ResolveCollisions() { }
+        public virtual void Draw()              { }
+        public virtual void DrawDebug()         { }
     }
 }

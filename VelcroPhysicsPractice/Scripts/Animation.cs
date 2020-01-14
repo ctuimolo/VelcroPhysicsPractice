@@ -17,7 +17,6 @@ namespace VelcroPhysicsPractice.Scripts
         public Rectangle DrawRect;
         
         public Vector2  Offset     { get; set; }
-        public Vector2  OwnerSize  { get; set; }
         public int      FrameCount { get; set; }
         public int      FrameDelay { get; set; }
         public int      StartIndex { get; set; }
@@ -27,7 +26,7 @@ namespace VelcroPhysicsPractice.Scripts
 
         public OffsetType OffsetType = OffsetType.CenterBottom;
 
-        public Animation(Rectangle drawRect, Vector2 ownerSize)
+        public Animation(Rectangle drawRect, Point ownerSize)
         {
             _font = Game.Assets.Load<SpriteFont>("font");
             DrawRect = drawRect;

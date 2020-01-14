@@ -77,18 +77,54 @@ namespace VelcroPhysicsPractice
                 new Wall(new Rectangle(600,388,40,32)),
                 new Wall(new Rectangle(642,388,40,32)),
 
-                new Player(new Vector2(350,230)),
-
-                new Hitbox(null, new Vector2(370,320), new Vector2( 50, 50), "purple", "test"),
-                new Hitbox(null, new Vector2(420,310), new Vector2( 30, 60), "orange", "test"),
-                new Hitbox(null, new Vector2(550,290), new Vector2( 20,120), "purple", "test"),
-                new Hitbox(null, new Vector2( 60,290), new Vector2( 40, 40), "orange", "test"),
-                new Hitbox(null, new Vector2(440,290), new Vector2( 80, 40), "purple", "test"),
-                new Hitbox(null, new Vector2(300,250), new Vector2( 40, 20), "orange", "test"),
-                new Hitbox(null, new Vector2(280,340), new Vector2( 20, 50), "purple", "test"),
-                new Hitbox(null, new Vector2(300,340), new Vector2( 20, 50), "orange", "test"),
-                new Hitbox(null, new Vector2(320,340), new Vector2( 20, 50), "purple", "test"),
+                new Player(new Vector2(250,230)),
              };
+
+            Hitbox tmpBox;
+
+            tmpBox = World.AddHitbox(null, new Vector2(420, 310), new Point(30, 60), "orange");
+            tmpBox.Data.Value = "orange";
+            tmpBox.Data.String = "spuds";
+
+            tmpBox = World.AddHitbox(null, new Vector2(550, 290), new Point(20, 120), "purple");
+            tmpBox.Data.Value = "purple";
+            tmpBox.Data.String = "cats";
+
+            tmpBox = World.AddHitbox(null, new Vector2(60, 290), new Point(40, 40), "orange");
+            tmpBox.Data.Value = "orange";
+            tmpBox.Data.String = "bruh";
+
+            tmpBox = World.AddHitbox(null, new Vector2(440, 290), new Point(80, 40), "purple");
+            tmpBox.Data.Value = "purple";
+            tmpBox.Data.String = "crunchy";
+
+            tmpBox = World.AddHitbox(null, new Vector2(300, 250), new Point(40, 20), "orange");
+            tmpBox.Data.Value = "orange";
+            tmpBox.Data.String = "trash";
+
+            tmpBox = World.AddHitbox(null, new Vector2(280, 340), new Point(20, 50), "purple");
+            tmpBox.Data.Value = "purple";
+            tmpBox.Data.String = "curly";
+
+            tmpBox = World.AddHitbox(null, new Vector2(300, 340), new Point(20, 50), "orange");
+            tmpBox.Data.Value = "orange";
+            tmpBox.Data.String = "d00d";
+
+            tmpBox = World.AddHitbox(null, new Vector2(320, 340), new Point(20, 50), "purple");
+            tmpBox.Data.Value = "purple";
+            tmpBox.Data.String = "very nice";
+
+            tmpBox = World.AddHitbox(null, new Vector2(580, 120), new Point(66, 12), "purple");
+            tmpBox.Data.Value = "purple";
+            tmpBox.Data.String = "cute funny";
+
+            tmpBox = World.AddHitbox(null, new Vector2(400, 620), new Point(40, 40), "orange");
+            tmpBox.Data.Value = "orange";
+            tmpBox.Data.String = "popcorn";
+
+            tmpBox = World.AddHitbox(null, new Vector2(21, 400), new Point(24, 50), "purple");
+            tmpBox.Data.Value = "purple";
+            tmpBox.Data.String = "bruh bruh bruh";
 
             // Initialize debug
             _font = Content.Load<SpriteFont>("font");
@@ -160,6 +196,11 @@ namespace VelcroPhysicsPractice
                 {
                     obj.DrawDebug();
                 }
+            }
+
+            if (_drawDebug)
+            {
+                World.DrawDebug();
             }
 
             SpriteBatch.End();

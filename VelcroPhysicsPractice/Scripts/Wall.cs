@@ -9,7 +9,7 @@ namespace VelcroPhysicsPractice.Scripts
 {
     public class Wall : GameObject
     {
-        private readonly Vector2    _size;
+        private readonly Point      _size;
         private readonly Vector2    _position;
         private readonly Texture2D  _sprite;
 
@@ -21,12 +21,11 @@ namespace VelcroPhysicsPractice.Scripts
         public Wall(Rectangle coordinates)
         {
             // Object fields
-            _size = new Vector2(coordinates.Width, coordinates.Height);
-            _sprite = Game.Assets.Load<Texture2D>("grey");
+            _size     = new Point(coordinates.Width, coordinates.Height);
+            _sprite   = Game.Assets.Load<Texture2D>("grey");
             _position = new Vector2(coordinates.X, coordinates.Y);
 
             Body = Game.World.AddBody(this, _position, _size, false);
-            Body.BoxCollider.AddTags(PhysicsType.Wall);
         }
 
         public override void LoadContent()

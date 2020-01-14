@@ -9,25 +9,29 @@ namespace VelcroPhysicsPractice.Scripts
     public class CollisionPackage
     {
         public string Value;
+        public string String;
     }
 
-    public class Hitbox : GameObject
+    public class Hitbox
     {
         // Monogame drawing fields
         private readonly Texture2D  _sprite;
 
         public GameObject   Owner   { get; private set; } = null;
 
-        public Vector2 Offset   { get; set; }
-        public Vector2 Position { get; set; }
+        public Vector2 Offset;
+        public Vector2 Position;
+        public Point   Size;
+        public CollisionPackage Data { get; set; }
 
         public delegate void enact();
 
-        public Hitbox(GameObject owner, Vector2 offset, Vector2 size, string color, string value)
+        public Hitbox(GameObject owner, Vector2 offset, Point size, string color)
         {
             _sprite = Game.Assets.Load<Texture2D>(color);
 
             Offset  = offset;
+            Size    = size;
 
             if (owner != null )
             {
@@ -37,41 +41,16 @@ namespace VelcroPhysicsPractice.Scripts
                 Position = Offset;
             }
 
-            Body = Game.World.AddBody(this, Position, size, false);
-
-            Body.BoxCollider.Data = new CollisionPackage()
-            {
-                Value = color
-            };
+            Data = new CollisionPackage();
         }
 
-        public override void Initialize()
-        {
-        }
-
-        public override void LoadContent()
-        {
-        } 
-
-        public override void Update()
-        {
-        }
-
-        public override void ResolveCollisions()
-        {
-        }
-
-        public override void Draw()
-        {
-        }
-
-        public override void DrawDebug()
+        public void DrawDebug()
         {
             Game.SpriteBatch.Draw(
                 _sprite,
-                new Vector2(Body.BoxCollider.X, Body.BoxCollider.Y),
-                new Rectangle(0, 0, (int)Body.BoxCollider.Width, (int)Body.BoxCollider.Height),
-                new Color(Color.White, 0.25f),
+                new Vector2(Position.X, Position.Y),
+                new Rectangle(0, 0, Size.X, Size.Y),
+                new Color(Color.White, 0.1f),
                 0f,
                 Vector2.Zero,
                 1f,
