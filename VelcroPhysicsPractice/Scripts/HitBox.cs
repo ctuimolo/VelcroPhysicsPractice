@@ -38,7 +38,6 @@ namespace VelcroPhysicsPractice.Scripts
             }
 
             Body = Game.World.AddBody(this, Position, size, false);
-            Body.BoxCollider.AddTags(PhysicsType.Hitbox);
 
             Body.BoxCollider.Data = new CollisionPackage()
             {

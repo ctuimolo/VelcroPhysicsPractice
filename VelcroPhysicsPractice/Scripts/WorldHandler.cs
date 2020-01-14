@@ -54,21 +54,21 @@ namespace VelcroPhysicsPractice.Scripts
                         body.Velocity.Y = MaxFallSpeed;
                     }
                 }
+                //body.BoxCollider.Simulate(
+                //   body.BoxCollider.X + body.Velocity.X,
+                //   body.BoxCollider.Y + body.Velocity.Y,
+                //   (collision) =>
+                //   {
+                //       return CollisionResponse.Create(collision, CollisionResponses.None);
+                //   });
+
                 body.BoxCollider.Move(
                     body.BoxCollider.X + body.Velocity.X,
                     body.BoxCollider.Y + body.Velocity.Y, 
                     (collision) =>
                     {
-                        if (collision.Other.HasTag(PhysicsType.Hitbox))
-                        {
-                            if (collision.Other.Data != null)
-                                body.CurrentCollisions.Add(collision);
-                            return CollisionResponses.Cross;
-                        }
                         if (collision.Other.HasTag(PhysicsType.Wall))
                         {
-                            if (collision.Other.Data != null)
-                                body.CurrentCollisions.Add(collision);
                             if (body.Velocity.Y > 0 && collision.Hit.Normal.Y < 0)
                             {
                                 body.Velocity.Y = 0;

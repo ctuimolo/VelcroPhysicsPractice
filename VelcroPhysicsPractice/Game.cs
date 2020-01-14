@@ -60,7 +60,7 @@ namespace VelcroPhysicsPractice
             _renderedGameObjects = new List<GameObject> 
             {
                 new Wall(new Rectangle(0,420,800,80)),
-                new Wall(new Rectangle(560,327,40,20)),
+                new Wall(new Rectangle(560,312,40,20)),
                 new Wall(new Rectangle(0,0,4,480)),
                 new Wall(new Rectangle(0,400,5,480)),
                 new Wall(new Rectangle(796,0,4,480)),
@@ -69,9 +69,13 @@ namespace VelcroPhysicsPractice
                 new Wall(new Rectangle(0,0,800,4)),
                 new Wall(new Rectangle(190,400,70,20)),
                 new Wall(new Rectangle(60,325,70,20)),
-                new Wall(new Rectangle(390,398,40,32)),
+                new Wall(new Rectangle(390,388,40,32)),
                 new Wall(new Rectangle(432,388,40,32)),
                 new Wall(new Rectangle(474,388,40,32)),
+                new Wall(new Rectangle(516,388,40,32)),
+                new Wall(new Rectangle(558,388,40,32)),
+                new Wall(new Rectangle(600,388,40,32)),
+                new Wall(new Rectangle(642,388,40,32)),
 
                 new Player(new Vector2(350,230)),
 
