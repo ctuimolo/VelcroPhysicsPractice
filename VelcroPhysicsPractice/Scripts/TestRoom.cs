@@ -175,6 +175,7 @@ namespace Rooms.TestRoom
             // Physics world step, and then resolve collisions
             // Send to collisions, interacting objects
             World.PhysicsStep();
+            HandleKeyboard();
 
             // update every game object
             foreach (GameObject obj in _renderedGameObjects)
@@ -187,8 +188,6 @@ namespace Rooms.TestRoom
             {
                 obj.Update();
             }
-
-            HandleKeyboard();
         }
 
         public override void Draw()

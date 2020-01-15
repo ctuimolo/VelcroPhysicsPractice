@@ -36,20 +36,18 @@ namespace VelcroPhysicsPractice
         {
             Graphics = new GraphicsDeviceManager(this)
             {
-                PreferredBackBufferWidth = 800,
-                PreferredBackBufferHeight = 480,
-                SynchronizeWithVerticalRetrace = true
+                PreferredBackBufferWidth        = 800,
+                PreferredBackBufferHeight       = 480,
+                SynchronizeWithVerticalRetrace  = true
             };
-            TargetElapsedTime = TimeSpan.FromTicks(TimeSpan.TicksPerSecond / _targetFPS);
+            TargetElapsedTime       = TimeSpan.FromTicks(TimeSpan.TicksPerSecond / _targetFPS);
             Content.RootDirectory   = "Content";
             Assets = Content;
         }
 
         protected override void LoadContent()
         {
-            // Init spritebatch and physics engine
             SpriteBatch = new SpriteBatch(Graphics.GraphicsDevice);
-            //World       = new WorldHandler(new Point(1000,1000));
             Rooms       = new RoomHandler();
 
             Rooms.Hash["test room"] = new TestRoom(new Point(1000,1000));
@@ -78,8 +76,8 @@ namespace VelcroPhysicsPractice
 
         protected override void Update(GameTime gameTime) // 60 updates per ~1000ms, non-buffering (slowdown enabled)
         {
-            CurrentRoom.Update();
             HandleKeyboard();
+            CurrentRoom.Update();
         }
 
         protected override void Draw(GameTime gameTime) // calls after Update()

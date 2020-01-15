@@ -158,6 +158,9 @@ namespace VelcroPhysicsPractice.Scripts
 
         public override void Update()
         {
+            // Take keyboard input
+            HandleKeyboard();
+
             // World collisions are set, do update here
             _isOverlappingOrange = false;
             _isOverlappingPink   = false;
@@ -185,9 +188,6 @@ namespace VelcroPhysicsPractice.Scripts
                     _isOverlappingPink = true;
                 }
             }
-
-            // Take keyboard input
-            HandleKeyboard();
         }
 
         public override void Draw()
