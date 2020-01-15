@@ -24,9 +24,9 @@ namespace VelcroPhysicsPractice.Scripts
         public float Gravity        { get; set; } = 0.6f;
         public float MaxFallSpeed   { get; set; } = 12f;
 
-        public WorldHandler()
+        public WorldHandler(Point worldSize)
         {
-            _world          = new World(Game.Graphics.PreferredBackBufferWidth, Game.Graphics.PreferredBackBufferHeight);
+            _world          = new World(worldSize.X, worldSize.Y);
             _dynamicBodies  = new List<PhysicsBody>();
             _worldHitboxes  = new List<Hitbox>();
         }
