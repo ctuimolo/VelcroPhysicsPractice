@@ -22,7 +22,6 @@ namespace VelcroPhysicsPractice.Scripts
         private readonly Point      _size = new Point(14,56);
         private readonly float      _walkSpeed    = 3;
         private readonly float      _jumpStrength = 8;
-        private readonly SpriteFont _font;
 
         // Input handler eventually
         private KeyboardState _oldKeyState;
@@ -43,8 +42,6 @@ namespace VelcroPhysicsPractice.Scripts
 
         public Player(WorldHandler setWorld, Vector2 setPosition)
         {
-            _font       = Game.Assets.Load<SpriteFont>("font");
-
             CurrentWorld            = setWorld;
             Body                    = setWorld.AddBody(this, setPosition, _size);
             Body.ChildHitboxes[0]   = new Hitbox(this, new Vector2(0,0), _size);
@@ -164,6 +161,7 @@ namespace VelcroPhysicsPractice.Scripts
             // World collisions are set, do update here
             _isOverlappingOrange = false;
             _isOverlappingPink   = false;
+
             if (!Body.IsFloored)
             {
                 if (Body.Velocity.Y <= 0)
@@ -206,7 +204,7 @@ namespace VelcroPhysicsPractice.Scripts
             _afterCollisionString = "Collisions present:  " + (Body.CurrentCollisions.Count > 0 ? "true" : "false");
 
             Game.SpriteBatch.DrawString(
-                _font,
+                Debug.Assets.DebugFont,
                 "collision packages: " + Body.CurrentCollisions.Count,
                 new Vector2(10, 124),
                 Color.GreenYellow);
@@ -220,38 +218,38 @@ namespace VelcroPhysicsPractice.Scripts
             if (Body.CurrentCollisions.Count > 0 )
             {
                 Game.SpriteBatch.DrawString(
-                    _font,
+                    Debug.Assets.DebugFont,
                     _listOfCollisions,
                     new Vector2(10, 136),
                     Color.GreenYellow);
             }
 
             Game.SpriteBatch.DrawString(
-                _font,
+                Debug.Assets.DebugFont,
                 _PositionDebugString,
                 new Vector2(Body.BoxCollider.X, Body.BoxCollider.Y) + new Vector2(-60, -88),
                 Color.CornflowerBlue);
 
             Game.SpriteBatch.DrawString(
-                _font,
+                Debug.Assets.DebugFont,
                 _isFlooredString,
                 new Vector2(Body.BoxCollider.X, Body.BoxCollider.Y) + new Vector2(-60, -102),
                 Color.Gray);
 
             Game.SpriteBatch.DrawString(
-                _font,
+                Debug.Assets.DebugFont,
                 _afterCollisionString,
                 new Vector2(Body.BoxCollider.X, Body.BoxCollider.Y) + new Vector2(-60, -116),
                 Color.Gray);
 
             Game.SpriteBatch.DrawString(
-                _font,
+                Debug.Assets.DebugFont,
                 "A " + _isOverlappingPinkString,
                 new Vector2(Body.BoxCollider.X, Body.BoxCollider.Y) + new Vector2(20, -64),
                 Color.Violet);
 
             Game.SpriteBatch.DrawString(
-                _font,
+                Debug.Assets.DebugFont,
                 "B " + _isOverlappingOrangeString,
                 new Vector2(Body.BoxCollider.X, Body.BoxCollider.Y) + new Vector2(20, -50),
                 Color.Orange);

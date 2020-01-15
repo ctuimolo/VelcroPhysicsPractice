@@ -9,9 +9,6 @@ namespace VelcroPhysicsPractice.Scripts
 {
     public class PhysicsBody
     {
-        private readonly Texture2D  _sprite;
-        private readonly SpriteFont _font;
-
         public Dictionary<int, Hitbox>  ChildHitboxes       { get; private set; }
         public List<Hitbox>             CurrentCollisions   { get; private set; }
         public bool IsFloored   { get; set; }
@@ -24,9 +21,6 @@ namespace VelcroPhysicsPractice.Scripts
 
         public PhysicsBody(GameObject owner, IBox body)
         {
-            _sprite     = Game.Assets.Load<Texture2D>("red");
-            _font       = Game.Assets.Load<SpriteFont>("font"); 
-
             Owner       = owner;
             BoxCollider = body;
 
@@ -39,7 +33,7 @@ namespace VelcroPhysicsPractice.Scripts
             foreach(Hitbox hitbox in ChildHitboxes.Values)
             {
                 Game.SpriteBatch.Draw(
-                    _sprite,
+                    Debug.Assets.RedBox,
                     new Vector2(hitbox.Position.X, hitbox.Position.Y),
                     new Rectangle(0, 0, hitbox.Size.X, hitbox.Size.Y),
                     new Color(Color.White, 0.5f),

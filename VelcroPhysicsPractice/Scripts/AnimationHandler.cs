@@ -14,7 +14,6 @@ namespace VelcroPhysicsPractice.Scripts
 
     public class AnimationHandler
     {
-        private readonly SpriteFont _font;
         private readonly GameObject _owner;
 
         private Dictionary<int, Animation> _animationDic { get; }
@@ -30,7 +29,6 @@ namespace VelcroPhysicsPractice.Scripts
         {
             _owner          = owner;
             _animationDic   = new Dictionary<int, Animation>();
-            _font           = Game.Assets.Load<SpriteFont>("font");
         }
 
         public void AddAnimation(int key, Animation animation)
@@ -91,7 +89,7 @@ namespace VelcroPhysicsPractice.Scripts
                 }
             }
 
-            Game.SpriteBatch.DrawString(_font, "_drawIndex  : " + _drawIndex, new Vector2(10, 100), Color.Pink);
+            Game.SpriteBatch.DrawString(Debug.Assets.DebugFont, "_drawIndex  : " + _drawIndex, new Vector2(10, 100), Color.Pink);
             _currentAnimation.DrawDebug();
         }
     }

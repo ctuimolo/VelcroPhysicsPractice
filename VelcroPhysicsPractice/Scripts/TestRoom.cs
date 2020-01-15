@@ -17,7 +17,6 @@ namespace Rooms.TestRoom
 
         private List<GameObject>    _renderedGameObjects;
         private bool                _drawDebug = false;
-        private SpriteFont          _font;
         private KeyboardState       _oldKeyState;
 
         public TestRoom(Point worldSize) : base(worldSize)
@@ -52,15 +51,17 @@ namespace Rooms.TestRoom
 
             World.AddHitbox(new Hitbox(null, new Vector2(420, 310), new Point(30, 60))
             {
+                DebugSprite = VelcroPhysicsPractice.Debug.Assets.OrangeBox,
                 Data = new CollisionPackage
                 {
                     Value = "orange",
                     String = "spuds",
                 }
-            });
+            });;
 
             World.AddHitbox(new Hitbox(null, new Vector2(550, 290), new Point(20, 120))
             {
+                DebugSprite = VelcroPhysicsPractice.Debug.Assets.PurpleBox,
                 Data = new CollisionPackage
                 {
                     Value = "purple",
@@ -70,6 +71,7 @@ namespace Rooms.TestRoom
 
             World.AddHitbox(new Hitbox(null, new Vector2(60, 290), new Point(40, 40))
             {
+                DebugSprite = VelcroPhysicsPractice.Debug.Assets.OrangeBox,
                 Data = new CollisionPackage
                 {
                     Value = "orange",
@@ -79,6 +81,7 @@ namespace Rooms.TestRoom
 
             World.AddHitbox(new Hitbox(null, new Vector2(440, 290), new Point(80, 40))
             {
+                DebugSprite = VelcroPhysicsPractice.Debug.Assets.PurpleBox,
                 Data = new CollisionPackage
                 {
                     Value = "purple",
@@ -88,6 +91,7 @@ namespace Rooms.TestRoom
 
             World.AddHitbox(new Hitbox(null, new Vector2(300, 250), new Point(40, 20))
             {
+                DebugSprite = VelcroPhysicsPractice.Debug.Assets.OrangeBox,
                 Data = new CollisionPackage
                 {
                     Value = "orange",
@@ -97,6 +101,7 @@ namespace Rooms.TestRoom
 
             World.AddHitbox(new Hitbox(null, new Vector2(280, 340), new Point(20, 50))
             {
+                DebugSprite = VelcroPhysicsPractice.Debug.Assets.PurpleBox,
                 Data = new CollisionPackage
                 {
                     Value = "purple",
@@ -106,6 +111,7 @@ namespace Rooms.TestRoom
 
             World.AddHitbox(new Hitbox(null, new Vector2(300, 340), new Point(20, 50))
             {
+                DebugSprite = VelcroPhysicsPractice.Debug.Assets.OrangeBox,
                 Data = new CollisionPackage
                 {
                     Value = "orange",
@@ -115,6 +121,7 @@ namespace Rooms.TestRoom
 
             World.AddHitbox(new Hitbox(null, new Vector2(320, 340), new Point(20, 50))
             {
+                DebugSprite = VelcroPhysicsPractice.Debug.Assets.PurpleBox,
                 Data = new CollisionPackage
                 {
                     Value = "purple",
@@ -124,6 +131,7 @@ namespace Rooms.TestRoom
 
             World.AddHitbox(new Hitbox(null, new Vector2(580, 120), new Point(66, 12))
             {
+                DebugSprite = VelcroPhysicsPractice.Debug.Assets.PurpleBox,
                 Data = new CollisionPackage
                 {
                     Value = "purple",
@@ -133,6 +141,7 @@ namespace Rooms.TestRoom
 
             World.AddHitbox(new Hitbox(null, new Vector2(400, 620), new Point(40, 40))
             {
+                DebugSprite = VelcroPhysicsPractice.Debug.Assets.OrangeBox,
                 Data = new CollisionPackage
                 {
                     Value = "orange",
@@ -142,6 +151,7 @@ namespace Rooms.TestRoom
 
             World.AddHitbox(new Hitbox(null, new Vector2(21, 400), new Point(24, 50))
             {
+                DebugSprite = VelcroPhysicsPractice.Debug.Assets.PurpleBox,
                 Data = new CollisionPackage
                 {
                     Value = "purple",

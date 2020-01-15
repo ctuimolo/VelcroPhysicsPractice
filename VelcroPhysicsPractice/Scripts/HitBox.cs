@@ -15,9 +15,8 @@ namespace VelcroPhysicsPractice.Scripts
     public class Hitbox
     {
         // Monogame drawing fields
-        private readonly Texture2D  _sprite;
-
-        public GameObject   Owner   { get; private set; } = null;
+        public GameObject   Owner       { get; private set; } = null;
+        public Texture2D    DebugSprite { get; set; } 
 
         public Vector2 Offset;
         public Vector2 Position;
@@ -43,7 +42,7 @@ namespace VelcroPhysicsPractice.Scripts
         public void DrawDebug()
         {
             Game.SpriteBatch.Draw(
-                Game.Assets.Load<Texture2D>(Data.Value),
+                DebugSprite,
                 new Vector2(Position.X, Position.Y),
                 new Rectangle(0, 0, Size.X, Size.Y),
                 new Color(Color.White, 0.1f),

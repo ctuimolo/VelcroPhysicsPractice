@@ -20,7 +20,6 @@ namespace VelcroPhysicsPractice
 
         // Game camera and view
         private bool                _drawDebug = false;
-        private SpriteFont          _font;
         private KeyboardState       _oldKeyState;
         private Matrix              _view;
         private int                 _frameCount;
@@ -57,7 +56,6 @@ namespace VelcroPhysicsPractice
             CurrentRoom = Rooms.Hash["test room"];
 
             _view = Matrix.Identity;
-            _font = Content.Load<SpriteFont>("font");
         }
 
         public static int CurrentTargetFPS()
@@ -98,10 +96,10 @@ namespace VelcroPhysicsPractice
             GraphicsDevice.Clear(Color.Black);
             SpriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, _view);
 
-            SpriteBatch.DrawString(_font, "Toggle Hitbox view:   [F1]", new Vector2(10, 10), Color.White);
-            SpriteBatch.DrawString(_font, "_frameCount: " + _frameCount, new Vector2(10, 22), Color.White);
-            SpriteBatch.DrawString(_font, "Target FPS: " + _targetFPS, new Vector2(10, 34), Color.White);
-            SpriteBatch.DrawString(_font, "Avg FPS:    " + _frameRate, new Vector2(10, 46), Color.White);
+            SpriteBatch.DrawString(Debug.Assets.DebugFont, "Toggle Hitbox view:   [F1]", new Vector2(10, 10), Color.White);
+            SpriteBatch.DrawString(Debug.Assets.DebugFont, "_frameCount: " + _frameCount, new Vector2(10, 22), Color.White);
+            SpriteBatch.DrawString(Debug.Assets.DebugFont, "Target FPS: " + _targetFPS, new Vector2(10, 34), Color.White);
+            SpriteBatch.DrawString(Debug.Assets.DebugFont, "Avg FPS:    " + _frameRate, new Vector2(10, 46), Color.White);
 
             CurrentRoom.Draw();
 

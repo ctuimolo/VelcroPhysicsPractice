@@ -11,7 +11,6 @@ namespace VelcroPhysicsPractice.Scripts
     {
         private readonly Point      _size;
         private readonly Vector2    _position;
-        private readonly Texture2D  _sprite;
 
         private bool _drawDebug = true;
         private KeyboardState _oldKeyState;
@@ -22,7 +21,6 @@ namespace VelcroPhysicsPractice.Scripts
         {
             // Object fields
             _size     = new Point(coordinates.Width, coordinates.Height);
-            _sprite   = Game.Assets.Load<Texture2D>("grey");
             _position = new Vector2(coordinates.X, coordinates.Y);
 
             CurrentWorld    = setWorld;
@@ -52,7 +50,7 @@ namespace VelcroPhysicsPractice.Scripts
         public override void Draw()
         {
             Game.SpriteBatch.Draw(
-                _sprite,
+                Debug.Assets.GreyBox,
                 new Vector2(Body.BoxCollider.X, Body.BoxCollider.Y),
                 new Rectangle(0, 0, (int)_size.X, (int)_size.Y), 
                 Color.White,

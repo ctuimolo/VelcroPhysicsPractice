@@ -11,8 +11,6 @@ namespace VelcroPhysicsPractice.Scripts
 
     public class Animation
     {
-        private readonly SpriteFont         _font;
-
         public Texture2D SpriteSheet { get; set; }
         public Rectangle DrawRect;
         
@@ -28,7 +26,6 @@ namespace VelcroPhysicsPractice.Scripts
 
         public Animation(Rectangle drawRect, Point ownerSize)
         {
-            _font = Game.Assets.Load<SpriteFont>("font");
             DrawRect = drawRect;
             if(OffsetType == OffsetType.CenterBottom)
             {
@@ -45,8 +42,8 @@ namespace VelcroPhysicsPractice.Scripts
 
         public void DrawDebug()
         {
-            Game.SpriteBatch.DrawString(_font, "DrawRect.X : " + DrawRect.X, new Vector2(10, 76), Color.Pink);
-            Game.SpriteBatch.DrawString(_font, "DrawRect.Y : " + DrawRect.Y, new Vector2(10, 88), Color.Pink);
+            Game.SpriteBatch.DrawString(Debug.Assets.DebugFont, "DrawRect.X : " + DrawRect.X, new Vector2(10, 76), Color.Pink);
+            Game.SpriteBatch.DrawString(Debug.Assets.DebugFont, "DrawRect.Y : " + DrawRect.Y, new Vector2(10, 88), Color.Pink);
         }
     }
 }
