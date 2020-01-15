@@ -36,7 +36,7 @@ namespace VelcroPhysicsPractice.Scripts
 
         public void AddChildHitbox(int key, Vector2 offset, Point size)
         {
-            ChildHitboxes[key] = Game.World.AddHitbox(Owner, offset, size, "red");
+            ChildHitboxes[key] = Game.Rooms.CurrentRoom.World.AddHitbox(Owner, offset, size, "red");
         }
         
         public void DrawDebug()

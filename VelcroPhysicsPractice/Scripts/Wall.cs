@@ -25,7 +25,7 @@ namespace VelcroPhysicsPractice.Scripts
             _sprite   = Game.Assets.Load<Texture2D>("grey");
             _position = new Vector2(coordinates.X, coordinates.Y);
 
-            Body = Game.World.AddBody(this, _position, _size, false);
+            Body = Game.Rooms.Hash["test"].World.AddBody(this, _position, _size, false);
         }
 
         public override void LoadContent()

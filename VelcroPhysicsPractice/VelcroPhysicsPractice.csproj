@@ -51,6 +51,8 @@
     <Compile Include="Scripts\HitboxAnimator.cs" />
     <Compile Include="Scripts\PhysicsBody.cs" />
     <Compile Include="Scripts\Player.cs" />
+    <Compile Include="Scripts\Room.cs" />
+    <Compile Include="Scripts\RoomManager.cs" />
     <Compile Include="Scripts\Wall.cs" />
     <Compile Include="Scripts\WorldHandler.cs" />
   </ItemGroup>

@@ -49,7 +49,7 @@ namespace VelcroPhysicsPractice.Scripts
             _font       = Game.Assets.Load<SpriteFont>("font");
             _sprite     = Game.Assets.Load<Texture2D>("red");
 
-            Body                = Game.World.AddBody(this, setPosition, _size);
+            Body                = Game.Rooms.CurrentRoom.World.AddBody(this, setPosition, _size);
             Body.AddChildHitbox(0, new Vector2(0,0), _size);
             AnimationHandler    = new AnimationHandler(this);
             Position            = setPosition;
