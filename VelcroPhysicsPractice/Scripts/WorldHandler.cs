@@ -41,11 +41,20 @@ namespace VelcroPhysicsPractice.Scripts
             return newBody;
         }
 
-        public Hitbox AddHitbox(GameObject owner, Vector2 offset, Point size, string color)
+        public PhysicsBody AddDynamicBody(PhysicsBody body)
         {
-            Hitbox newHitbox = new Hitbox(owner, offset, size, color);
-            _worldHitboxes.Add(newHitbox);
-            return newHitbox;
+            _dynamicBodies.Add(body);
+            return body;
+        }
+
+        public void AddHitbox(Hitbox hitbox)
+        {
+            _worldHitboxes.Add(hitbox);
+        }
+
+        public PhysicsBody CreatePhysicsBody(GameObject owner, Vector2 position, Point size)
+        {
+            return new PhysicsBody(owner, _world.Create(position.X, position.Y, size.X, size.Y));
         }
 
         private bool IsAABBOverlap(Hitbox A, Hitbox B)
@@ -106,6 +115,7 @@ namespace VelcroPhysicsPractice.Scripts
                     {
                         if (!body.CurrentCollisions.Contains(other)     &&
                             !ReferenceEquals(body.Owner, other.Owner)   &&
+                            other.Data != null                          &&
                             IsAABBOverlap(hitbox, other))
                         {
                             body.CurrentCollisions.Add(other);

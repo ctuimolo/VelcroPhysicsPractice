@@ -59,72 +59,125 @@ namespace VelcroPhysicsPractice
             ///////////////////
             _renderedGameObjects = new List<GameObject> 
             {
-                new Wall(new Rectangle(0,420,800,80)),
-                new Wall(new Rectangle(560,312,40,20)),
-                new Wall(new Rectangle(0,0,4,480)),
-                new Wall(new Rectangle(0,400,5,480)),
-                new Wall(new Rectangle(796,0,4,480)),
-                new Wall(new Rectangle(200,300,70,20)),
-                new Wall(new Rectangle(220,280,70,20)),
-                new Wall(new Rectangle(0,0,800,4)),
-                new Wall(new Rectangle(190,400,70,20)),
-                new Wall(new Rectangle(60,325,70,20)),
-                new Wall(new Rectangle(390,388,40,32)),
-                new Wall(new Rectangle(432,388,40,32)),
-                new Wall(new Rectangle(474,388,40,32)),
-                new Wall(new Rectangle(516,388,40,32)),
-                new Wall(new Rectangle(558,388,40,32)),
-                new Wall(new Rectangle(600,388,40,32)),
-                new Wall(new Rectangle(642,388,40,32)),
+                new Wall(World, new Rectangle(0,420,800,80)),
+                new Wall(World, new Rectangle(560,312,40,20)),
+                new Wall(World, new Rectangle(0,0,4,480)),
+                new Wall(World, new Rectangle(0,400,5,480)),
+                new Wall(World, new Rectangle(796,0,4,480)),
+                new Wall(World, new Rectangle(200,300,70,20)),
+                new Wall(World, new Rectangle(220,280,70,20)),
+                new Wall(World, new Rectangle(0,0,800,4)),
+                new Wall(World, new Rectangle(190,400,70,20)),
+                new Wall(World, new Rectangle(60,325,70,20)),
+                new Wall(World, new Rectangle(390,388,40,32)),
+                new Wall(World, new Rectangle(432,388,40,32)),
+                new Wall(World, new Rectangle(474,388,40,32)),
+                new Wall(World, new Rectangle(516,388,40,32)),
+                new Wall(World, new Rectangle(558,388,40,32)),
+                new Wall(World, new Rectangle(600,388,40,32)),
+                new Wall(World, new Rectangle(642,388,40,32)),
 
-                new Player(new Vector2(250,230)),
+                new Player(World, new Vector2(250,230)),
              };
 
-            Hitbox tmpBox;
+            World.AddHitbox(new Hitbox(null, new Vector2(420, 310), new Point(30, 60))
+            {
+                Data = new CollisionPackage
+                {
+                    Value  = "orange",
+                    String = "spuds",
+                }
+            });
 
-            tmpBox = World.AddHitbox(null, new Vector2(420, 310), new Point(30, 60), "orange");
-            tmpBox.Data.Value = "orange";
-            tmpBox.Data.String = "spuds";
+            World.AddHitbox(new Hitbox(null, new Vector2(550, 290), new Point(20, 120))
+            {
+                Data = new CollisionPackage
+                {
+                    Value = "purple",
+                    String = "cats",
+                }
+            });
 
-            tmpBox = World.AddHitbox(null, new Vector2(550, 290), new Point(20, 120), "purple");
-            tmpBox.Data.Value = "purple";
-            tmpBox.Data.String = "cats";
+            World.AddHitbox(new Hitbox(null, new Vector2(60, 290), new Point(40, 40))
+            {
+                Data = new CollisionPackage
+                {
+                    Value  = "orange",
+                    String = "bruh",
+                }
+            });
 
-            tmpBox = World.AddHitbox(null, new Vector2(60, 290), new Point(40, 40), "orange");
-            tmpBox.Data.Value = "orange";
-            tmpBox.Data.String = "bruh";
+            World.AddHitbox(new Hitbox(null, new Vector2(440, 290), new Point(80, 40))
+            {
+                Data = new CollisionPackage
+                {
+                    Value = "purple",
+                    String = "crunchy",
+                }
+            });
 
-            tmpBox = World.AddHitbox(null, new Vector2(440, 290), new Point(80, 40), "purple");
-            tmpBox.Data.Value = "purple";
-            tmpBox.Data.String = "crunchy";
+            World.AddHitbox(new Hitbox(null, new Vector2(300, 250), new Point(40, 20))
+            {
+                Data = new CollisionPackage
+                {
+                    Value  = "orange",
+                    String = "trash",
+                }
+            });
 
-            tmpBox = World.AddHitbox(null, new Vector2(300, 250), new Point(40, 20), "orange");
-            tmpBox.Data.Value = "orange";
-            tmpBox.Data.String = "trash";
+            World.AddHitbox(new Hitbox(null, new Vector2(280, 340), new Point(20, 50))
+            {
+                Data = new CollisionPackage
+                {
+                    Value = "purple",
+                    String = "curly",
+                }
+            });
 
-            tmpBox = World.AddHitbox(null, new Vector2(280, 340), new Point(20, 50), "purple");
-            tmpBox.Data.Value = "purple";
-            tmpBox.Data.String = "curly";
+            World.AddHitbox(new Hitbox(null, new Vector2(300, 340), new Point(20, 50))
+            {
+                Data = new CollisionPackage
+                {
+                    Value = "orange",
+                    String = "d00d",
+                }
+            });
 
-            tmpBox = World.AddHitbox(null, new Vector2(300, 340), new Point(20, 50), "orange");
-            tmpBox.Data.Value = "orange";
-            tmpBox.Data.String = "d00d";
+            World.AddHitbox(new Hitbox(null, new Vector2(320, 340), new Point(20, 50))
+            {
+                Data = new CollisionPackage
+                {
+                    Value = "purple",
+                    String = "very nice",
+                }
+            });
 
-            tmpBox = World.AddHitbox(null, new Vector2(320, 340), new Point(20, 50), "purple");
-            tmpBox.Data.Value = "purple";
-            tmpBox.Data.String = "very nice";
+            World.AddHitbox(new Hitbox(null, new Vector2(580, 120), new Point(66, 12))
+            {
+                Data = new CollisionPackage
+                {
+                    Value = "purple",
+                    String = "cute funny",
+                }
+            });
 
-            tmpBox = World.AddHitbox(null, new Vector2(580, 120), new Point(66, 12), "purple");
-            tmpBox.Data.Value = "purple";
-            tmpBox.Data.String = "cute funny";
+            World.AddHitbox(new Hitbox(null, new Vector2(400, 620), new Point(40, 40))
+            {
+                Data = new CollisionPackage
+                {
+                    Value = "orange",
+                    String = "popcorn",
+                }
+            });
 
-            tmpBox = World.AddHitbox(null, new Vector2(400, 620), new Point(40, 40), "orange");
-            tmpBox.Data.Value = "orange";
-            tmpBox.Data.String = "popcorn";
-
-            tmpBox = World.AddHitbox(null, new Vector2(21, 400), new Point(24, 50), "purple");
-            tmpBox.Data.Value = "purple";
-            tmpBox.Data.String = "bruh bruh bruh";
+            World.AddHitbox(new Hitbox(null, new Vector2(21, 400), new Point(24, 50))
+            {
+                Data = new CollisionPackage
+                {
+                    Value = "purple",
+                    String = "bruh bruh bruh",
+                }
+            });
 
             // Initialize debug
             _font = Content.Load<SpriteFont>("font");

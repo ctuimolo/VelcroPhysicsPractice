@@ -18,14 +18,15 @@ namespace VelcroPhysicsPractice.Scripts
 
         public Hitbox Hitbox  { get; private set; }
 
-        public Wall(Rectangle coordinates)
+        public Wall(WorldHandler setWorld, Rectangle coordinates)
         {
             // Object fields
             _size     = new Point(coordinates.Width, coordinates.Height);
             _sprite   = Game.Assets.Load<Texture2D>("grey");
             _position = new Vector2(coordinates.X, coordinates.Y);
 
-            Body = Game.World.AddBody(this, _position, _size, false);
+            CurrentWorld    = setWorld;
+            Body            = setWorld.AddBody(this, _position, _size, false);
         }
 
         public override void LoadContent()

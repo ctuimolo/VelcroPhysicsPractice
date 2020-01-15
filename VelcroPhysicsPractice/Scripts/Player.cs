@@ -40,19 +40,17 @@ namespace VelcroPhysicsPractice.Scripts
         private string  _isOverlappingOrangeString;
         private string  _isOverlappingPinkString;
         private string  _listOfCollisions;
-        private Texture2D _sprite;
 
-        public Vector2 Position     { get; private set; }
-
-        public Player(Vector2 setPosition)
+        public Player(WorldHandler setWorld, Vector2 setPosition)
         {
             _font       = Game.Assets.Load<SpriteFont>("font");
-            _sprite     = Game.Assets.Load<Texture2D>("red");
 
-            Body                = Game.World.AddBody(this, setPosition, _size);
-            Body.AddChildHitbox(0, new Vector2(0,0), _size);
-            AnimationHandler    = new AnimationHandler(this);
-            Position            = setPosition;
+            CurrentWorld            = setWorld;
+            Body                    = setWorld.AddBody(this, setPosition, _size);
+            Body.ChildHitboxes[0]   = new Hitbox(this, new Vector2(0,0), _size);
+            AnimationHandler        = new AnimationHandler(this);
+            Position                = setPosition;
+            Size                    = _size;
 
             AnimationHandler.AddAnimation(
                 (int)AnimationStates.Idle,

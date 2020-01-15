@@ -26,10 +26,8 @@ namespace VelcroPhysicsPractice.Scripts
 
         public delegate void enact();
 
-        public Hitbox(GameObject owner, Vector2 offset, Point size, string color)
+        public Hitbox(GameObject owner, Vector2 offset, Point size)
         {
-            _sprite = Game.Assets.Load<Texture2D>(color);
-
             Offset  = offset;
             Size    = size;
 
@@ -40,14 +38,12 @@ namespace VelcroPhysicsPractice.Scripts
             } else {
                 Position = Offset;
             }
-
-            Data = new CollisionPackage();
         }
 
         public void DrawDebug()
         {
             Game.SpriteBatch.Draw(
-                _sprite,
+                Game.Assets.Load<Texture2D>(Data.Value),
                 new Vector2(Position.X, Position.Y),
                 new Rectangle(0, 0, Size.X, Size.Y),
                 new Color(Color.White, 0.1f),

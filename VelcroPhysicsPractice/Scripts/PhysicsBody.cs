@@ -33,11 +33,6 @@ namespace VelcroPhysicsPractice.Scripts
             ChildHitboxes       = new Dictionary<int, Hitbox>();
             CurrentCollisions   = new List<Hitbox>();
         }
-
-        public void AddChildHitbox(int key, Vector2 offset, Point size)
-        {
-            ChildHitboxes[key] = Game.World.AddHitbox(Owner, offset, size, "red");
-        }
         
         public void DrawDebug()
         {
